@@ -13,8 +13,9 @@ export async function saveElement(collection_data, element) {
   const mainStore = useMainStore()
   const { saveSimple, saveCatalog } = mainStore
   // const snake_name = final_snake_name(collection_data)
+
   const { snake_name, is_catalog } = final_snake_name(collection_data)
-  // console.log("save_element", snake_name, element)
+  // console.log("save_element", snake_name, element, collection_data, is_catalog)
   if (is_catalog)
     return await saveCatalog([collection_data, element]).then((response) => {
       return response
@@ -36,4 +37,18 @@ export async function getElement(collection_data, el_id) {
   return await getSimple([snake_name, el_id]).then((response) => {
     return response
   })
+}
+
+export async function deleteElement(collection_data, obj_id) {
+  const mainStore = useMainStore()
+  const { deleteSimple, deleteCatalog } = mainStore
+  const { snake_name, is_category } = final_snake_name(collection_data)
+  if (is_category)
+    return await deleteCatalog([collection_data, obj_id]).then((response) => {
+      return response
+    })
+  else
+    return await deleteSimple([snake_name, obj_id]).then((response) => {
+      return response
+    })
 }

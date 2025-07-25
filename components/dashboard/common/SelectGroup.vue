@@ -31,6 +31,7 @@ const props = defineProps({
   subtype_class: String,
   is_display: Boolean,
   required: Boolean,
+  special_multiple: Boolean,
 })
 
 const emits = defineEmits(['delete-record'])
@@ -70,16 +71,22 @@ const category_is_multiple = computed(() => {
   return false
 })
 
+
 const subcategory_is_multiple = computed(() => {
+  if (props.forced_level)
+    return false
   if (is_multiple.value)
     return true
+  if (props.special_multiple)
+    return true
   if (final_main_collection.value){
-    const category = final_main_collection.value.categories.find(
-      cat => cat.parent === filter_group.value.category_subtype) || {}
-    return category.is_multiple || false
+    const subtype_field = final_main_collection.value.fields.find(field =>
+      field.related_snake_name === collections.value.subtype.snake_name)
+    return subtype_field && subtype_field.relation_type === 'many_to_many'
   }
   return false
 })
+
 
 const level_names = computed(() => {
   let done = false
@@ -168,8 +175,10 @@ const type_items = computed(() => {
     if (nodes.value.group && nodes.value.group.children)
       return nodes.value.group.children.map(child => child.data)
   }
-  else
+  else{
+    // console.log("filter_node", filter_node.value)
     return filter_node.value.children.map(child => child.data)
+  }
   return []
 })
 

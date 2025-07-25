@@ -6,7 +6,6 @@ import { storeToRefs } from 'pinia'
 import HeaderCommon from "~/components/dashboard/generic/HeaderCommon.vue";
 
 const mainStore = useMainStore()
-const { cats } = storeToRefs(mainStore)
 
 const props = defineProps({
   main: Object,

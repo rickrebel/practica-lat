@@ -3,6 +3,7 @@
 import {useMainStore} from '~/store/index.js'
 import EditCommon from "~/components/dashboard/common/EditCommon.vue";
 import WordListEdit from "~/components/dashboard/search/word_list/WordListEdit.vue";
+import {onMounted} from "vue";
 const mainStore = useMainStore()
 const { cats, schemas } = storeToRefs(mainStore)
 
@@ -23,16 +24,16 @@ const cluster_in_edit = ref(null)
 // const new_apply_query = ref(null)
 const edit_type = ref(null)
 
-const main_word_lists = computed(() => {
-  return cats.value.clusters.map(cluster => {
-    const word_lists = cats.value.word_lists.filter(
-      word_list => word_list.cluster === cluster.id)
-    return {...cluster, word_lists: word_lists}
-  })
-})
-
 const collection_data_word_list = computed(() => {
   return schemas.value.collections_dict['word_list']
+})
+
+const main_word_lists = computed(() => {
+  return cats.value.cluster.map(cluster => {
+    const word_lists = cats.value.word_list.filter(
+        word_list => word_list.cluster === cluster.id)
+    return {...cluster, word_lists: word_lists}
+  })
 })
 
 const total_words = computed(() => {
@@ -52,11 +53,12 @@ const counter_color = computed(() => {
     return 'success'
 })
 
+
+
 function editWordList(word_list) {
   element_to_edit.value = word_list
   edit_type.value = {key: 'edit', title: 'Editar lista de palabras'}
   dialog_edit.value = true
-  console.log("editWordList", word_list)
 }
 
 function addWordList(cluster) {
@@ -112,7 +114,7 @@ function saveSearchQuery() {
         v-tooltip="cluster.description || 'Ayuda no definida'"
         append-icon="help"
       >
-        help
+        Ayuda
       </v-chip>
 
     </span>

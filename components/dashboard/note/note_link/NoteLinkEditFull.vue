@@ -194,7 +194,7 @@ function saveNewElement({res, is_new}) {
                 density="compact"
               >
                 <v-btn
-                  v-for="option in cats.valid_options"
+                  v-for="option in cats.valid_option"
                   :key="option.id"
                   :color="option.color"
                   class="text-caption"
@@ -221,7 +221,7 @@ function saveNewElement({res, is_new}) {
                   @update:model-value="sendLink"
                 >
                   <v-btn
-                    v-for="option in cats.valid_options"
+                    v-for="option in cats.valid_option"
                     :key="option.id"
                     :color="option.color"
                     :value="option.id"

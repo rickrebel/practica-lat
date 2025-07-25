@@ -21,7 +21,7 @@ const snake_name = computed(() => props.collection_data.snake_name)
 const edit_name = computed(() => `${props.collection_data.model_name}Edit`)
 const edit_name_full = computed(() => `${props.collection_data.model_name}EditFull`)
 
-const emits = defineEmits(['finish-open', 'item-saved'])
+const emits = defineEmits(['finish-open', 'item-saved', 'item-deleted'])
 
 import(`~/components/dashboard/${route_key.value}/${snake_name.value}/${edit_name.value}.vue`)
   .then(module => {
@@ -122,6 +122,8 @@ const itemSaved = ({res, is_new}) => {
             :full_main="full_main"
             :collection_data="collection_data"
             @item-saved="itemSaved"
+            @item-deleted="emits('item-deleted', $event)"
+            can_delete
           >
             <template v-slot:edit="{ full_main }">
               <component

@@ -6,7 +6,7 @@ import {storeToRefs} from "pinia";
 import SelectGroup from "~/components/dashboard/common/SelectGroup.vue";
 import ScrapeableChip from "~/components/dashboard/source/source/ScrapeableChip.vue";
 const mainStore = useMainStore()
-const { cats, foreign_origin, all_nodes } = storeToRefs(mainStore)
+const { all_nodes } = storeToRefs(mainStore)
 const props = defineProps({
   main: Object,
   collection_data: Object,

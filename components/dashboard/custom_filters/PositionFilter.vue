@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 const items = computed(() => {
-  console.log("cats", cats.value)
+  // console.log("cats", cats.value)
   if (!cats.value) {
     return []
   }

@@ -14,7 +14,7 @@ export default defineNuxtPlugin((app) => {
     },
     theme: {
       themes: {
-        light: {
+        home: {
           dark: false,
           colors: {
             primary: "#C41D7F",
@@ -25,6 +25,16 @@ export default defineNuxtPlugin((app) => {
             pinky: "#c72d67",
             pinked: "#f6b6bd",
             choco: "#3A0811",
+          }
+        },
+        dashboard: {
+          dark: false,
+          colors: {
+            primary: "#3a3a3a",
+            secondary: "#EE8B44",
+            accent: "#5F9398",
+            info: "#001249",
+            warning: "#e0be79",
           }
         }
       }

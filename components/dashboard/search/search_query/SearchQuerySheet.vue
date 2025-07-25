@@ -8,7 +8,7 @@ import SelectDate from "~/components/dashboard/common/SelectDate.vue";
 import {example_response} from "~/composables/example.js";
 import NoteLinkEditFull from "~/components/dashboard/note/note_link/NoteLinkEditFull.vue";
 const mainStore = useMainStore()
-const { schemas, cats, foreign_origin } = storeToRefs(mainStore)
+const { schemas, foreign_origin } = storeToRefs(mainStore)
 const { sendQuery, saveSimple, searchApplyQuery } = mainStore
 
 const props = defineProps({

@@ -86,8 +86,6 @@ const final_buttons = computed(() => {
       <router-link to="/" _class="d-flex align-center">
         <v-img
           src="~/assets/logo_ibero.png"
-          _height="xs ? 64 : 76"
-          _width="xs ? 64 : 320"
           :height="xs ? 60 : 40"
           :width="xs ? 190 : 120"
         />

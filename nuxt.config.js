@@ -58,5 +58,13 @@ export default defineNuxtConfig({
     preload: true,
     prefetch: true,
     preconnect: true
+  },
+  vite: {
+    vue: {
+      template: {
+        transformAssetUrls
+      }
+    }
   }
+
 })

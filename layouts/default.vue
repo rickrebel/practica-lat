@@ -8,6 +8,7 @@ import Footer from "~/components/web/Footer.vue";
 import {nextTick, onMounted} from "vue";
 import {useWebStore} from '~/store/web.js'
 const storyblokApi = useStoryblokApi();
+import { useTheme } from 'vuetify';
 
 const { $preview } = useNuxtApp()
 
@@ -17,6 +18,8 @@ const { setDocuments, setAllDocuments, setGlobalConfig } = webStore
 const version = $preview ? 'draft' : 'published'
 
 onMounted(() => {
+  const theme = useTheme();
+  theme.change('home');
   nextTick(() => {
     // storyblokApi.get(
     //   `cdn/stories/documents`,

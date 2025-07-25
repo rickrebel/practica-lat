@@ -92,7 +92,7 @@ const changeOrigin = (value) => {
     @update:model-value="changeOrigin"
   >
     <v-btn
-      v-for="choice in cats.source_origins"
+      v-for="choice in cats.source_origin"
       :key="choice.id"
       :value="choice.id"
       :color="choice.color"

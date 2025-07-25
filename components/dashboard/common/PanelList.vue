@@ -65,9 +65,14 @@ function changeShowDetails() {
   })
 }
 
-// function saveItem() {
-//   emits('save-item')
-// }
+
+function deleteItem(elem_id) {
+  // console.log("deleteItem", res)
+  open_panels.value = []
+  const index = props.results.findIndex(
+      result => result[props.collection_data.pk] === elem_id)
+  props.results.splice(index, 1)
+}
 
 </script>
 
@@ -84,6 +89,7 @@ function changeShowDetails() {
       :sel="sel"
       @finish-open="changeShowDetails"
       @item-saved="addItem"
+      @item-deleted="deleteItem"
     >
       <template
         #header="{openMain}"

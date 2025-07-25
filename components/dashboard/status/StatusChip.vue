@@ -59,11 +59,14 @@ const want_edit_note = ref(false);
 
 const { status_dict } = storeToRefs(mainStore);
 
+const simple_name = computed(() => {
+  return props.collection.replace('status_', '');
+})
 // Compute item_built using the status_dict and props
 const field = computed(() => `status_${props.collection}`);
 const item_built = computed(() => {
   const status_field = props.main[field.value];
-  return status_dict.value[props.collection][status_field] ||
+  return status_dict.value[simple_name.value][status_field] ||
     {
       public_name: "Sin definir",
       color: "grey",

@@ -5,6 +5,7 @@ const menu_drawer = ref(false)
 import {useMainStore} from "~/store/index.js";
 import {useAuthStore} from "~/store/auth.js";
 import {storeToRefs} from "pinia";
+import { useTheme } from 'vuetify';
 
 const mainStore = useMainStore()
 const authStore = useAuthStore()
@@ -15,9 +16,14 @@ const { logout } = authStore
 
 onBeforeMount(() => {
   console.log("cats_ready")
+
 //   fetchCatalogs().then(() => {
 //     console.log("cats_ready")
 //   })
+})
+onMounted(() => {
+  const theme = useTheme();
+  theme.change('dashboard')
 })
 
 

@@ -4,8 +4,8 @@ import StatusDetail from "~/components/dashboard/status/StatusDetail.vue";
 import Comments from "~/components/dashboard/common/Comments.vue";
 import {storeToRefs} from "pinia";
 import {useMainStore} from "~/store/index.js";
-import {saveElement} from "~/composables/save_elements.js";
-// import {saveElement} from "~/composables/save_elements.js";
+import {saveElement, deleteElement} from "~/composables/save_elements.js";
+import EditCommonFields from "~/components/dashboard/common/EditCommonFields.vue";
 const mainStore = useMainStore()
 const { schemas } = storeToRefs(mainStore)
 
@@ -13,12 +13,17 @@ const props = defineProps({
   full_main: Object,
   collection_data: Object,
   collection_name: String,
+  can_delete: Boolean,
 })
 
 const saving = ref(false)
 const snackbar = ref(false)
 const editForm = ref(null)
-const emits = defineEmits(['new-item'])
+// const emits = defineEmits(['new-item'])
+const emits = defineEmits(['new-item', 'item-deleted', 'item-saved'])
+
+const dialog_delete = ref(false)
+const deleting = ref(false)
 const errors = ref(null)
 
 const final_collection_data = computed(() => {
@@ -48,6 +53,30 @@ async function saveRecord() {
   })
 }
 
+function deleteRecord() {
+  errors.value = null
+  deleting.value = true
+  const id_to_delete = props.full_main[props.collection_data.pk]
+  deleteElement(final_collection_data.value, id_to_delete)
+    .then((res) => {
+      console.log("res", res)
+      if (res.errors) {
+        // const error_msg = "No se pudo eliminar el registro si tiene datos relacionados"
+        // errors.value = `${error_msg}: \n${
+        //   JSON.stringify(res.errors.report_data)}`
+        let error_msg = "No se pudo eliminar el registro:\n"
+        error_msg += JSON.stringify(res.errors)
+        errors.value = error_msg
+        deleting.value = false
+        dialog_delete.value = false
+        return
+      }
+      deleting.value = false
+      dialog_delete.value = false
+      emits('item-deleted', id_to_delete)
+    })
+}
+
 </script>
 
 <template>
@@ -65,122 +94,25 @@ async function saveRecord() {
     <v-form
       ref="editForm"
     >
-      <v-card-text
-        class="d-flex flex-wrap"
+      <EditCommonFields
+        :full_main="full_main"
+        :final_collection_data="final_collection_data"
       >
-        <v-col cols="12" class="d-flex pa-0">
-          <v-text-field
-            v-if="final_collection_data.has.order"
-            v-model="full_main.order"
-            label="Orden"
-            type="number"
-            variant="outlined"
-            class="mr-2"
-            style="max-width: 70px;"
-          >
-          </v-text-field>
-          <v-text-field
-            v-if="final_collection_data.name_field"
-            v-model="full_main[final_collection_data.name_field]"
-            :label="final_collection_data.name_field"
-            class="mr-2"
-            variant="outlined"
-            style="width: 300px;"
-          />
-          <v-spacer></v-spacer>
-          <template v-if="final_collection_data.status_groups">
-            <StatusDetail
-              v-for="status_group in final_collection_data.status_groups"
-              :final_filters="full_main"
-              :collection="status_group"
-              style="max-width: 300px;"
-              density="default"
-              class="mr-1"
-            />
-          </template>
-          <Comments
-            v-if="final_collection_data.has.comments"
-            :main="full_main"
-            :final_collection_data="final_collection_data"
-          />
-        </v-col>
-        <v-col
-          v-if="final_collection_data.has.icon || final_collection_data.has.color"
-          cols="12"
-          class="d-flex pa-0"
-        >
-          <v-text-field
-            v-if="final_collection_data.has.icon"
-            v-model="full_main.icon"
-            label="Ícono (material icons)"
-            variant="outlined"
-            class="mx-2"
-            style="max-width: 200px;"
-          >
-            <template v-slot:append>
-              <v-btn
-                icon
-                href="https://fonts.google.com/icons"
-                target="_blank"
-              >
-                <v-icon>open_in_new</v-icon>
-              </v-btn>
-            </template>
-          </v-text-field>
-          <v-text-field
-            v-if="final_collection_data.has.color"
-            v-model="full_main.color"
-            label="Color"
-            variant="outlined"
-            class="mx-2"
-            style="max-width: 200px;"
-          >
-            <template v-slot:append>
-              <v-btn
-                icon
-                href="https://vuetifyjs.com/en/styles/colors/#material-colors"
-                target="_blank"
-              >
-                <v-icon>open_in_new</v-icon>
-              </v-btn>
-            </template>
-          </v-text-field>
-        </v-col>
-
-        <slot name="edit" :full_main="full_main">
-          EDICIÓN (REVISAR PORQUE NO ES NORMAL)
-        </slot>
-        <v-col
-          v-if="final_collection_data.has.description"
-          cols="12"
-          class="d-flex pa-0"
-        >
-          <v-textarea
-            v-model="full_main.description"
-            label="Descripción"
-            rows="1"
-            auto-grow
-            class="mr-2"
-            variant="outlined"
-          ></v-textarea>
-        </v-col>
-        <v-col
-          cols="12"
-          class="d-flex pa-0"
-        >
-          <v-textarea
-            v-if="final_collection_data.has.help_text"
-            v-model="full_main.help_text"
-            label="Texto de ayuda"
-            variant="outlined"
-            rows="2"
-            auto-grow
-            _hide-details
-          >
-          </v-textarea>
-        </v-col>
-      </v-card-text>
+        <template #edit="{ full_main }">
+          <slot name="edit" :full_main="full_main">
+            EDICIÓN 1 (REPORTAR ESTO PORQUE NO ES NORMAL)
+          </slot>
+        </template>
+      </EditCommonFields>
       <v-card-actions>
+        <v-btn
+          v-if="final_collection_data.level !== 'secondary'"
+          color="error"
+          variant="outlined"
+          @click="dialog_delete = true"
+        >
+          Eliminar
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn
           color="accent"
@@ -212,6 +144,38 @@ async function saveRecord() {
         </v-btn>
       </template>
     </v-snackbar>
+    <v-dialog
+      v-model="dialog_delete"
+      max-width="500"
+    >
+      <v-card class="pa-3">
+        <v-card-title>
+          ¿Confirmas la eliminación de este registro?
+        </v-card-title>
+        <v-card-subtitle>
+          Esta acción no se puede deshacer
+        </v-card-subtitle>
+        <v-card-actions class="py-4">
+          <v-btn
+            color="accent"
+            variant="outlined"
+            @click="dialog_delete = false"
+          >
+            Cancelar
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            v-if="can_delete"
+            color="error"
+            variant="elevated"
+            :loading="deleting"
+            @click="deleteRecord"
+          >
+            Eliminar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 

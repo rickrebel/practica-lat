@@ -1,7 +1,7 @@
 import {computed, ref} from "vue";
 
 export const status_filters = {
-  "register": {
+  "status_register": {
     name: "de Registro",
     hidden: false,
     key_name: "register",
@@ -9,7 +9,7 @@ export const status_filters = {
     collection_group: "status",
     order: 4,
   },
-  "validation": {
+  "status_validation": {
     name: "de Validación",
     hidden: false,
     key_name: "validation",
@@ -17,9 +17,9 @@ export const status_filters = {
     collection_group: "status",
     order: 5,
   },
-  "location": {
+  "status_location": {
     name: "de Ubicación",
-    hidden: true,
+    hidden: false,
     key_name: "location",
     collection: "status_location",
     collection_group: "status",

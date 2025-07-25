@@ -55,9 +55,26 @@ export const useApi = () => {
     });
   };
 
+
+  const apiFetchAuth = $fetch.create({
+    baseURL: config.public.apiUrl || process.env.NUXT_API_URL,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${useCookie('auth_dfi').value || ''}`,
+    },
+    onRequestError({ request, options, error }) {
+      console.error('Request error:', error)
+    },
+    onResponseError({ request, response, options }) {
+      console.error('Response error:', response.status, response.statusText)
+    }
+  })
+
+
   return {
     apiFetch,
     setAuthHeader,
+    apiFetchAuth,
 
     async get(endpoint, options = {}) {
       return apiFetch(endpoint, { method: 'GET', ...options });

@@ -6,6 +6,7 @@ import {useMainStore} from '~/store/index'
 import {storeToRefs} from "pinia";
 import CollectionDisplay from "~/components/dashboard/CollectionDisplay.vue";
 import PanelList from "~/components/dashboard/common/PanelList.vue";
+import PanelsResult from "~/components/dashboard/common/PanelsResult.vue";
 
 definePageMeta({
   middleware: 'dashboard',
@@ -76,27 +77,34 @@ const group_results = computed(() => {
           v-for="(collection, key) in collections"
           :key="key"
           :href="`#${key}`"
+          :value="key"
           @click="setCollection(collection.snake_name)"
         >
           {{ collection.plural_name }}
         </v-tab>
       </v-tabs>
+
       <v-tabs-window v-model="options_tab">
+
         <v-tabs-window-item
           v-for="(collection, key) in collections"
           :key="key"
           :value="key"
         >
-          <PanelList
+          <div
             v-if="key === 'group'"
-            :results="group_results"
-            :collection_data="collection"
-            show_details
-          />
+            class="mt-2"
+          >
+            <PanelsResult
+              :results="group_results"
+              :collection_data="collection"
+              show_details
+              in_sheet
+            />
+          </div>
           <CollectionDisplay
             v-else
             :parent_collection="collection"
-            :level_name="key"
             :filter_group="filter_group"
           />
 

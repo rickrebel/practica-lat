@@ -1,8 +1,7 @@
 <script setup>
 
-// import StatusDetail from "~/components/dashboard/status/StatusDetail.vue";
-import Comments from "~/components/dashboard/utils/Comments.vue";
 import StatusDetail from "../status/StatusDetail.vue";
+import Comments from "~/components/dashboard/common/Comments.vue";
 
 const props = defineProps({
   full_main: Object,
@@ -28,7 +27,7 @@ function openLink(type) {
   <v-card-text
     class="d-flex flex-wrap"
   >
-    <v-col cols="12" class="d-flex pb-4 px-0">
+    <v-col cols="12" class="d-flex pa-0">
       <v-text-field
         v-if="final_collection_data.has.order"
         v-model="full_main.order"
@@ -48,13 +47,6 @@ function openLink(type) {
         style="width: 300px;"
         :rules="[rules.required]"
       />
-      <v-sheet
-        class="d-flex align-center text-h6 font-weight-bold"
-        _style="max-width: 300px;"
-        variant="tonal"
-      >
-        {{ full_main.full_name }}
-      </v-sheet>
       <v-spacer></v-spacer>
       <template v-if="final_collection_data.status_groups">
         <StatusDetail
@@ -67,6 +59,7 @@ function openLink(type) {
         />
       </template>
       <Comments
+        v-if="final_collection_data.has.comments"
         :main="full_main"
         :final_collection_data="final_collection_data"
       />
