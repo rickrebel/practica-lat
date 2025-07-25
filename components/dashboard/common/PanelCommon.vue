@@ -13,7 +13,7 @@ const props = defineProps({
   sel: Object,
 })
 
-const full_main = ref({})
+const full_main = ref(null)
 const edit_component = shallowRef('')
 const edit_full_component = shallowRef('')
 const route_key = computed(() => props.collection_data.app_label)
@@ -47,13 +47,14 @@ const openMain = () => {
   // const group = props.group
   // const real_group = group.parent ? `catalogs/${group.key}` : group.key
   const level = props.collection_data.level
-  console.log('level', level)
+  // console.log('level', level)
   if (level === 'category_group'){
     emits('finish-open')
     return
   }
   const elem_id = props.main.id ? 'id' : 'key_name'
   getElement(props.collection_data, props.main[elem_id]).then((res) => {
+    // console.log('openMain', res)
     full_main.value = res
     emits('finish-open')
   })

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import ApiService from "./common";
+// import ApiService from "./common";
 import * as d3 from 'd3';
 
 
@@ -15,7 +15,9 @@ export const useWebStore = defineStore('web', {
   actions: {
     async sendResponse(data) {
       try {
-        let response = await ApiService.post(`/oej/response/`, data);
+        const { post } = useApi();
+
+        let response = await post(`/oej/response/`, data);
         return response.data
       } catch (error) {
         console.error(error);
@@ -24,7 +26,9 @@ export const useWebStore = defineStore('web', {
     async saveFile([response_id, file_data]) {
       try {
         console.log('response_id', response_id)
-        let response = await ApiService.post(
+        const { post } = useApi();
+
+        let response = await post(
           `/oej/response/${response_id}/add_file/`, file_data,
           {headers: {
             'Content-Type': 'multipart/form-data'

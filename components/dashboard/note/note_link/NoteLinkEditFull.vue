@@ -67,7 +67,7 @@ async function sendLink(){
   }
   // console.log("params", params)
   savePreLink([props.full_main.id, params]).then(response => {
-    console.log("response", response)
+    // console.log("response", response)
     if (response.errors)
       errors.value = response.errors
     if (response.note_contents){
@@ -85,7 +85,8 @@ async function sendLink(){
 
 const rule_link = computed(() => {
   // return props.full_main.is_internal_dis === 'invalid'
-  const is_invalid_option = props.full_main.valid_option === invalid_valid_option.value.id
+  const is_invalid_option = (
+      props.full_main.valid_option === invalid_valid_option.value.id)
   return is_invalid_option
     ? Boolean(props.full_main.real_url) || 'Se requiere el link final'
     : true

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import ApiService from "./common";
+// import ApiService from "./common";
 import colorMixin from "~/mixins/colorMixin";
 // import { mande } from 'mande'
 import qs from 'qs';
@@ -215,7 +215,7 @@ const calculateFilterGroup = (data, fg) => {
 
 function getLastId(data) {
   const id = data.id || data.key_name
-  const method = id ? 'put' : 'post'
+  const method = id ? 'PUT' : 'POST'
   const last_id = id ? `${id}/` : ''
   return { method, last_id }
 }
@@ -235,13 +235,6 @@ export const useMainStore = defineStore('main', {
     full_geo: {"state": {}, "municipality": {}},
   }),
   actions: {
-    setHeader() {
-      const cookie_auth = useCookie('auth_dfi')
-      // console.log("cookie_auth", cookie_auth)
-      if (cookie_auth.value) {
-        ApiService.defaults.headers.common['Authorization'] = `Token ${cookie_auth.value}`
-      }
-    },
     setFilterGroup(group) {
       console.log("setFilterGroup", group)
       this.current_filter_group = group
@@ -263,34 +256,35 @@ export const useMainStore = defineStore('main', {
       this.current_collection_data = this.schemas.collections_dict[
         this.current_collection]
     },
-    fetchCatalogs() {
+    async fetchCatalogs() {
       // console.log("fetchCatalogs init")
-      return new Promise((resolve) => {
-        ApiService.get('/catalogs/all/')
-          .then(({data}) => {
-            // console.log("fetchCatalogs data", data)
-            this.cats = data
-            this.schemas = calculateSchemas(data)
-            // console.log("schemas", this.schemas)
-            this.all_nodes = calculateNewCats(
-              data, this.schemas.filter_groups)
-            this.status = calculate_status(data.status_control)
-            this.setCollectionData()
-            this.setFilterGroupData()
-            this.cats_ready = true
-            console.log("fetchCatalogs end")
-            resolve(data)
-          })
-          .catch(error => {
-            console.error(error)
-          })
-      })
+
+      try {
+        const { get } = useApi();
+        const response = await get('/catalogs/all/')
+          // .then(({data}) => {
+          // console.log("fetchCatalogs data", data)
+        this.cats = response
+        this.schemas = calculateSchemas(response)
+        // console.log("schemas", this.schemas)
+        this.all_nodes = calculateNewCats(
+          response, this.schemas.filter_groups)
+        this.status = calculate_status(response.status_control)
+        this.setCollectionData()
+        this.setFilterGroupData()
+        this.cats_ready = true
+        console.log("fetchCatalogs end")
+        return response
+          // })
+      } catch (error) {
+        console.error(error)
+      }
     },
     async getSimple([group, id]) {
-      this.setHeader()
       try {
-        let response = await ApiService.get(`/${group}/${id}/`);
-        return response.data
+        const { get, setAuthHeader } = useApi();
+        setAuthHeader();
+        return await get(`/${group}/${id}/`);
       } catch (error) {
         console.error(error)
         ;
@@ -300,14 +294,16 @@ export const useMainStore = defineStore('main', {
       if (this.full_geo[group][id])
         return
       this.full_geo[group][id] = []
-      this.setHeader()
       try {
-        let response = await ApiService.get(`space_time/${group}/${id}/`);
-        // console.log("getGeo", response.data)
-        // this.full_states[id] = response.data.municipalities
+        const { get, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        let response = await get(`space_time/${group}/${id}/`);
+        // console.log("getGeo", data)
+        // this.full_states[id] = data.municipalities
         const child = group === 'state' ? 'municipalities' : 'localities'
-        this.full_geo[group][id] = response.data[child]
-        return response.data
+        this.full_geo[group][id] = response[child]
+        return response
       } catch (error) {
         console.error(error)
         ;
@@ -315,16 +311,18 @@ export const useMainStore = defineStore('main', {
     },
     appendNewSources(response) {
       // const new_sources = response.data.new_sources
-      this.cats.sources = response.data.all_sources
+      this.cats.sources = response.all_sources
       this.all_nodes['sources'] = calculateFilterGroup(
         this.cats, this.schemas.filters_dict.sources)
     },
     async sendQuery([id, params]) {
       try {
-        this.setHeader()
-        let response = await ApiService.post(`/search_query/${id}/search/`, params);
+        const { post, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        let response = await post(`/search_query/${id}/search/`, params);
         this.appendNewSources(response)
-        return response.data
+        return response
       } catch (error) {
         console.error(error)
         ;
@@ -332,17 +330,20 @@ export const useMainStore = defineStore('main', {
     },
     async searchApplyQuery(id) {
       try {
-        this.setHeader()
-        let response = await ApiService.get(`/apply_query/${id}/search/`);
+        const { get, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        let response = await get(`/apply_query/${id}/search/`);
         this.appendNewSources(response)
-        return response.data
+        return response
       } catch (error) {
         console.error(error)
         ;
       }
     },
     edit_source_value(data) {
-      if (!data.source)
+      console.log("edit_source_value", data)
+      if (!data.source || !data.source.id)
         return
       const index = this.cats.sources.findIndex(el => el.id === data.source.id)
       this.cats.sources[index] = data.source
@@ -350,82 +351,100 @@ export const useMainStore = defineStore('main', {
         this.cats, this.schemas.filters_dict.sources)
     },
     async savePreLink([id, data]) {
-      this.setHeader()
       try {
-        let response = await ApiService.patch(`/note_link/${id}/get_note_content/`, data);
-        // console.log("savePreLink", response.data)
-        this.edit_source_value(response.data)
-        return response.data
+        const { patch, setAuthHeader } = useApi();
+        setAuthHeader();
+        let response = await patch(`/note_link/${id}/get_note_content/`, data);
+        console.log("savePreLink", response)
+        this.edit_source_value(response)
+        return response
       } catch (error) {
         console.error(error);
-        this.edit_source_value(error.response.data)
-        return error.response.data
+        // this.edit_source_value(error.response.data)
+        this.edit_source_value(error._data)
+        return error._data
       }
     },
     async getAdditionalInfo(id) {
-      this.setHeader()
       try {
-        let response = await ApiService.get(`/note_content/${id}/additional_info/`);
+        const { get, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        let response = await get(`/note_content/${id}/additional_info/`);
         // console.log("getAdditionalInfo", response.data)
-        return response.data
+        return response
       } catch (error) {
         console.error(error);
       }
     },
     async saveSimple([collection, data]) {
-      this.setHeader()
+
       const { method, last_id } = getLastId(data)
       try {
-        let response = await ApiService[method](`/${collection}/${last_id}`, data);
-        return response.data
+        const { apiFetch } = useApi();
+        return await apiFetch(`/${collection}/${last_id}`, {
+          method: method,
+          data: data,
+        });
       } catch (error) {
         console.error(error);
-        return {errors: error.response.data}
+        // return {errors: error.response.data}
+        return {errors: error.response ? error.response.data : error.message}
       }
     },
     async saveCatalog([collection_data, data]) {
       // console.log("collection_data", collection_data)
-      this.setHeader()
       const { method, last_id } = getLastId(data)
       const collection = collection_data.snake_name
       const full_url = `catalogs/${collection}/${last_id}`
       try {
-        let response = await ApiService[method](full_url, data);
+        const { apiFetch, setAuthHeader } = useApi();
+        setAuthHeader();
+        let response = await apiFetch(full_url, {
+          method: method,
+          data: data,
+        });
+
+        // let response = await ApiService[method](full_url, data);
         let real_group = `${collection}s`
         if (collection === 'country')
           real_group = 'countries'
         if (method === 'post')
-          this.cats[real_group].unshift(response.data)
+          this.cats[real_group].unshift(response)
         else {
-          const elem_id = response.data.id ? 'id' : 'key_name'
+          const elem_id = response.id ? 'id' : 'key_name'
           const index = this.cats[real_group].findIndex(
-            el => el[elem_id] === response.data[elem_id])
-          this.cats[real_group][index] = response.data
+            el => el[elem_id] === response[elem_id])
+          this.cats[real_group][index] = response
         }
         const filter_group = this.schemas.filter_groups.find(
           fg => fg[collection_data.level] === collection)
         this.all_nodes[filter_group.key_name] = calculateFilterGroup(
           this.cats, filter_group)
         // this.calculateNewNodes(filter_group, response.data)
-        return response.data
+        return response
       } catch (error) {
         console.error(error);
-        return {errors: error.response.data}
+        // return {errors: error.response.data}
+        return {errors: error.response ? error.response.data : error.message}
       }
     },
     async patchSimple([collection, id, data]) {
-      this.setHeader()
       try {
-        let response = await ApiService.patch(`/${collection}/${id}/`, data);
-        return response.data
+        const { patch, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        let response = await patch(`/${collection}/${id}/`, data);
+        return response
       } catch (error) {
         console.error(error);
       }
     },
     async deleteSimple([group, id]) {
-      this.setHeader()
       try {
-        await ApiService.delete(`/${group}/${id}/`);
+        const { deleteData, setAuthHeader } = useApi();
+        setAuthHeader();
+        await deleteData(`/${group}/${id}/`);
         return id
       } catch (error) {
         console.error(error);
@@ -433,9 +452,11 @@ export const useMainStore = defineStore('main', {
     },
     async fetchElements([group, params]) {
       // console.log('fetchElements', group, params)
-      this.setHeader()
       try {
-        const result = await ApiService.get(`/${group}/`, {
+        const { get, setAuthHeader } = useApi();
+        setAuthHeader();
+
+        const result = await get(`/${group}/`, {
           params: params,
           paramsSerializer: params => {
             return qs.stringify(params, {arrayFormat: 'comma'})
@@ -444,7 +465,7 @@ export const useMainStore = defineStore('main', {
         // if (group.includes('catalogs/')){
         //   const real_group = group.split('/')[1]
         // }
-        return result.data
+        return result
       } catch (error) {
         console.error(error)
       }

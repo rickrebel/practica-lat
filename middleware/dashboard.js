@@ -4,10 +4,10 @@ import {useAuthStore} from "~/store/auth.js";
 
 export default defineNuxtRouteMiddleware((to, from, next) => {
   // console.log('TO', to)
-  if (to.path === '/dashboard') {
-    console.log('redirecting to dashboard')
-    return navigateTo('/dashboard/candidate')
-  }
+  // if (to.path === '/dashboard') {
+  //   console.log('redirecting to dashboard')
+  //   return navigateTo('/dashboard/candidate')
+  // }
 
   const mainStore = useMainStore()
   const authStore = useAuthStore()
@@ -15,8 +15,8 @@ export default defineNuxtRouteMiddleware((to, from, next) => {
   const {
     fetchCatalogs,
     cats_ready,
-    // setCollection,
-    // setFilterGroup,
+    setCollection,
+    setFilterGroup,
   } = mainStore
   const { is_logged, checkAuthSimple, authCookie, purgeAuth } = authStore
 
@@ -28,19 +28,19 @@ export default defineNuxtRouteMiddleware((to, from, next) => {
   //   return navigateTo('/login')
   // }
   if (!authCookie) {
-    // console.log('redirecting to login')
+    console.log('redirecting to login')
     purgeAuth()
     return navigateTo('/login')
   }
   if (!is_logged) {
-    // console.log('checking auth')
+    console.log('checking auth')
     checkAuthSimple()
   }
 
-  // if (to.params.group)
-  //   setCollection(to.params.group)
-  // else if (to.params.model)
-  //   setFilterGroup(to.params.model)
+  if (to.params.group)
+    setCollection(to.params.group)
+  else if (to.params.model)
+    setFilterGroup(to.params.model)
   if (cats_ready) {
     // next()
     return

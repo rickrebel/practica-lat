@@ -145,19 +145,19 @@ async function submitForm(){
 }
 
 function sendFiles(){
-  form_data.value.files.forEach(file_obj => {
-    let formData = new FormData();
-    formData.append("file", file_obj.file, file_obj.file.name);
-    const elem_id = form_data.value.id
-    saveFile([elem_id, formData]).then(res=>{
-      console.log("res", res);
-      ready_files.value += 1
-      if (ready_files.value === form_data.value.files.length){
-        all_saved.value = true
-        saving.value = false
-      }
-    })
-  })
+  // form_data.value.files.forEach(file_obj => {
+  //   let formData = new FormData();
+  //   formData.append("file", file_obj.file, file_obj.file.name);
+  //   const elem_id = form_data.value.id
+  //   saveFile([elem_id, formData]).then(res=>{
+  //     console.log("res", res);
+  //     ready_files.value += 1
+  //     if (ready_files.value === form_data.value.files.length){
+  //       all_saved.value = true
+  //       saving.value = false
+  //     }
+  //   })
+  // })
 }
 
 function uploadFile(e){

@@ -9,7 +9,7 @@ import LoginMail from "~/components/login/LoginMail.vue";
 const { rules } = authMix;
 
 definePageMeta({
-  middleware: 'dashboard',
+  // middleware: 'dashboard',
   layout: 'login',
 })
 

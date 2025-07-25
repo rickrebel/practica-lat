@@ -81,8 +81,13 @@ watch(
 
 )
 
-const is_category = computed(() =>
-  collection_data.value.level.includes('category'))
+const is_category = computed(() =>{
+  // console.log("collection_data.value.level", collection_data.value)
+  // return props.parent_collection || current_collection_data.value
+  // console.log("parent_collection", props.parent_collection)
+  // console.log("current_collection_data", current_collection_data.value)
+  return collection_data.value.level.includes('category')
+})
 
 const debounceApplyFilters = _debounce(() => {
   applyFilters()

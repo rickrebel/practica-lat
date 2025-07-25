@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 // import Cookie from "js-cookie";
-import ApiService from "~/store/common.js";
+// import ApiService from "~/store/common.js";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -14,8 +14,6 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     setToken(token) {
       this.auth_dfi = token
-      //ApiService.defaults.headers.common['Authorization'] = `Token ${token}`;
-      //ApiService.defaults.headers.common['Authorization
     },
     setAuth(user, from_mid=true) {
       console.log("setAuth")
@@ -31,12 +29,6 @@ export const useAuthStore = defineStore("auth", {
         token.value = user.token
       }
       this.auth_dfi = user.token
-    },
-    setHeader() {
-      if (this.auth_dfi) {
-        let token = this.auth_dfi
-        ApiService.defaults.headers.common['Authorization'] = `Token ${token}`
-      }
     },
     checkAuthSimple() {
       // const cookie_auth = Cookie.get('auth_dfi')
@@ -59,7 +51,6 @@ export const useAuthStore = defineStore("auth", {
         else if (cookie_auth.value) {
           // console.log("hay cookie", this.auth_dfi)
           this.auth_dfi = cookie_auth.value
-          this.setHeader()
           this.getLogin()
         }
         else {
@@ -78,34 +69,44 @@ export const useAuthStore = defineStore("auth", {
         return null
       }
     },
-    getLogin() {
+    async getLogin() {
+      try {
+        const { get, setAuthHeader } = useApi()
+        setAuthHeader()
+        const data = await get('/login/')
+        return this.hasLogged(data)
+      } catch (err) {
+        console.log("LOGIN_ERROR", err)
+        return this.hasNotLogged(`Server error: ${err}`)
+      }
       // console.log("getLogin")
       // return new Promise((resolve) => {
-      this.setHeader()
-      ApiService.get('/login/')
-        .then(({data, status}) => {
-          if (status !== 204)
-            return this.hasLogged(data)
-          else
-            return this.hasNotLogged('Not Content (204)')
-        })
-        .catch(err =>{
-          console.log("LOGIN_ERROR", err)
-          return this.hasNotLogged(`Server error: ${err}`)
-        })
+      // this.setHeader()
+      // ApiService.get('/login/')
+      //   .then(({data, status}) => {
+      //     if (status !== 204)
+      //       return this.hasLogged(data)
+      //     else
+      //       return this.hasNotLogged('Not Content (204)')
+      //   })
+      //   .catch(err =>{
+      //     console.log("LOGIN_ERROR", err)
+      //     return this.hasNotLogged(`Server error: ${err}`)
+      //   })
       // })
     },
-    loginMail(params) {
-      return new Promise((resolve) => {
-        ApiService.post('/login/', params)
-          .then(({data}) => {
-            this.hasLogged(data, false)
-            return resolve(data)
-          })
-          .catch(err =>{
-            return resolve({error:err})
-          })
-      })
+    async loginMail(params) {
+      try {
+        const { post } = useApi();
+        let response = await post('/login/', params)
+
+        console.log("loginMail", response)
+        this.hasLogged(response, false)
+        return response
+
+      } catch (err) {
+        return {error:err}
+      }
     },
     hasLogged(userData, from_mid=true) {
       this.purgeAuth(from_mid)
