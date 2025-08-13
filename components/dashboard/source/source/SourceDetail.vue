@@ -73,47 +73,54 @@ const changeOrigin = (value) => {
 </script>
 
 <template>
-  <span class="text-cyan-darken-2 text-subtitle-1 mr-2 font-weight-bold">
-    {{full_source.name}}
-  </span>
-  <span class="text-black text-caption">
-    ({{full_source.main_url}})
-  </span>
-  <v-btn-toggle
-    v-if="!is_test"
-    v-model="source_origin"
-    :model-value="full_source.source_origin"
-    color="accent"
-    class="ml-2"
-    border
-    divided
-    density="compact"
-    variant="elevated"
-    @update:model-value="changeOrigin"
+  <v-card
+    color="transparent"
+    variant="flat"
+    max-width="600"
+    class="d-flex flex-wrap align-center"
   >
-    <v-btn
-      v-for="choice in cats.source_origin"
-      :key="choice.id"
-      :value="choice.id"
-      :color="choice.color"
-      :loading="saving_source"
-      size="small"
+    <span class="text-cyan-darken-2 text-subtitle-1 mr-2 font-weight-bold">
+      {{full_source.name}}
+    </span>
+    <span class="text-black text-caption">
+      ({{full_source.main_url}})
+    </span>
+    <v-btn-toggle
+      v-if="!is_test"
+      v-model="source_origin"
+      :model-value="full_source.source_origin"
+      color="accent"
+      class="ml-2"
+      border
+      divided
+      density="compact"
+      variant="elevated"
+      @update:model-value="changeOrigin"
     >
-      {{choice.name}}
-    </v-btn>
-  </v-btn-toggle>
-  <v-chip
-    v-else-if="pre_source?.source_origin"
-    :color="pre_source.source_origin.color"
-    class="ml-2"
-    variant="elevated"
-  >
-    {{pre_source.source_origin.name}}
-  </v-chip>
-  <ScrapeableChip
-    v-if="full_source.id"
-    :main="full_source"
-  />
+      <v-btn
+        v-for="choice in cats.source_origin"
+        :key="choice.id"
+        :value="choice.id"
+        :color="choice.color"
+        :loading="saving_source"
+        size="small"
+      >
+        {{choice.name}}
+      </v-btn>
+    </v-btn-toggle>
+    <v-chip
+      v-else-if="pre_source?.source_origin"
+      :color="pre_source.source_origin.color"
+      class="ml-2"
+      variant="elevated"
+    >
+      {{pre_source.source_origin.name}}
+    </v-chip>
+    <ScrapeableChip
+      v-if="full_source.id"
+      :main="full_source"
+    />
+  </v-card>
 </template>
 
 <style scoped>

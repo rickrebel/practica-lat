@@ -4,11 +4,19 @@ import dayjs from 'dayjs'
 // add isBetween plugin
 import isBetween from 'dayjs/plugin/isBetween'
 dayjs.extend(isBetween)
+import 'dayjs/locale/es'
+dayjs.locale('es')
 
 const props = defineProps({
   apply_queries: Array,
+  new_apply_query: Object,
+  months_ago: {
+    type: Number,
+    default: 30
+  }
 })
 
+const emits = defineEmits(['select-day'])
 const is_ready = ref(false)
 
 function getLimits() {
@@ -18,15 +26,15 @@ function getLimits() {
   props.apply_queries.sort((a, b) => {
     return a.has_errors - b.has_errors
   })
-  return props.apply_queries.reduce((acc, apply_query) => {
-    let base_limit = {has_errors: apply_query.has_errors}
-    if (apply_query.from_date === apply_query.to_date)
-      acc[apply_query.from_date] = {
+  return props.apply_queries.reduce((acc, query) => {
+    let base_limit = {has_errors: query.has_errors}
+    if (query.from_date === query.to_date)
+      acc[query.from_date] = {
         ...base_limit, icon: 'sync_alt', location: 'top left'}
     else{
-      acc[apply_query.from_date] = {
+      acc[query.from_date] = {
         ...base_limit, icon: 'play_arrow', location: 'top left'}
-      acc[apply_query.to_date] = {
+      acc[query.to_date] = {
         ...base_limit, icon: 'arrow_back_ios', location: 'top right'}
     }
     return acc
@@ -39,12 +47,12 @@ function getLimitsWithDayJS() {
   props.apply_queries.sort((a, b) => {
     return a.has_errors - b.has_errors
   })
-  return props.apply_queries.map(apply_query => {
+  return props.apply_queries.map(query => {
     return {
-      from_date: dayjs(apply_query.from_date),
-      to_date: dayjs(apply_query.to_date),
-      has_errors: apply_query.has_errors,
-      color: apply_query.has_errors ? 'orange' : 'cyan'
+      from_date: dayjs(query.from_date),
+      to_date: dayjs(query.to_date),
+      has_errors: query.has_errors,
+      color: query.has_errors ? 'orange' : 'cyan'
     }
   })
 }
@@ -53,12 +61,26 @@ const recent_months_with_day_js = computed(() => {
   if (is_ready.value)
     return
   const now = dayjs()
-  const three_months_ago = now.subtract(3, 'month')
-  let current_day = three_months_ago.startOf('month')
+  const real_months_ago = now.subtract(props.months_ago, 'month')
+  let current_day = real_months_ago.startOf('month')
   current_day = current_day.subtract(1, 'day')
-  let all_days = {}
+  let all_months = {}
   const limits = getLimits()
-  const between_dates = getLimitsWithDayJS()
+  let between_dates = getLimitsWithDayJS()
+  if (props.new_apply_query && props.new_apply_query.from_date){
+    const from_date = dayjs(props.new_apply_query.from_date)
+    let to_date = null
+    if (props.new_apply_query.to_date)
+      to_date = dayjs(props.new_apply_query.to_date)
+    else
+      to_date = from_date
+    between_dates.push({
+      from_date: from_date,
+      to_date: to_date,
+      has_errors: false,
+      color: 'green-lighten-2'
+    })
+  }
   while (current_day.isBefore(now)){
     current_day = current_day.add(1, 'day')
     const year_month = current_day.format('YYYY-MM')
@@ -74,23 +96,34 @@ const recent_months_with_day_js = computed(() => {
       month: current_day.month() + 1,
       year: current_day.year(),
       full_day: date_str,
+      date: current_day.toDate(),
       limit: limit,
       is_between: is_between
     }
-    if (all_days[year_month])
-      all_days[year_month].push(day_obj)
+    if (all_months[year_month])
+      all_months[year_month].push(day_obj)
     else
-      all_days[year_month] = [day_obj]
+      all_months[year_month] = [day_obj]
   }
-  console.log("all_days", all_days)
-  return Object.entries(all_days).map(([month, days]) => {
-    const month_str = dayjs(month).format('MMMM')
-    return {"month": month_str, "days": days}
+  console.log("all_months", all_months)
+  return Object.entries(all_months).map(([month, days]) => {
+    const month_str = dayjs(month).format('MMM')
+    const year = days[0].year % 1000
+    return {"month": month_str, "days": days, year: year}
   })
 
-
-
 })
+
+function indirectSelectDay(day) {
+  console.log("indirectSelectDay", day)
+  // const date = dayjs(day.full_day)
+  emits('select-day', {
+    date: day.date,
+    limit: day.limit,
+    is_between: day.is_between,
+    full_day: day.full_day,
+  })
+}
 
 </script>
 
@@ -104,12 +137,16 @@ const recent_months_with_day_js = computed(() => {
       v-for="month in recent_months_with_day_js"
       :key="month.month"
       class="d-flex align-center"
+      :class="month.month === 'ene' ? 'mt-4' : ''"
     >
       <div
         class="text-subtitle-1 mr-3 text-left"
-        style="width: 100px;"
+        style="width: 60px;"
       >
         {{month.month}}
+        <span class="text-grey-darken-1">
+          {{month.year}}
+        </span>
       </div>
       <div
         v-for="day in month.days"
@@ -142,7 +179,8 @@ const recent_months_with_day_js = computed(() => {
           v-else
           :color="day.is_between?.color || 'cyan-lighten-4'"
           size="x-small"
-          class="mr-1 text-caption text-grey-darken-2"
+          class="mr-1 text-caption text-grey-darken-2 cursor-pointer"
+          @click="indirectSelectDay(day)"
         >
           {{day.number}}
         </v-avatar>

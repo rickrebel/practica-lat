@@ -27,6 +27,7 @@ const loading = ref(false)
 const search_count = ref(0)
 const show_foreign = ref(false)
 const exist_links_count = ref(0)
+const months_ago = ref(9)
 
 const test_query = ref({
   when: 1,
@@ -98,10 +99,28 @@ function sendApplyQuery(apply_query_id) {
       return acc
     }, {valid: [], foreign: []})
     search_count.value = response.search_count
+    if (!search_count.value)
+      search_count.value = response.note_links.length
     exist_links_count.value = response.exist_links_count
     loading.value = false
     // new_apply_query.value = response
   })
+}
+
+function selectDay(day) {
+  // console.log("selectDay", day)
+  if (new_apply_query.value.from_date && new_apply_query.value.to_date) {
+    new_apply_query.value.from_date = day.full_day
+    new_apply_query.value.to_date = null
+  }
+  else if (new_apply_query.value.from_date && !new_apply_query.value.to_date) {
+    new_apply_query.value.to_date = day.full_day
+  } else {
+    new_apply_query.value.from_date = day.full_day
+    new_apply_query.value.to_date = null
+  }
+  // if (!day.limit)
+  //   return
 }
 
 </script>
@@ -110,10 +129,25 @@ function sendApplyQuery(apply_query_id) {
 
   <v-card class="mb-4" elevation="4" variant="elevated">
     <v-card-text>
+      <v-text-field
+        v-model="months_ago"
+        label="Meses atrás"
+        variant="outlined"
+        class="ml-4"
+        density="compact"
+        style="max-width: 120px;"
+        type="number"
+        hide-details
+      >
+      </v-text-field>
       <CalendarDisplay
         v-if="full_main.apply_queries?.length"
         :apply_queries="full_main.apply_queries"
+        :new_apply_query="new_apply_query"
+        :months_ago="months_ago"
+        @select-day="selectDay($event)"
       />
+
     </v-card-text>
     <v-row class="ml-3 mr-0">
       <v-col cols="5" class="mb-2 pl-0">
@@ -219,7 +253,9 @@ function sendApplyQuery(apply_query_id) {
                   icon
                   @click="show_foreign = !show_foreign"
                 >
-                  <v-icon>{{show_foreign ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</v-icon>
+                  <v-icon>
+                    {{show_foreign ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
+                  </v-icon>
                 </v-btn>
               </v-card-title>
               <template
@@ -247,7 +283,9 @@ function sendApplyQuery(apply_query_id) {
         </v-row>
       </v-card-text>
     </v-card>
-    <v-card-title v-if="full_main.apply_queries?.length">
+    <v-card-title
+      v-if="full_main.apply_queries?.length"
+    >
       Consultas realizadas:
     </v-card-title>
     <v-card-text>

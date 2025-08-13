@@ -274,11 +274,11 @@ function saveNewElement({res, is_new}) {
 
         </v-alert>
 
-<!--        <NoteContentSheet-->
-<!--          v-for="note_content in full_main.note_contents"-->
-<!--          :key="note_content.id"-->
-<!--          :full_main="note_content"-->
-<!--        />-->
+        <NoteContentSheet
+          v-for="note_content in full_main.note_contents"
+          :key="note_content.id"
+          :full_main="note_content"
+        />
       </v-card>
     </v-form>
     <v-snackbar
