@@ -1,13 +1,30 @@
 <script setup>
+import {onMounted} from "vue";
+
 const { $preview } = useNuxtApp()
+const { query } = useRoute()
+// import { apiPlugin, storyblokInit, useStoryblokBridge } from '@storyblok/vue';
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
 // const storyblokApi = useStoryblokApi();
+console.log("language query (index)", query._storyblok_lang)
 const story = await useAsyncStoryblok(
     'home',
-    { version: version },
+    {
+      version: version,
+      // language: 'en',
+      // language: null,
+      language: query._storyblok_lang || null,
+      fallback_lang: null,
+    },
 { customParent: 'https://app.storyblok.com' }
 )
+
+onMounted(() => {
+  console.log('query', query)
+  console.log('language', query._storyblok_lang)
+})
+
 
 // console.log('story', story)
 

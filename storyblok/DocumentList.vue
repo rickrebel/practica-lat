@@ -1,4 +1,5 @@
 <script setup>
+
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { ref, computed } from 'vue'
@@ -103,8 +104,8 @@ const filteredDocs = computed(() => {
   if (!show_all.value)
     return filtered_docs.slice(0, final_display.value)
   return filtered_docs
-
 })
+
 </script>
 
 <template>

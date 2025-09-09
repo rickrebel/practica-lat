@@ -6,10 +6,27 @@ node_modules
 .output
 .env
 .env*
+
 .idea
 .idea*
 .idea/
 .idea/*
+*.iml
+modules.xml
+.idea/misc.xml
+*.ipr
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
 
 dist
 localhost-key.pem

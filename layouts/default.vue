@@ -18,8 +18,6 @@ const { setDocuments, setAllDocuments, setGlobalConfig } = webStore
 const version = $preview ? 'draft' : 'published'
 
 onMounted(() => {
-  const theme = useTheme();
-  theme.change('home');
   nextTick(() => {
     // storyblokApi.get(
     //   `cdn/stories/documents`,

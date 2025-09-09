@@ -21,10 +21,6 @@ onBeforeMount(() => {
 //     console.log("cats_ready")
 //   })
 })
-onMounted(() => {
-  const theme = useTheme();
-  theme.change('dashboard')
-})
 
 
 const collection_data = computed(() => {

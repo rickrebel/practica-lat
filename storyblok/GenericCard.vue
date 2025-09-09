@@ -1,6 +1,7 @@
 <script setup>
 // import { computed, ref, onMounted } from 'vue'
 import CommonTitle from "../components/web/CommonTitle.vue";
+import AdaptativeVideoPlayer from "../components/AdaptativeVideoPlayer.vue";
 import {computed} from "vue";
 
 // defineProps({ blok: Object });
@@ -90,6 +91,11 @@ const blok_header = computed(() => {
         <CommonTitle
           v-if="blok.title"
           :blok="blok_header"
+        />
+        <AdaptativeVideoPlayer
+          v-if="blok.video_hls_url"
+          :video-url="blok.video_hls_url"
+          :video-poster="blok.media?.filename"
         />
         <v-card-text v-if="description2" class="py-2 py-sm-4">
           <div

@@ -14,14 +14,18 @@ export default defineNuxtPlugin((app) => {
     },
     theme: {
       themes: {
-        home: {
+        light: {
           dark: false,
           colors: {
-            primary: "#C41D7F",
+            primary: "#3BF4FB",
+            secondary: "#00FF99",
+            accent: "#FFD91F",
+            info: "#001249",
+            warning: "#e0be79",
+            hospital: "#52A198",
+
             primaryDark: "#9B055D",
-            secondary: "#1E1E1E",
             ibero: "#E00034",
-            accent: "#CF0622",
             pinky: "#c72d67",
             pinked: "#f6b6bd",
             choco: "#3A0811",

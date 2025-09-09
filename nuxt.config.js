@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  ssr: true,
   runtimeConfig: {
     public: {
       apiUrl: process.env.NUXT_API_URL
@@ -12,7 +13,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify']
   },
-  ssr: true,
+  router: {
+    middleware: ['language-detector']
+  },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/google-fonts',
@@ -44,9 +47,9 @@ export default defineNuxtConfig({
       // key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
       // cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
       key: 'localhost-key.pem',
-      cert: 'localhost.pem',
+      cert: 'localhost.pem'
     },
-    port: 3001
+    port: 3013
   },
   googleFonts: {
     families: {
