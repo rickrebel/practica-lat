@@ -3,6 +3,8 @@
 import CommonTitle from "../components/web/CommonTitle.vue";
 import AdaptativeVideoPlayer from "../components/AdaptativeVideoPlayer.vue";
 import {computed} from "vue";
+import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+
 
 // defineProps({ blok: Object });
 const props = defineProps({
@@ -37,10 +39,10 @@ const color_description = computed(() =>
 
 const variant_card = computed(() => {
   return props.blok.background_color2
-    ? props.blok.background_color2 === 'primary'
-      ? 'elevated'
-      : 'tonal'
-    : 'elevated'
+    ? ['primary', 'secondary'].includes(props.blok.background_color2)
+      ? 'flat'
+      : 'text'
+    : 'flat'
 })
 
 function orientToAlign(orient) {
@@ -53,6 +55,14 @@ const final_align = computed(() => {
 
 const final_sm_align = computed(() => {
   return orientToAlign(props.blok.align_md)
+})
+
+const background_image = computed(() => {
+  if (!props.blok.texture_back)
+    return null
+
+  const image_url = resizeImg(props.blok.texture_back, 400)
+  return `url(${image_url})`
 })
 
 const blok_header = computed(() => {
@@ -81,12 +91,13 @@ const blok_header = computed(() => {
     :order-sm="blok.order_sm || 1"
   >
     <v-card
-      variant="text"
+      :variant="variant_card"
       :class="`${blok.free_class} text-${blok.align_text} text-sm-${blok.align_md}`"
       class="rounded-0 d-flex flex-column justify-center fill-height py-0 _py-sm-4"
+      :style="`background-image: ${background_image}`"
       elevation="0"
+      :color="blok.background_color2 || 'transparent'"
     >
-
       <div>
         <CommonTitle
           v-if="blok.title"
@@ -133,4 +144,17 @@ const blok_header = computed(() => {
 .title-no-wrap{
   white-space: normal !important;
 }
+/* Textura-papel */
+.paper-texture {
+  _position: absolute;
+  _width: 473px;
+  _height: 843px;
+  _left: 0px;
+  _top: 227px;
+  //background: url(-azul.jpg);
+  background: url('~/assets/textura-papel.png');
+  //background-size: cover;
+}
+
+
 </style>

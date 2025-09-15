@@ -23,7 +23,7 @@ const background_color = computed(() => {
     v-editable="blok"
     :color="background_color"
     style="min-width: 100%;"
-    :style="{backgroundImage: blok.texture_back ? `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)` : ''}"
+    _style="{backgroundImage: blok.texture_back ? `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)` : ''}"
     :class="blok.free_class"
   >
 

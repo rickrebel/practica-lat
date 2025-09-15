@@ -24,11 +24,11 @@ const final_sm_align = computed(() => {
 <template>
   <v-card-title
     v-if="blok.subheader"
-    class="text-h6 text-sm-h4 font-weight-medium d-flex flex-column align-center pt-0"
+    class="text-h6 text-sm-h4 d-flex flex-column align-center pt-0"
     :class="`text-${blok.color_title || 'primary'} align-${final_align} align-sm-${final_sm_align}`"
   >
     <span
-      class="oswald title-no-wrap font-weight-medium"
+      class="montse title-no-wrap font-weight-bold"
       v-html="blok.subheader"
     >
     </span>

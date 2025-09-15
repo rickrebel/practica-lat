@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import componentMixin from '~/mixins/componentMixin'
 import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
 import {useDisplay} from "vuetify";
 import CommonTitle from "../components/web/CommonTitle.vue";
