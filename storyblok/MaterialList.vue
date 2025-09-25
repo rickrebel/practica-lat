@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import {useWebStore} from '~/store/web.js'
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import * as d3 from 'd3'

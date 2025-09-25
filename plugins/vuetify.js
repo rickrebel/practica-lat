@@ -20,15 +20,13 @@ export default defineNuxtPlugin((app) => {
             primary: "#3BF4FB",
             secondary: "#00FF99",
             accent: "#FFD91F",
+            accentDark: "#a88b13",
             info: "#001249",
             warning: "#e0be79",
-            hospital: "#52A198",
-
-            primaryDark: "#9B055D",
-            ibero: "#E00034",
-            pinky: "#c72d67",
+            // primaryDark: "#9B055D",
             pinked: "#f6b6bd",
             choco: "#3A0811",
+            // otter: "#333",
           }
         },
         dashboard: {
@@ -57,14 +55,14 @@ export default defineNuxtPlugin((app) => {
     },
     defaults: {
       VBtnPrimary: {
-        class: ['v-btn--primary', 'text-none', 'rounded-xl', 'px-6'],
+        class: ['v-btn--accent', 'text-none', 'rounded-xl', 'px-6', 'text-weight-bold'],
         // prependIcon: 'arrow_back',
-        appendIcon: 'arrow_forward',
+        appendIcon: 'add',
       },
       VBtnText: {
         class: ['v-btn--text', 'rounded-xl', 'px-6'],
         // prependIcon: 'arrow_back',
-        appendIcon: 'arrow_forward',
+        appendIcon: 'add',
       },
       VBtnMenu: {
         class: ['v-btn--menu', 'text-none'],

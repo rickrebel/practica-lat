@@ -7,7 +7,7 @@ const { query } = useRoute()
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
 // const storyblokApi = useStoryblokApi();
-console.log("language query (index)", query._storyblok_lang)
+// console.log("language query (index)", query._storyblok_lang)
 const story = await useAsyncStoryblok(
     'home',
     {

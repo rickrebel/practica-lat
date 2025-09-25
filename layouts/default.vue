@@ -13,7 +13,7 @@ import { useTheme } from 'vuetify';
 const { $preview } = useNuxtApp()
 
 const webStore = useWebStore()
-const { setDocuments, setAllDocuments, setGlobalConfig } = webStore
+const { setDocuments, setAllDocuments, setGlobalConfig, setAllProjects } = webStore
 
 const version = $preview ? 'draft' : 'published'
 
@@ -32,10 +32,19 @@ onMounted(() => {
     // storyblokApi.getAll(
     storyblokApi.getStories({
         version: version,
+        starts_with: "project/"
+      }
+    ).then(({data}) => {
+      // console.log("data all_projects", data);
+      setAllProjects(data.stories);
+      // documents.value = data.story.content;
+    });
+    storyblokApi.getStories({
+        version: version,
         starts_with: "report/"
       }
     ).then(({data}) => {
-      console.log("data all_documents", data);
+      // console.log("data all_documents", data);
       setAllDocuments(data.stories);
       // documents.value = data.story.content;
     });
@@ -46,7 +55,7 @@ onMounted(() => {
         starts_with: "global"
       }
     ).then(({data}) => {
-      console.log("data global_config", data);
+      // console.log("data global_config", data);
       if (data.stories.length)
         setGlobalConfig(data.stories[0].content);
     });
@@ -74,6 +83,18 @@ onMounted(() => {
       </v-container>
     </v-layout>
     <Footer />
+    <svg width="0" height="0" style="position:absolute;">
+      <defs>
+        <filter id="sandpaper-filter">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.65"
+            numOctaves="3"
+            stitchTiles="stitch"
+          />
+        </filter>
+      </defs>
+    </svg>
   </v-app>
 </template>
 

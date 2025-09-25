@@ -1,5 +1,5 @@
 <script setup>
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 import dayjs from "dayjs";
 const props = defineProps({
   item: Object,
@@ -24,103 +24,73 @@ function openDoc(item) {
 <template>
   <v-card
     v-if="item"
-    color="white"
     v-editable="item"
-    variant="flat"
-    class="outlined-card"
+    variant="text"
+    class="outlined-card pt-3 dynamic_background"
     tile
+    height="260"
   >
-    <div class="d-flex _flex-no-wrap flex-column">
-      <v-sheet
-        color="primary"
-        class="full-height d-flex justify-center align-center"
+    <svg
+      _v-if="blok.use_grandient"
+      class="texture-background"
+    >
+      <rect width="100%" height="100%" />
+    </svg>
+    <div class="content d-flex flex-column justify-space-between">
+      <v-card-subtitle
+        v-if="item.subtitle"
+        class="text-subtitle-2 title-no-wrap pb-0 font-weight-bold text-primary"
       >
-        <v-img
-          :aspect-ratio="1"
-          :src="resizeImg(item.cover, 140)"
-          max-height="240"
-          cover
-        ></v-img>
-      </v-sheet>
-      <div class="mx-6 mt-6">
-        <v-btn
-          variant="flat"
-          color="accent"
+        {{ item.subtitle }}
+      </v-card-subtitle>
+      <v-card-title
+        class="text-subtitle-1 title-no-wrap pt-0 font-weight-bold montse pointer"
+        style="line-height: 1.25"
+      >
+        <NuxtLink
+          :to="`/${item.full_slug}`"
+          class="text-decoration-none text-black"
+        >
+          {{ item.name }}
+        </NuxtLink>
+      </v-card-title>
+      <v-card-subtitle
+        class="text-subtitle-1 title-no-wrap text-black"
+      >
+        <span class="text-body-2">
+          {{ item.date_month }}
+        </span>
+      </v-card-subtitle>
+      <v-spacer></v-spacer>
+      <v-divider class="my-2" >
+      </v-divider>
+      <v-card-actions class="pt-auto pb-3">
+  <!--          <NuxtLink-->
+  <!--            :to="`/${item.full_slug}`"-->
+  <!--            class="text-decoration-none"-->
+  <!--          >-->
+        <v-btn-text
           @click="openDoc(item)"
-          icon="description"
-          v-tooltip="'Decargar documento'"
-        ></v-btn>
-      </div>
-
-      <div class="pt-6">
-        <v-card-subtitle
-          v-if="item.subtitle"
-          class="text-subtitle-1 title-no-wrap pb-0 font-weight-bold text-primary"
+          variant="elevated"
+          color="accent"
+          icon="download"
+          :block="!mdAndUp"
+          v-tooltip="'Descargar'"
         >
-          {{ item.subtitle }}
-        </v-card-subtitle>
-        <v-card-title
-          class="text-h6 title-no-wrap pt-0 font-weight-bold montse pointer mx-3"
+        </v-btn-text>
+        <v-spacer></v-spacer>
+        <v-btn-text
+          :to="`/${item.full_slug}`"
+          variant="text"
+          color="accent"
+          icon="visibility"
+          :block="!mdAndUp"
+          v-tooltip="'Explorar documento'"
         >
-          <NuxtLink
-            :to="`/${item.full_slug}`"
-            class="text-decoration-none oswald text-black"
-            _class="`text-${item.colors[2]}`"
-          >
-            {{ item.name }}
-          </NuxtLink>
-        </v-card-title>
-        <v-card-subtitle
-          class="text-subtitle-1 title-no-wrap pb-6 text-black mx-3"
-        >
-          <v-chip
-            v-if="!item.type_doc.includes('quincenal')"
-            size="small"
-            variant="outlined"
-            class="mr-2"
-          >
-            {{ item.document_type.name }}
-          </v-chip>
-          <span
-            v-if="!item.type_doc.includes('quincenal') && false"
-            :class="`text-pinked`"
-          >{{ item.type_doc }} |</span>
-          <span class="text-body-2">
-            {{ item.date_text }}
-          </span>
-        </v-card-subtitle>
-        <v-divider class="my-2" >
-        </v-divider>
-        <v-card-actions class="pb-4">
-<!--          <NuxtLink-->
-<!--            :to="`/${item.full_slug}`"-->
-<!--            class="text-decoration-none"-->
-<!--          >-->
-          <v-btn-text
-            :to="`/${item.full_slug}`"
-            variant="text"
-            color="accent"
-            prepend-icon="visibility"
-            :block="!mdAndUp"
-          >
-            Visualizar
-          </v-btn-text>
-<!--          </NuxtLink>-->
-<!--          <template v-if="mdAndUp">-->
-<!--            <v-spacer></v-spacer>-->
-<!--            <v-btn-->
-<!--              _rounded="lg"-->
-<!--              variant="flat"-->
-<!--              color="accent"-->
-<!--              @click="openDoc(item)"-->
-<!--              icon="file_download"-->
-<!--              v-tooltip="'Decargar documento'"-->
-<!--            ></v-btn>-->
-<!--          </template>-->
-        </v-card-actions>
-
-      </div>
+        </v-btn-text>
+      </v-card-actions>
     </div>
+
   </v-card>
 </template>
 

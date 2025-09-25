@@ -10,6 +10,8 @@ export const useWebStore = defineStore('web', {
     materials: [],
     documents: [],
     all_documents: [],
+    all_projects: [],
+    main_projects: [],
     global_config: null,
   }),
   actions: {
@@ -45,11 +47,11 @@ export const useWebStore = defineStore('web', {
       this.materials = materials;
     },
     setDocuments(documents) {
-      console.log('setting documents', documents)
+      // console.log('setting documents', documents)
       this.documents = documents
     },
     setAllDocuments(stories) {
-      console.log('setting all documents', stories)
+      // console.log('setting all documents', stories)
       let documents = stories.reduce((acc, story) => {
         // console.log('story', story)
         if (story.content.document.length > 0){
@@ -63,6 +65,16 @@ export const useWebStore = defineStore('web', {
       documents = documents.sort((a, b) => d3.descending(a.date_start, b.date_start))
       this.all_documents = documents
       // console.log('all_documents', this.all_documents)
+    },
+    setAllProjects(stories) {
+      // console.log('setting all documents', stories)
+      let projects = stories.reduce((acc, story) => {
+        acc.push(story)
+        return acc
+      }, [])
+      // console.log('projects', projects)
+      this.all_projects = projects
+      // console.log('this.all_projects', this.all_projects)
     },
     setGlobalConfig(config) {
       console.log('setting footer config', config)

@@ -8,6 +8,7 @@ import {useWebStore} from '~/store/web.js'
 import {getDocumentType} from "~/composables/documents.js";
 
 import Document from "~/storyblok/Document.vue"
+import {da} from "vuetify/locale";
 
 dayjs.locale('es')
 const webStore = useWebStore()
@@ -51,6 +52,7 @@ const final_docs = computed(() => {
       doc.month = date_start.month()
       doc.month_year = date_start.format('MMMM YYYY')
       let date_text = ''
+      let date_month = date_start.format('MMMM-YYYY')
       if (doc.document_type.has_range) {
         date_text = date_start.format('[Del] D [al] ')
         const date_end = dayjs(doc.end_date.substr(0, 10))
@@ -62,6 +64,7 @@ const final_docs = computed(() => {
         doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
       }
       doc.date_text = date_text
+      doc.date_month = date_month
       return doc
     })
     // .sort((x, y) => d3.descending(x.date_start, y.date_start))
@@ -167,32 +170,15 @@ const filteredDocs = computed(() => {
       <v-col
         v-for="(item, idx) in filteredDocs"
         :key="item._uid"
-        cols="12"
-        md="6"
+        cols="6"
+        sm="4"
+        md="3"
+
       >
         <Document
           :item="item"
         />
       </v-col>
     </v-row>
-<!--    <template-->
-<!--      v-if="!show_all && (blok?.init_display || 999) < final_docs.length"-->
-<!--    >-->
-
-      <v-card-actions
-        v-if="!show_all && (final_display < final_docs.length)"
-      >
-        <v-spacer></v-spacer>
-        <v-btn-primary
-          color="accent"
-          variant="outlined"
-          append-icon="expand_more"
-          @click="show_all = true"
-        >
-          Mostrar más
-        </v-btn-primary>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-<!--    </template>-->
   </v-card>
 </template>

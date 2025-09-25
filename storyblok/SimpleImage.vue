@@ -1,5 +1,5 @@
 <script setup>
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 const props = defineProps({
   blok: Object,
   columns_together: Boolean,

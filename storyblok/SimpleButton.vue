@@ -59,7 +59,7 @@ const dialog_text_simple = computed(() => {
     :variant="variant"
     color="accent"
     :size="blok.size || 'large'"
-    class="mx-2"
+    class="mx-2 text-weight-bold"
     _class="blok.style ? 'text-white px-3' : 'white-outlined px-5'"
     @click="openDialog"
     id="button_new"
@@ -118,9 +118,10 @@ const dialog_text_simple = computed(() => {
     :variant="variant"
     color="accent"
     :size="blok.size || 'large'"
-    class="mx-2"
+    class="mx-2 text-weight-bold"
     :to="blok.to.cached_url || blok.to.url"
     id="button_new"
+    style="font-weight: bold;"
   >
     {{blok.button_title}}
   </v-btn-primary>

@@ -21,32 +21,30 @@ const explanation = computed(() => {
 <template>
   <v-card
     v-editable="blok"
-    elevation="6"
+    variant="flat"
+    color="transparent"
     class="pb-2 pb-md-4 mx-3"
   >
-    <v-row class="mx-3 my-0" align="start">
+    <v-row class="mx-3 my-3" align="start">
       <v-col
         v-if="blok.title"
         cols="12"
-        class="text-center d-flex justify-center"
+        class="pb-0"
       >
-        <div>
-          <v-sheet
-            color="secondary"
-            class="px-5 py-1 text-white font-weight-bold text-h5"
-          >
-            <div class="oswald">
-              {{blok.title}}
-            </div>
-          </v-sheet>
+        <div
+          class="py-1 font-weight-bold text-h4 montse"
+          :class="`text-${blok.color_title || 'nnoe'}`"
+        >
+          {{blok.title}}
         </div>
       </v-col>
       <v-col
         cols="12"
         v-if="blok.text"
+        class="pt-0"
       >
         <div
-          class="float-left my-6"
+          class="float-left"
         >
         </div>
 

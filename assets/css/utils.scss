@@ -33,3 +33,171 @@
 .montse{
   font-family: Montserrat !important;
 }
+
+
+.container-with-texture {
+  position: relative;
+  overflow: hidden;
+  z-index: 3;
+}
+
+
+$color-yellow-full: rgba(246, 222, 80, 1);
+$color-yellow: rgb(246, 222, 80);
+$color-white: rgb(255, 255, 255);
+$color-green: rgb(0, 255, 153);
+$color-cyan: rgb(59, 244, 251);
+$blending: hard-light;
+
+.texture-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.texture-background rect {
+  opacity: 0.82;
+  filter: url(#sandpaper-filter);
+}
+
+.content {
+  position: relative;
+  height: 100%;
+  z-index: 6;
+}
+
+@keyframes moveYellow {
+  0% {
+    background:
+      radial-gradient(ellipse at 95% 95%,
+           rgb(246, 222, 80, 1) 20%, rgb(255, 217, 31, 0) 50%);
+  }
+  50% {
+    background:
+      radial-gradient(ellipse at 5% 85%,
+           rgb(246, 222, 80, 1) 20%, rgb(255, 217, 31, 0) 50%);
+  }
+  100% {
+    background:
+      radial-gradient(ellipse at 95% 95%,
+           rgb(246, 222, 80, 1) 20%, rgb(255, 217, 31, 0) 50%);
+
+  }
+}
+
+@property --x-yellow {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 95%;
+}
+
+@property --y-yellow {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 95%;
+}
+
+@property --x-green {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --y-green {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 95%;
+}
+
+@property --x-cyan {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 95%;
+}
+
+@property --y-cyan {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 5%;
+}
+
+@property --x-white {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --y-white {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@keyframes colorChange {
+  0% {
+    --x-yellow:95%;
+    --y-yellow:95%;
+    --x-green:0%;
+    --y-green:95%;
+    --x-cyan:95%;
+    --y-cyan:5%;
+    --x-white:0%;
+    --y-white:0%;
+  }
+  20% {
+    --x-yellow:50%;
+    --y-yellow:135%;
+    --x-green:28%;
+    --y-green:35%;
+    --x-cyan:72%;
+    --y-cyan:68%;
+    --x-white:50%;
+    --y-white:-30%;
+  }
+  50% {
+    --x-yellow:5%;
+    --y-yellow:95%;
+    --x-green:95%;
+    --y-green:95%;
+    --x-cyan:5%;
+    --y-cyan:5%;
+    --x-white:95%;
+    --y-white:0%;
+  }
+  80% {
+    --x-yellow:50%;
+    --y-yellow:135%;
+    --x-green:70%;
+    --y-green:65%;
+    --x-cyan:28%;
+    --y-cyan:68%;
+    --x-white:50%;
+    --y-white:-35%;
+  }
+  100% {
+    --x-yellow:95%;
+    --y-yellow:95%;
+    --x-green:0%;
+    --y-green:95%;
+    --x-cyan:95%;
+    --y-cyan:5%;
+    --x-white:0%;
+    --y-white:0%;
+  }
+}
+
+.dynamic_background {
+  background:
+    radial-gradient(ellipse at var(--x-white) var(--y-white),
+      rgba(255,255,255,1) 15%, rgba(255,255,255, 0) 35%),
+    radial-gradient(ellipse at var(--x-yellow) var(--y-yellow),
+      rgba($color-yellow, 1) 20%, rgba($color-yellow, 0) 50%),
+    radial-gradient(ellipse at var(--x-green) var(--y-green),
+      rgba($color-green, 1) 30%, rgba($color-green, .2) 60%),
+    radial-gradient(ellipse at var(--x-cyan) var(--y-cyan),
+      rgba($color-cyan, 1) 20%, rgba($color-cyan, 0) 70%);
+  animation: colorChange 12s ease-in-out infinite !important;
+}

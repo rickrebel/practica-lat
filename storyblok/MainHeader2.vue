@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
 const { xs, smAndUp } = useDisplay()
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 
 
 const props = defineProps({

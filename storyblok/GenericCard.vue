@@ -3,7 +3,7 @@
 import CommonTitle from "../components/web/CommonTitle.vue";
 import AdaptativeVideoPlayer from "../components/AdaptativeVideoPlayer.vue";
 import {computed} from "vue";
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 
 
 // defineProps({ blok: Object });
@@ -71,6 +71,7 @@ const blok_header = computed(() => {
     color_title: props.blok.color_title,
     align_text: props.blok.align_text,
     align_md: props.blok.align_md,
+    align_title: props.blok.align_title,
     is_indirect: true,
   }
 })
@@ -93,12 +94,24 @@ const blok_header = computed(() => {
     <v-card
       :variant="variant_card"
       :class="`${blok.free_class} text-${blok.align_text} text-sm-${blok.align_md}`"
-      class="rounded-0 d-flex flex-column justify-center fill-height py-0 _py-sm-4"
+      class="rounded-0 fill-height py-0 _py-sm-4"
       :style="`background-image: ${background_image}`"
       elevation="0"
       :color="blok.background_color2 || 'transparent'"
     >
-      <div>
+<!--      <div-->
+<!--        class="d-flex flex-column"-->
+<!--        :class="{ 'justify-center' : blok.vertical_centered }"-->
+<!--      >-->
+        <v-img
+          v-if="blok.media?.filename && !blok.video_hls_url"
+          _contain
+          dark
+          :src="resizeImg(blok.media)"
+          :max-height="blok.image_height || 300"
+          class="mt-10 mb-6 px-3 px-sm-6"
+          _style="object-fit: contain;"
+        ></v-img>
         <CommonTitle
           v-if="blok.title"
           :blok="blok_header"
@@ -130,7 +143,7 @@ const blok_header = computed(() => {
             :blok="blok"
           ></StoryblokComponent>
         </v-card-text>
-      </div>
+<!--      </div>-->
     </v-card>
   </v-col>
 

@@ -19,11 +19,11 @@ function openDoc(item) {
   <v-col
     v-editable="blok"
     cols="12"
-    class="section-header mb-1 pt-2 d-flex justify-space-between"
+    class="section-header mb-1 pt-3 d-flex justify-space-between"
     :class="{report_block: 'text-center'}"
   >
     <v-card
-      v-if="report_blok?.cover"
+      v-if="report_blok?.cover?.filename"
       width="340"
       class="white-outlined ml-2 ml-sm-10 mr-2"
       color="transparent"
@@ -37,12 +37,16 @@ function openDoc(item) {
     </v-card>
     <v-spacer v-else-if="!blok.left_align"></v-spacer>
     <div class="d-flex flex-column">
-      <div
-        class="text-uppercase text-body-2 text-grey-darken-2 px-4"
-        :class="report_blok ? '' : 'mb-4'"
-      >
-        {{blok.header}}
-      </div>
+<!--      <div-->
+<!--        class="text-uppercase text-body-2 text-grey-darken-2 px-4"-->
+<!--        :class="report_blok ? '' : 'mb-4'"-->
+<!--      >-->
+<!--        {{blok.header}}-->
+<!--      </div>-->
+      <CommonTitle
+        :blok="blok"
+        is_main_title
+      />
       <CommonTitle
         :blok="blok"
       />

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
+import { resizeImg } from '~/composables/storyblok_images.js'
 import {useDisplay} from "vuetify";
 import CommonTitle from "../components/web/CommonTitle.vue";
 const { xs, smAndUp, mdAndUp, smAndDown } = useDisplay()
