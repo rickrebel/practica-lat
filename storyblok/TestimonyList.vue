@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { storeToRefs } from 'pinia'
-import {useWebStore} from '~/store/web.js'
+import {useWebStore} from '~/store/web.ts'
 
 import { useDisplay } from 'vuetify'
 const { sm, smAndUp, lgAndUp, mobile, width } = useDisplay()

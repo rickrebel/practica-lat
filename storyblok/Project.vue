@@ -6,7 +6,7 @@ const props = defineProps({
 })
 import { useDisplay } from 'vuetify'
 import CommonTitle from "~/components/web/CommonTitle.vue";
-import {useWebStore} from "~/store/web.js";
+import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const { xs, mdAndUp } = useDisplay()
 const webStore = useWebStore()
@@ -89,11 +89,12 @@ const justify = ref(props.blok.justify || false)
       </div>
       <v-card-actions class="pt-4 px-8">
         <v-btn-primary
-          variant="outlined"
-          color="white"
+          variant="flat"
+          color="accent"
           :append-icon="false"
           :href="blok.website"
           target="_blank"
+          class="font-weight-medium"
         >
           {{blok.website}}
         </v-btn-primary>
@@ -131,10 +132,6 @@ const justify = ref(props.blok.justify || false)
 
 .title-no-wrap{
   white-space: normal !important;
-}
-
-.white-outlined {
-  border: 3px solid white !important;
 }
 
 .outlined-card {

@@ -60,7 +60,6 @@ const dialog_text_simple = computed(() => {
     color="accent"
     :size="blok.size || 'large'"
     class="mx-2 text-weight-bold"
-    _class="blok.style ? 'text-white px-3' : 'white-outlined px-5'"
     @click="openDialog"
     id="button_new"
     rounded="lg"
@@ -142,7 +141,5 @@ const dialog_text_simple = computed(() => {
 </template>
 
 <style scoped lang="scss">
-.white-outlined {
-  border: 3px solid white !important;
-}
+
 </style>

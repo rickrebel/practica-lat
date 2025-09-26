@@ -1,18 +1,27 @@
 <script setup>
-import { resizeImg } from '~/composables/storyblok_images.js'
-import dayjs from "dayjs";
+import {computed} from "vue";
+
 const props = defineProps({
   item: Object,
   blok: Object,
+  idx: Number,
 })
 import { useDisplay } from 'vuetify'
 const { xs, mdAndUp } = useDisplay()
+const route = useRoute()
+const cookieLang = useCookie('user_lang')
 
 const color = computed(() => {
   if (!props.item.colors) return 'primary'
   return props.item.colors[0]
 })
 
+const language = computed(() => {
+  let lang = cookieLang.value
+  if (!lang)
+    lang = route.params.lang || 'es'
+  return lang
+})
 
 function openDoc(item) {
   if (!item.file_doc) return
@@ -26,7 +35,9 @@ function openDoc(item) {
     v-if="item"
     v-editable="item"
     variant="text"
-    class="outlined-card pt-3 dynamic_background"
+    color="transparent"
+    class="outlined-card pt-3"
+    :class="`dynamic-background${idx%2 === 0 ? '' : '-dark'}`"
     tile
     height="260"
   >
@@ -48,7 +59,7 @@ function openDoc(item) {
         style="line-height: 1.25"
       >
         <NuxtLink
-          :to="`/${item.full_slug}`"
+          :to="`/${language}/${item.full_slug}`"
           class="text-decoration-none text-black"
         >
           {{ item.name }}
@@ -84,6 +95,7 @@ function openDoc(item) {
           variant="text"
           color="accent"
           icon="visibility"
+          elevation="4"
           :block="!mdAndUp"
           v-tooltip="'Explorar documento'"
         >

@@ -33,7 +33,6 @@ onMounted(() => {
       class="d-flex flex-column justify-center"
     >
       <v-card
-
         class="landing-max-width-section text-center px-6 px-sm-16"
         color="transparent"
         elevation="0"

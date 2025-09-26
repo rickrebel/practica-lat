@@ -27,7 +27,7 @@ export default defineNuxtRouteMiddleware((to, from, next) => {
     // Get the language code from the cookie if it exists
     // The cookie-universal-nuxt module injected by Nuxt makes this easy
     const cookieLang = useCookie('user_lang')
-    // console.log('Cookie user_lang:', cookieLang.value)
+    // console.log('Cookie user_lang 1:', cookieLang.value)
     // const cookieLang = app.$cookies.get('user_lang');
 
     if (cookieLang.value && !to.path.startsWith(`/${cookieLang.value}`)) {
@@ -40,18 +40,13 @@ export default defineNuxtRouteMiddleware((to, from, next) => {
     const currentLang = to.path.split('/')[1];
     // console.log('Current lang from path:', currentLang)
     if (supportedLocales.includes(currentLang) || cookieLang.value) {
-      // console.log('Already on a localized path or cookie exists, no redirection needed.')
+      // console.log('Already localized, no redirection needed.', to.path)
       return;
     }
 
     // Check the Accept-Language header from the browser
     const acceptLanguage = useRequestHeader('accept-language') || ''
     // console.log('Accept-Language header:', acceptLanguage)
-    const acceptLanguage2 = useRequestHeader('Accept-Language') || ''
-    // console.log('Accept-Language header 2:', acceptLanguage2)
-
-    // If no Accept-Language header, redirect to default locale
-
 
     if (!acceptLanguage) {
       // console.log('No Accept-Language header, redirecting to default locale:', `/${defaultLocale}${to.fullPath}`)
@@ -76,11 +71,12 @@ export default defineNuxtRouteMiddleware((to, from, next) => {
     // console.log('Final language to use:', finalLanguage)
 
     cookieLang.value = finalLanguage
+    // console.log('Cookie user_lang 2:', cookieLang.value)
 
     // Redirect to the detected language path
     // Only redirect from the root path to avoid redirect loops on non-localized assets
     if (to.path === '/') {
-      // console.log('Redirecting to detected language path:', `/${finalLanguage}${tof.fullPath}`)
+      // console.log('Redirecting to detected language path:', `/${finalLanguage}${to.fullPath}`)
       return redirect(`/${finalLanguage}${to.fullPath}`);
     } else {
       // console.log('Not redirecting since not on root path:', to.path)

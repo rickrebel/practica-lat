@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 // import { useMainStore } from '~/store/index'
-import { useWebStore } from '~/store/web.js'
+import { useWebStore } from '~/store/web.ts'
 import { storeToRefs } from 'pinia'
 
 const webStore = useWebStore()

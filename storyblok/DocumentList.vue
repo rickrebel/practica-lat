@@ -2,19 +2,18 @@
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+const route = useRoute()
+const cookieLang = useCookie('user_lang')
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import {useWebStore} from '~/store/web.js'
+import {useWebStore} from '~/store/web.ts'
 import {getDocumentType} from "~/composables/documents.js";
-
 import Document from "~/storyblok/Document.vue"
-import {da} from "vuetify/locale";
 
 dayjs.locale('es')
 const webStore = useWebStore()
 // Store setup and state
 const { all_documents } = storeToRefs(webStore)
-
 // Props
 const props = defineProps({
   blok: Object,
@@ -32,13 +31,20 @@ const final_display = computed(()=>{
     : 300
 })
 
+const language = computed(() => {
+  let lang = cookieLang.value
+  if (!lang)
+    lang = route.params.lang || 'es'
+  return lang
+})
+
 // Computed properties
 const final_docs = computed(() => {
   // console.log("documents.value", documents.value)
   // return []
   const initialDocs = props.init_documents ||
     props.blok?.body || all_documents.value
-  console.log("initialDocs", initialDocs)
+  // console.log("initialDocs", initialDocs)
   if (!initialDocs)
     return []
   return initialDocs
@@ -53,16 +59,8 @@ const final_docs = computed(() => {
       doc.month_year = date_start.format('MMMM YYYY')
       let date_text = ''
       let date_month = date_start.format('MMMM-YYYY')
-      if (doc.document_type.has_range) {
-        date_text = date_start.format('[Del] D [al] ')
-        const date_end = dayjs(doc.end_date.substr(0, 10))
-        date_text += `${date_end.format('D [de] MMMM [de] YYYY')}`
-        doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
-      }
-      else {
-        date_text = date_start.format('D/MMM/YYYY')
-        doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
-      }
+      date_text = date_start.format('D/MMM/YYYY')
+      doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
       doc.date_text = date_text
       doc.date_month = date_month
       return doc
@@ -103,7 +101,7 @@ const filteredDocs = computed(() => {
       selectedDocList.some(selDoc => selDoc.key === doc.type_doc) &&
       selected_month_list.includes(doc.month_year)
   )
-  console.log('filtered_docs', filtered_docs)
+  // console.log('filtered_docs', filtered_docs)
   if (!show_all.value)
     return filtered_docs.slice(0, final_display.value)
   return filtered_docs
@@ -125,6 +123,8 @@ const filteredDocs = computed(() => {
     variant="flat"
     color="transparent"
   >
+    cookieLang: {{cookieLang || 'no-lang'}} |
+    language: {{language}}
 <!--    <div-->
 <!--      class="d-flex justify-center align-center flex-column flex-md-row"-->
 <!--    >-->
@@ -170,13 +170,14 @@ const filteredDocs = computed(() => {
       <v-col
         v-for="(item, idx) in filteredDocs"
         :key="item._uid"
-        cols="6"
-        sm="4"
-        md="3"
-
+        cols="12"
+        sm="6"
+        md="4"
+        lg="3"
       >
         <Document
           :item="item"
+          :idx="idx"
         />
       </v-col>
     </v-row>

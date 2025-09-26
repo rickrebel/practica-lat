@@ -25,10 +25,7 @@ const subtitleStyle = computed(() => (
 <template>
   <v-img
     v-editable="blok"
-    :sssrc="props.blok.cover.filename"
-    _src="resizeImg(props.blok.cover, 1300)"
     :min-height="props.blok.height * 0.68 || 300"
-    _max-height="props.blok.height || 440"
     id="header2"
     :class="imgClass"
   >
@@ -80,8 +77,12 @@ const subtitleStyle = computed(() => (
         class="mb-sm-n6 mb-md-n12 mb-0"
       >
         <v-img
-          v-editable="blok"
-          :sssrc="blok.cover.filename"
+          v-if="blok.cover"
+          :src="resizeImg(blok.cover, 1300)"
+          id="image-map"
+        >
+        </v-img>
+        <v-img
           :src="resizeImg(blok.cover, 1300)"
           id="image-map"
         >

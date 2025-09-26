@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 dayjs.locale('es')
 import { resizeImg } from '~/composables/storyblok_images.js'
-import {useWebStore} from "~/store/web.js";
+import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const webStore = useWebStore()
 // Store setup and state
@@ -51,8 +51,9 @@ const final_projects = computed(() => {
           <v-spacer></v-spacer>
           <v-btn-primary
             bg-color="accentDark"
-            class="text-black"
+            class="text-accent"
             variant="tonal"
+            elevation="4"
           >
             {{ blok.button_text }}
           </v-btn-primary>

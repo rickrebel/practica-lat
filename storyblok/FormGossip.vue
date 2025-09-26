@@ -1,7 +1,7 @@
 <script setup>
 
 import { useGoTo } from 'vuetify'
-import { useWebStore } from '~/store/web.js'
+import { useWebStore } from '~/store/web.ts'
 const webStore = useWebStore()
 const { sendResponse, saveFile } = webStore
 

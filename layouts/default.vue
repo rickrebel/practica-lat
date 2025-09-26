@@ -6,7 +6,7 @@ import Footer from "~/components/web/Footer.vue";
 
 
 import {nextTick, onMounted} from "vue";
-import {useWebStore} from '~/store/web.js'
+import {useWebStore} from '~/store/web.ts'
 const storyblokApi = useStoryblokApi();
 import { useTheme } from 'vuetify';
 

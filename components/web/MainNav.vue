@@ -57,7 +57,6 @@ const locales_with_image_flag = computed(() => {
       >
         ES
         <v-avatar
-          v-if="true"
           size="24"
           class="ml-2"
           rounded="sm"

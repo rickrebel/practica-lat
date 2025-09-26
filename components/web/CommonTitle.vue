@@ -24,7 +24,9 @@ const align_classes = computed(() => {
 })
 
 const text_size = computed(() => {
-  return props.is_main_title ? 'text-h5 text-sm-h3' : 'text-h6 text-sm-h4'
+  return props.is_main_title
+    ? 'text-h5 text-sm-h4 text-md-h3'
+    : 'text-h6 text-sm-h5 text-md-h4'
 })
 
 </script>
@@ -33,7 +35,7 @@ const text_size = computed(() => {
   <v-card-title
     v-if="main_text"
     class="d-flex flex-column align-center pt-0"
-    :class="`text-${blok.color_title || 'primary'} ${align_classes} ${text_size}`"
+    :class="`text-${blok.color_title || 'black'} ${align_classes} ${text_size}`"
   >
     <span
       class="montse title-no-wrap font-weight-bold"

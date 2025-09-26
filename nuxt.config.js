@@ -51,6 +51,17 @@ export default defineNuxtConfig({
     },
     port: 3013
   },
+  routeRules: {
+    // This rule is effective only in development mode
+    '/**': {
+      headers: {
+        'X-Frame-Options': 'ALLOW-FROM https://app.storyblok.com/'
+      }
+    }
+  },
+  typescript: {
+    typeCheck: false
+  },
   googleFonts: {
     families: {
       Montserrat: [400, 700, 900],
