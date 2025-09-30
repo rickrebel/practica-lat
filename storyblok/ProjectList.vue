@@ -11,10 +11,13 @@ const { all_projects } = storeToRefs(webStore)
 
 const props = defineProps({
   blok: Object,
-  projects: Array
+  projects: Array,
+  full_projects: Array,
 })
 
 const final_projects = computed(() => {
+  if (props.full_projects)
+    return props.full_projects
   const projects_ids = props.projects || props.blok?.projects || []
   // console.log("projects_ids", projects_ids)
   // console.log("all_projects", all_projects.value)
@@ -31,7 +34,6 @@ const final_projects = computed(() => {
     class="mx-3"
     v-editable="blok"
   >
-
     <v-col
       v-for="project in final_projects"
       :key="project._uid"

@@ -2,6 +2,7 @@
 // import 'vuetify/src/styles/settings/_variables';
 // import colors from 'vuetify/lib/util/colors';
 import MainNav from "~/components/web/MainNav.vue";
+import MainMenu from "~/components/web/MainMenu.vue";
 import Footer from "~/components/web/Footer.vue";
 
 
@@ -16,6 +17,8 @@ const webStore = useWebStore()
 const { setDocuments, setAllDocuments, setGlobalConfig, setAllProjects } = webStore
 
 const version = $preview ? 'draft' : 'published'
+
+const menu_drawer = ref(false);
 
 onMounted(() => {
   nextTick(() => {
@@ -62,26 +65,36 @@ onMounted(() => {
   });
 });
 
+function changeMenu() {
+
+  menu_drawer.value = !menu_drawer.value;
+}
 
 
 </script>
 
 <template>
   <v-app>
-    <v-layout>
-      <v-container class="_px-1 _px-sm-3 px-0 pt-0" fluid>
-      <v-responsive
+    <MainNav @toggleMenu="changeMenu"/>
+    <MainMenu :menu_drawer="menu_drawer"/>
+    <v-main>
+      <v-container
+        class="_px-1 _px-sm-3 px-0 pt-0"
+        fluid
         max-width="1440"
-        class="mx-auto _dfi-app-width"
       >
-        <MainNav/>
-        <v-main class="" id="app-width">
-            <NuxtPage />
-        </v-main>
-      </v-responsive>
+<!--        <v-responsive-->
+<!--          max-width="1440"-->
+<!--          class="mx-auto _dfi-app-width"-->
+<!--        >-->
+
+<!--          <v-main class="" id="app-width">-->
+              <NuxtPage />
+<!--          </v-main>-->
+<!--        </v-responsive>-->
 
       </v-container>
-    </v-layout>
+    </v-main>
     <Footer />
     <svg width="0" height="0" style="position:absolute;">
       <defs>

@@ -28,6 +28,7 @@ const background_color = computed(() => {
 <template>
   <v-col
     cols="12"
+    class="pa-0"
     :order="blok.order || 1"
     :order-md="blok.order_md || 1"
   >

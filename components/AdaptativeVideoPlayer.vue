@@ -41,7 +41,7 @@ const initPlayer = async () => {
   await nextTick()
 
   const options = {
-    controls: true,
+    controls: false,
     responsive: props.responsive,
     fluid: true,
     aspectRatio: props.aspectRatio,
@@ -224,7 +224,6 @@ defineExpose({
     <video
       ref="videoPlayer"
       class="video-js vjs-default-skin vjs-big-play-centered"
-      controls
       preload="auto"
       :poster="videoPoster"
       style="min-width: 100%; width: 100%; min-height: 240px; height: 100%;"

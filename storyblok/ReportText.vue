@@ -40,7 +40,8 @@ const padding_top = computed(() => {
 <template>
   <v-card
     v-editable="blok"
-    elevation="6"
+    elevation="0"
+    variant="text"
     class="pb-2 pb-md-4 mx-3"
   >
     <v-row class="mx-3 my-0" align="start">

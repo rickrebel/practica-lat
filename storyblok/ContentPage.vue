@@ -61,11 +61,11 @@ function openDoc(item) {
 </script>
 
 <template>
-  <v-row class="page ma-0">
-    <v-col cols="12">
+<!--  <v-row class="page ma-0">-->
+<!--    <v-col cols="12">-->
       <v-sheet
         class="sheet-background"
-        color="primary"
+        color="transparent"
       >
         <SectionHeader
           v-if="report_blok"
@@ -115,8 +115,8 @@ function openDoc(item) {
           :init_documents="other_reports"
         />
       </v-card>
-    </v-col>
-  </v-row>
+<!--    </v-col>-->
+<!--  </v-row>-->
 </template>
 
 <style lang="scss">

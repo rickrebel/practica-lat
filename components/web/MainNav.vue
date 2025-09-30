@@ -11,6 +11,8 @@ const props = defineProps({
   is_editable: Boolean,
 })
 
+const emits = defineEmits(['toggle-menu'])
+
 //       logo: null, // require("@/assets/logo.png"),
 // const logo = ref(null)
 // const menu = ref(false)
@@ -31,12 +33,13 @@ const locales_with_image_flag = computed(() => {
 
 <template>
   <v-app-bar
+    app
     color="black"
     height="90"
     class="px-3"
   >
     <div
-      class="app-width2 d-flex px-3 justify-space-between align-center"
+      class="app-width2 d-flex px-3 justify-space-between align-center mx-auto"
       style="width: 100%;"
     >
       <div>
@@ -50,6 +53,8 @@ const locales_with_image_flag = computed(() => {
           />
         </router-link>
       </div>
+      <v-spacer></v-spacer>
+
       <v-chip
         color="white"
         variant="flat"
@@ -114,10 +119,14 @@ const locales_with_image_flag = computed(() => {
           </v-list>
         </v-menu>
       </v-chip>
+      <v-app-bar-nav-icon class="ml-4" @click="$emit('toggle-menu')">
+
+
+      </v-app-bar-nav-icon>
     </div>
-    <template v-slot:append>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-    </template>
+<!--    <template v-slot:append>-->
+<!--      <v-app-bar-nav-icon></v-app-bar-nav-icon>-->
+<!--    </template>-->
 
   </v-app-bar>
 </template>

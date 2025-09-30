@@ -48,14 +48,15 @@ function openDoc(item) {
       <rect width="100%" height="100%" />
     </svg>
     <div class="content d-flex flex-column justify-space-between">
+      <v-spacer></v-spacer>
       <v-card-subtitle
         v-if="item.subtitle"
-        class="text-subtitle-2 title-no-wrap pb-0 font-weight-bold text-primary"
+        class="text-subtitle-1 text-center title-no-wrap pb-0 font-weight-bold text-grey-darken-2"
       >
         {{ item.subtitle }}
       </v-card-subtitle>
       <v-card-title
-        class="text-subtitle-1 title-no-wrap pt-0 font-weight-bold montse pointer"
+        class="text-h6 text-center title-no-wrap pt-0 font-weight-bold montse pointer"
         style="line-height: 1.25"
       >
         <NuxtLink
@@ -65,13 +66,6 @@ function openDoc(item) {
           {{ item.name }}
         </NuxtLink>
       </v-card-title>
-      <v-card-subtitle
-        class="text-subtitle-1 title-no-wrap text-black"
-      >
-        <span class="text-body-2">
-          {{ item.date_month }}
-        </span>
-      </v-card-subtitle>
       <v-spacer></v-spacer>
       <v-divider class="my-2" >
       </v-divider>
@@ -89,6 +83,15 @@ function openDoc(item) {
           v-tooltip="'Descargar'"
         >
         </v-btn-text>
+        <v-spacer></v-spacer>
+      <v-card-subtitle
+        class="text-subtitle-1 title-no-wrap text-black"
+      >
+        <span class="text-body-2">
+          {{ item.date_month }}
+        </span>
+      </v-card-subtitle>
+
         <v-spacer></v-spacer>
         <v-btn-text
           :to="`/${item.full_slug}`"
