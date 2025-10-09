@@ -42,19 +42,19 @@ const locales_with_image_flag = computed(() => {
       class="app-width2 d-flex px-3 justify-space-between align-center mx-auto"
       style="width: 100%;"
     >
-      <div>
+      <div class="d-flex">
 
         <router-link to="/" class="d-flex">
           <v-img
-            src="~/assets/logo_simple_white.png"
+            src="~/assets/p-white.svg"
             _src="/logo_simple_white.png"
-            :height="xs ? 64 : 76"
-            :width="xs ? 164 : 246"
+            :height="xs ? 60 : 60"
+            :width="xs ? 60 : 60"
           />
         </router-link>
+
       </div>
       <v-spacer></v-spacer>
-
       <v-chip
         color="white"
         variant="flat"

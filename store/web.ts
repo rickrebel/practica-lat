@@ -36,6 +36,11 @@ interface Project {
   [key: string]: any
 }
 
+interface Agenda {
+  // Define agend properties based on your data structure
+  [key: string]: any
+}
+
 interface GlobalConfig {
   // Define config properties based on your data structure
   [key: string]: any
@@ -58,6 +63,7 @@ interface WebStoreState {
   all_documents: Document[]
   all_projects: Project[]
   main_projects: Project[]
+  all_agendas: Agenda[]
   global_config: GlobalConfig | null
 }
 
@@ -73,6 +79,7 @@ export const useWebStore = defineStore('web', {
     all_documents: [],
     all_projects: [],
     main_projects: [],
+    all_agendas: [],
     global_config: null,
   }),
 
@@ -137,12 +144,16 @@ export const useWebStore = defineStore('web', {
     },
 
     setAllProjects(stories: Story[]): void {
-      const projects = stories.reduce((acc: Project[], story) => {
-        acc.push(story)
-        return acc
-      }, [])
+      // this.all_projects = stories.reduce((acc: Project[], story) => {
+      //   acc.push(story)
+      //   return acc
+      // }, [])
+      this.all_projects = stories
+    },
 
-      this.all_projects = projects
+    setAllAgendas(agendas: Agenda[]): void {
+      console.log('setting agendas', agendas)
+      this.all_agendas = agendas
     },
 
     setGlobalConfig(config: GlobalConfig): void {

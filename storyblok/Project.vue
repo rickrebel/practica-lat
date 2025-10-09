@@ -66,7 +66,7 @@ const justify = ref(props.blok.justify || false)
           class="contain"
         ></v-img>
         <v-chip
-          v-if="blok.is_assistance"
+          v-if="blok.project_type === 'assistance'"
           color="secondary"
           class="font-weight-bold px-5 mx-3"
         >

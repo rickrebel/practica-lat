@@ -7,55 +7,66 @@ import Footer from "~/components/web/Footer.vue";
 
 
 import {nextTick, onMounted} from "vue";
-import {useWebStore} from '~/store/web.ts'
 const storyblokApi = useStoryblokApi();
+import {useWebStore} from '~/store/web.ts'
+const { query } = useRoute()
 import { useTheme } from 'vuetify';
 
 const { $preview } = useNuxtApp()
 
 const webStore = useWebStore()
-const { setDocuments, setAllDocuments, setGlobalConfig, setAllProjects } = webStore
+const {
+  setDocuments,
+  setAllDocuments,
+  setGlobalConfig,
+  setAllProjects,
+  setAllAgendas,
+} = webStore
 
 const version = $preview ? 'draft' : 'published'
+
+let storyblok_lang = 'es'
+if (query._storyblok_lang)
+  storyblok_lang = String(query._storyblok_lang)
+
 
 const menu_drawer = ref(false);
 
 onMounted(() => {
   nextTick(() => {
-    // storyblokApi.get(
-    //   `cdn/stories/documents`,
-    //   {
-    //     version: version,
-    //   }
-    // ).then(({data}) => {
-    //   // console.log("data", data);
-    //   setDocuments(data.story.content);
-    //   // documents.value = data.story.content;
-    // });
-    // storyblokApi.getAll(
     storyblokApi.getStories({
         version: version,
-        starts_with: "project/"
+        starts_with: "project/",
+        language: storyblok_lang,
       }
     ).then(({data}) => {
       // console.log("data all_projects", data);
       setAllProjects(data.stories);
-      // documents.value = data.story.content;
     });
     storyblokApi.getStories({
         version: version,
-        starts_with: "report/"
+        starts_with: "report/",
+        language: storyblok_lang,
       }
     ).then(({data}) => {
       // console.log("data all_documents", data);
       setAllDocuments(data.stories);
-      // documents.value = data.story.content;
+    });
+    storyblokApi.getStories({
+        version: version,
+        starts_with: "agend/",
+        language: storyblok_lang,
+      }
+    ).then(({data}) => {
+      // console.log("data all_agendas", data);
+      setAllAgendas(data.stories);
     });
     storyblokApi.get(
       `cdn/stories`,
       {
         version: version,
-        starts_with: "global"
+        starts_with: "global",
+        language: storyblok_lang,
       }
     ).then(({data}) => {
       // console.log("data global_config", data);
@@ -66,7 +77,6 @@ onMounted(() => {
 });
 
 function changeMenu() {
-
   menu_drawer.value = !menu_drawer.value;
 }
 

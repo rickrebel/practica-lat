@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { resizeImg } from '~/composables/storyblok_images.js'
 
 // Props
@@ -14,38 +14,54 @@ const props = defineProps({
 const loading = ref(false)
 const show_all = ref(false)
 
+const biography = computed(() => {
+  let rich_text = renderRichText(props.blok.biography)
+  if (!rich_text)
+    return '-'
+  // rich_text = rich_text.replace(
+  //     /<p>/g, '<p class="mt-2 mt-sm-4 montse">')
+  return rich_text
+  // return renderRichText(props.blok.text)
+})
 // Use the converted mixin as a composable
 </script>
 
 <template>
-  <v-card flat tile class="d-flex" v-editable="blok">
-    <v-hover v-slot:default="{ hover }">
-      <v-row no-gutters>
-        <v-col cols="12">
+  <v-col cols="12" sm="6" lg="4" class="pa-3">
+    <v-card
+      v-editable="blok"
+      color="black"
+      variant="flat"
+      tile
+      min-height="200"
+    >
+      <v-row no-gutters style="min-height: 200px;">
+        <v-col cols="6">
           <v-img
             v-if="blok.profile_img?.filename"
             :src="resizeImg(blok.profile_img, 300)"
-            aspect-ratio="1"
             class="grey lighten-2"
+            aspect-ratio="1"
+            cover
+            height="200"
           ></v-img>
-          <v-fade-transition>
-            <v-overlay
-              v-if="hover"
-              absolute
-              style="overflow: hidden; vertical-align: top;"
-              color="#036358"
-              class="text-body-2"
-            >
-              <div>{{ blok.biography.substr(0,300) }}</div>
-            </v-overlay>
-          </v-fade-transition>
         </v-col>
-        <v-col cols="12" align-self="center">
-          <div class="text-subtitle-1 primary--text font-weight-bold">
-            {{ blok.full_name }}
+        <v-col cols="6" class="d-flex flex-column justify-space-around">
+          <div>
+            <div class="text-h6 text-sm-h5 font-weight-bold px-3">
+              {{ blok.full_name }}
+            </div>
+            <div class="text-subtitle-1 px-3">
+              {{ blok.position }}
+            </div>
           </div>
+          <div class="text-body-2 pa-3" v-html="biography">
+          </div>
+
         </v-col>
       </v-row>
-    </v-hover>
-  </v-card>
+
+
+    </v-card>
+  </v-col>
 </template>

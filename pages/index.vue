@@ -22,7 +22,7 @@ const story = await useAsyncStoryblok(
 
 onMounted(() => {
   // console.log('query', query)
-  console.log('language', query._storyblok_lang)
+  // console.log('language', query._storyblok_lang)
 })
 
 

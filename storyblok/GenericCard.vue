@@ -31,6 +31,20 @@ const card_class = computed(() => {
     final_class += ' d-flex align-center'
   if (blok.free_class)
     final_class += ` ${blok.free_class}`
+  if (blok.background_color2)
+    final_class += ' paper-texture'
+  // if random number generated now
+  console.log("blok._uid", blok._uid)
+  if (blok._uid) {
+    const num = parseInt(blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
+    if (num % 4 === 0)
+      final_class += ' effect-1'
+    else if (num % 4 === 1)
+      final_class += ' effect-2'
+    else if (num % 4 === 2)
+      final_class += ' effect-3'
+  }
+
   return final_class
 })
 
@@ -58,7 +72,7 @@ const color_description = computed(() =>
 
 const variant_card = computed(() => {
   return props.blok.background_color2
-    ? ['primary', 'secondary'].includes(props.blok.background_color2)
+    ? ['primary', 'secondary', 'accent'].includes(props.blok.background_color2)
       ? 'flat'
       : 'text'
     : 'flat'
@@ -114,7 +128,8 @@ const blok_header = computed(() => {
       :class="card_class"
       class="rounded-0 fill-height py-0"
       notclass="d-flex flex-column flex-sm-row flex-md-column"
-      :style="`background-image: ${background_image}`"
+      _style="`background-image: ${background_image}`"
+
       elevation="0"
       :color="blok.background_color2 || 'transparent'"
     >
@@ -192,21 +207,50 @@ const blok_header = computed(() => {
 }
 /* Textura-papel */
 .paper-texture {
-  _position: absolute;
-  _width: 473px;
-  _height: 843px;
-  _left: 0px;
-  _top: 227px;
-  //background: url(-azul.jpg);
-  background: url('~/assets/papel-azul.png');
-  //background-size: cover;
+  background-blend-mode: multiply;
+  background: url('~/assets/textura-papel.png');
 }
+
 .shadow-phrases{
-  // sombra negra difuminada
-  //text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   background: linear-gradient(#eee, #333);
   filter: drop-shadow(2px 2px #333);
   color: #00FF99;
 }
+
+.effect-1 {
+  background-position: bottom center;
+  background-size: cover;
+  position: relative; /* Necesario para posicionar el pseudoelemento */
+  z-index: 1;
+  overflow: hidden; /* Oculta partes del fondo que se salgan */
+}
+
+.effect-1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 1440px;
+  background-image: inherit;
+  //background-color: rgba(164, 123, 123, 0.6);
+  background-color: inherit;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  //transform: scale(-1, -1);
+  transform: rotate(270deg);
+}
+
+.effect-2 {
+  background-position: top left;
+}
+
+.effect-3 {
+  background-position: top right;
+}
+
+
 
 </style>

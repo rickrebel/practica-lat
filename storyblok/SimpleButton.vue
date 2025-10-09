@@ -63,6 +63,7 @@ const dialog_text_simple = computed(() => {
     @click="openDialog"
     id="button_new"
     rounded="lg"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
     <v-dialog
@@ -76,7 +77,6 @@ const dialog_text_simple = computed(() => {
           height="80"
           color="choco"
         >
-
           <div
             class="oswald text-h4 py-2"
           >
@@ -109,6 +109,7 @@ const dialog_text_simple = computed(() => {
     size="default"
     :to="blok.to.cached_url || blok.to.url"
     id="button_new"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
   </v-btn-menu>
@@ -121,6 +122,7 @@ const dialog_text_simple = computed(() => {
     :to="blok.to.cached_url || blok.to.url"
     id="button_new"
     style="font-weight: bold;"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
   </v-btn-primary>

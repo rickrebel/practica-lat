@@ -123,8 +123,8 @@ const filteredDocs = computed(() => {
     variant="flat"
     color="transparent"
   >
-    cookieLang: {{cookieLang || 'no-lang'}} |
-    language: {{language}}
+<!--    cookieLang: {{cookieLang || 'no-lang'}} |-->
+<!--    language: {{language}}-->
 <!--    <div-->
 <!--      class="d-flex justify-center align-center flex-column flex-md-row"-->
 <!--    >-->

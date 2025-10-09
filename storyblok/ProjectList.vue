@@ -21,7 +21,15 @@ const final_projects = computed(() => {
   const projects_ids = props.projects || props.blok?.projects || []
   // console.log("projects_ids", projects_ids)
   // console.log("all_projects", all_projects.value)
-  return all_projects.value.filter(p => projects_ids.includes(p.uuid))
+  let selected_projects = all_projects.value.filter(
+    p => projects_ids.includes(p.uuid))
+  // sort by practica_id ascending
+  // console.log("selected_projects", selected_projects)
+  selected_projects.sort((a, b) =>
+    parseInt(a.content.practica_id || 99)
+      - parseInt(b.content.practica_id || 99)
+  )
+  return selected_projects
 })
 
 </script>
@@ -39,10 +47,50 @@ const final_projects = computed(() => {
       :key="project._uid"
       v-editable="project"
       cols="12"
-      :sm="parseInt(project.content.practica_id) === 1 ?  10 : 6"
+      :sm="(blok.display_type === 'home'
+        && parseInt(project.content.practica_id) === 1) ?  10 : 6"
       class="align-center justify-space-between full-height"
     >
       <v-card
+        v-if="blok.display_type === 'home' || !blok.display_type"
+        class="pb-4 paper-texture d-flex flex-column"
+        :height="parseInt(project.content.practica_id) === 1 ? 280 : 200"
+      >
+        <div class="text-white pa-3 pa-sm-5 font-weight-bold text-h4 text-md-h3">
+          {{project.content.name}}
+        </div>
+        <v-card-actions class="mt-auto">
+          <v-spacer></v-spacer>
+          <v-btn-primary
+            bg-color="accentDark"
+            class="text-white"
+            variant="tonal"
+            elevation="4"
+            append-icon="arrow_right_alt"
+          >
+            {{ blok.button_text }}
+          </v-btn-primary>
+        </v-card-actions>
+      </v-card>
+      <v-card
+        v-else-if="blok.display_type === 'simple'"
+        variant="text"
+        class="pb-4 d-flex flex-column pointer"
+        max-width="400"
+        :href="project.content.website"
+        target="_blank"
+      >
+        <v-img
+          :src="resizeImg(project.content.logo, 800)"
+          class="contain-image"
+          height="180"
+        ></v-img>
+        <div class="pa-3 font-weight-bold text-h6 text-md-h5 text-center">
+          {{project.name}}
+        </div>
+      </v-card>
+      <v-card
+        v-else-if="blok.display_type === 'detailed'"
         class="pb-4 paper-texture d-flex flex-column"
         :height="parseInt(project.content.practica_id) === 1 ? 280 : 200"
       >
@@ -60,45 +108,7 @@ const final_projects = computed(() => {
             {{ blok.button_text }}
           </v-btn-primary>
         </v-card-actions>
-<!--        <a :href="project.url?.url || ''" target="_blank">-->
-<!--          <v-img-->
-<!--            :src="resizeImg(note.cover, 350)"-->
-<!--            :alt="`Institución ${note}`"-->
-<!--            :max-height="blok.max_height || 160"-->
-<!--            :max-width="blok.max_width || 350"-->
-<!--            cover-->
-<!--          ></v-img>-->
-<!--        </a>-->
-<!--        <v-card-subtitle-->
-<!--          class="text-body-2 d-flex justify-space-between pt-3"-->
-<!--        >-->
-<!--          {{project.source}}-->
-<!--          <v-spacer></v-spacer>-->
-<!--          {{dayjs(project.date).format('DD/MMMM/YYYY')}}-->
-<!--        </v-card-subtitle>-->
-<!--        <a :href="project.url?.url || ''" target="_blank">-->
-<!--          <v-card-title-->
-<!--            class="text-info title-no-wrap text-subtitle-1 font-weight-bold lato"-->
-<!--            style="white-space: normal !important;"-->
-<!--          >-->
-<!--            {{project.title}}-->
-<!--          </v-card-title>-->
-<!--        </a>-->
-<!--        <v-tooltip-->
-<!--          v-if="project.subtitle"-->
-<!--          activator="parent"-->
-<!--          location="bottom"-->
-
-<!--        >-->
-<!--          <v-card max-width="300" color="transparent">-->
-
-
-<!--          {{ project.subtitle }}-->
-<!--          </v-card>-->
-<!--        </v-tooltip>-->
-
       </v-card>
-
     </v-col>
 
   </v-row>
@@ -123,11 +133,17 @@ const final_projects = computed(() => {
   //background-size: cover;
 }
 
-.project-title{
+.project-titlex{
   text-shadow:
       1px 1px 3px #fff,
       -1px -1px 5px #fff,
       0 0 8px #ffffffaa;
+}
+
+.contain-image{
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 
 </style>

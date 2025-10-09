@@ -20,15 +20,15 @@ const explanation = computed(() => {
   if (!rich_text)
     return '-'
   rich_text = rich_text.replace(
-      /<p>/g, '<p class="mt-2 mt-sm-4 montse text-white">')
+      /<p>/g, '<p class="mt-2 mt-sm-4 montse">')
   return rich_text
 })
 
 
 const related_projects = computed(() => {
-  console.log('all_projects', all_projects.value)
-  console.log('current_blok', props.blok)
-  console.log('current_story', props.story)
+  // console.log('all_projects', all_projects.value)
+  // console.log('current_blok', props.blok)
+  // console.log('current_story', props.story)
   // return all_documents.value
   // return []
   return all_projects.value.filter(
@@ -52,10 +52,10 @@ const justify = ref(props.blok.justify || false)
 <template>
   <v-card
     v-if="blok"
-    color="black"
+    color="white"
     v-editable="blok"
     variant="flat"
-    class="outlined-card"
+    class="outlined-card dynamic-background"
     tile
   >
     <div class="d-flex _flex-no-wrap flex-column">
@@ -77,7 +77,7 @@ const justify = ref(props.blok.justify || false)
       <div class="pt-6">
         <v-card-subtitle
           v-if="blok.pre_title"
-          class="text-h6 montse mx-3 text-white font-weight-medium"
+          class="text-h6 montse mx-3 font-weight-medium"
           style="opacity: 100%"
         >
           {{ blok.pre_title }}
@@ -89,44 +89,24 @@ const justify = ref(props.blok.justify || false)
         </v-card-title>
         <v-card-text
           v-html="explanation"
-          class="text-sm-subtitle-1 special-img mx-3"
+          class="text-sm-subtitle-1 special-img mx-3 text-black"
           :class="{'text-justify' : justify}"
         ></v-card-text>
         <v-divider class="my-2" >
         </v-divider>
       </div>
-      <v-card-actions class="pt-4 px-8">
-        <v-btn-primary
-          variant="flat"
-          color="accent"
-          :append-icon="false"
-          :href="blok.website"
-          target="_blank"
-          class="font-weight-medium"
-        >
-          {{blok.website}}
-        </v-btn-primary>
-      </v-card-actions>
-      <v-card
-        class="mt-8 pt-8 pb-14"
-        variant="flat"
-        color="grey-darken-4"
-      >
-        <Paragraph
-          v-for="blok in blok.content"
-          :key="blok._uid"
-          :blok="blok"
-        ></Paragraph>
-      </v-card>
+
     </div>
     <v-card
       class="pb-2 pb-md-4 mt-3 pt-3"
       elevation="0"
       variant="flat"
-      color="white"
+      color="transparent"
+      tile
     >
       <CommonTitle
         :blok="artificial_blok"
+        class="mb-3"
       />
       <div class="content">
         <ProjectList
