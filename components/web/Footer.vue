@@ -52,7 +52,6 @@ function wantOpenLink(url) {
     color="black"
     class="py-2"
     style="width: 100%;"
-
   >
     <v-row
       v-if="main_blok"

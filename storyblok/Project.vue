@@ -53,9 +53,10 @@ const justify = ref(props.blok.justify || false)
     <div class="d-flex _flex-no-wrap flex-column">
       <v-sheet
         v-if="blok.logo?.filename"
-        class="d-flex justify-space-between align-center"
+        class="d-flex justify-center align-center"
         max-height="200"
         color="transparent"
+        style="width: 100%;"
       >
         <v-img
           :aspect-ratio="1"
@@ -75,7 +76,7 @@ const justify = ref(props.blok.justify || false)
       </v-sheet>
       <div class="pt-6">
         <v-card-title
-          class="text-h4 title-no-wrap pt-0 font-weight-bold montse mx-3"
+          class="text-h4 title-no-wrap pt-0 font-weight-bold mx-3 text-center"
         >
           {{ blok.name }}
         </v-card-title>
@@ -94,10 +95,35 @@ const justify = ref(props.blok.justify || false)
           :append-icon="false"
           :href="blok.website"
           target="_blank"
-          class="font-weight-medium"
+          class="font-weight-medium mr-4"
         >
           {{blok.website}}
         </v-btn-primary>
+        <v-btn
+          v-for="net in blok.social_networks"
+          :key="net._uid"
+          align="end"
+          class="mr-4 text-primary"
+          icon
+          variant="text"
+          @click="wantOpenLink(net.url)"
+          color="white"
+        >
+          <v-avatar
+            v-if="net.logo"
+            size="default"
+          >
+            <img
+              :src="resizeImg(net.logo, 80)"
+              :alt="net.icon"
+              :height="24"
+            >
+          </v-avatar>
+          <v-icon v-else size="large" color="white">
+            user
+          </v-icon>
+        </v-btn>
+
       </v-card-actions>
       <v-card
         class="mt-8 pt-8 pb-14"

@@ -6,6 +6,7 @@ import { resizeImg } from '~/composables/storyblok_images.js'
 import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const webStore = useWebStore()
+const { query } = useRoute()
 // Store setup and state
 const { all_projects } = storeToRefs(webStore)
 
@@ -14,6 +15,10 @@ const props = defineProps({
   projects: Array,
   full_projects: Array,
 })
+
+let storyblok_lang = 'es'
+if (query._storyblok_lang)
+  storyblok_lang = String(query._storyblok_lang)
 
 const final_projects = computed(() => {
   if (props.full_projects)
@@ -67,6 +72,7 @@ const final_projects = computed(() => {
             variant="tonal"
             elevation="4"
             append-icon="arrow_right_alt"
+            :to="`/${storyblok_lang}/${project.full_slug}`"
           >
             {{ blok.button_text }}
           </v-btn-primary>
