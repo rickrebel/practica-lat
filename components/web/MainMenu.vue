@@ -31,7 +31,7 @@ const main_blok = computed(() => {
 })
 
 const final_buttons = computed(() => {
-  console.log('main_blok', main_blok.value)
+  // console.log('main_blok', main_blok.value)
   if (!main_blok.value) return []
   return main_blok.value.buttons || []
 })
@@ -50,7 +50,7 @@ const final_buttons = computed(() => {
     mobile-breakpoint="960"
     tile
     color="black"
-    width="280"
+    width="300"
   >
     <v-list nav open-strategy="multiple" _active-class="text-primary">
 
@@ -69,10 +69,10 @@ const final_buttons = computed(() => {
       <client-only>
         <template
           v-for="button in final_buttons"
+          :key="button._uid"
         >
           <ButtonGroup
             v-if="button.component === 'ButtonMenu'"
-            :key="button._uid"
             :button="button"
           />
 <!--          <v-list-group-->
@@ -101,17 +101,26 @@ const final_buttons = computed(() => {
 <!--          </v-list-group>-->
           <v-list-item
             v-else
-            :key="button._uid"
             :value="button._uid"
             exact
             :to="button.to.cached_url || button.to.url"
             :title="button.button_title"
+            class="my-1"
           >
+            <template v-slot:title>
+              <div
+                class="text-subtitle-1"
+              >
+                {{ button.button_title }}
+              </div>
+            </template>
+
             <template v-slot:prepend>
               <v-avatar
                 v-if="button.image_icon?.filename"
                 :size="26"
                 tile
+                class="mr-1"
               >
                 <img
                   :src="button.image_icon.filename"
@@ -121,10 +130,10 @@ const final_buttons = computed(() => {
               <v-icon
                 v-else-if="button.icon"
                 :icon="button.icon"
-                size="26"
-                style="opacity: 1"
+                size="30"
+                class="opacity-100 mr-n4"
               ></v-icon>
-              <v-icon v-else size="26" icon="info"></v-icon>
+              <v-icon v-else size="28" icon="info"></v-icon>
             </template>
 
           </v-list-item>

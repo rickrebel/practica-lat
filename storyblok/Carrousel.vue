@@ -45,7 +45,7 @@ const props = defineProps({
         >
           <v-img
             :aspect-ratio="1"
-            :src="resizeImg(photo, 800)"
+            :src="resizeImg(photo, 1200)"
             max-height="400"
             _max-width="480"
             cover

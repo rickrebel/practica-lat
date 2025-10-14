@@ -148,11 +148,12 @@ export const useWebStore = defineStore('web', {
       //   acc.push(story)
       //   return acc
       // }, [])
+      console.log('setting projects', stories)
       this.all_projects = stories
     },
 
     setAllAgendas(agendas: Agenda[]): void {
-      console.log('setting agendas', agendas)
+      // console.log('setting agendas', agendas)
       this.all_agendas = agendas
     },
 

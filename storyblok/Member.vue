@@ -13,6 +13,8 @@ const props = defineProps({
 // Reactive data
 const loading = ref(false)
 const show_all = ref(false)
+const dialog = ref(false)
+const selected_member = ref(null)
 
 const biography = computed(() => {
   let rich_text = renderRichText(props.blok.biography)
@@ -26,8 +28,8 @@ const biography = computed(() => {
 
 const short_biography = computed(() => {
   let bio = biography.value
-  if (bio.length > 90) {
-    bio = bio.slice(0, 90) + '...'
+  if (bio.length > 240) {
+    bio = bio.slice(0, 240) + '...'
   }
   return bio
 })
@@ -36,7 +38,7 @@ const short_biography = computed(() => {
 </script>
 
 <template>
-  <v-col cols="12" sm="6" lg="4" class="pa-3">
+  <v-col cols="12" md="6" lg="4" class="pa-3">
     <v-card
       v-editable="blok"
       color="black"
@@ -44,36 +46,110 @@ const short_biography = computed(() => {
       tile
       min-height="200"
     >
-      <v-row no-gutters style="min-height: 200px;">
-        <v-col cols="6">
+      <div style="min-height: 200px;" class="d-flex">
+        <div style="min-width: 200px;">
           <v-img
             v-if="blok.profile_img?.filename"
-            :src="transformImage(blok.profile_img, 400, 400)"
+            :src="transformImage(blok.profile_img, 300, 300)"
             class="grey lighten-2"
             aspect-ratio="1"
             cover
             height="200"
           ></v-img>
-        </v-col>
-        <v-col cols="6" class="d-flex flex-column justify-space-around">
+        </div>
+        <v-card
+          class="d-flex flex-column justify-space-around fade-out py-2"
+          variant="flat"
+          color="transparent"
+          tile
+          style="text-wrap: pretty; max-height: 200px; overflow: hidden;"
+        >
           <div>
-            <div class="text-h6 text-sm-h5 font-weight-bold px-3">
+            <div class="text-subtitle-1 text-sm-h6 font-weight-bold px-3">
               {{ blok.full_name }}
             </div>
             <div
-              class="text-subtitle-1 px-3"
+              class="text-subtitle-2 text-subtitle-sm-1 px-3 text-grey-lighten-1"
               style="line-height: 1.2 !important;"
             >
               {{ blok.position }}
             </div>
           </div>
-          <div class="text-body-2 pa-3" v-html="short_biography">
+          <div class="text-body-2 pa-3" v-html="biography">
           </div>
-
-        </v-col>
-      </v-row>
-
-
+        </v-card>
+        <div
+          class="d-flex justify-center floating-btn"
+        >
+          <v-btn
+            color="accent"
+            variant="elevated"
+            class="mt-n8"
+            xsize="xs ? 'small' : 'default'"
+            size="small"
+            icon
+            @click="dialog = true"
+          >
+            <v-icon>add</v-icon>
+          </v-btn>
+        </div>
+      </div>
     </v-card>
+    <v-dialog
+      v-model="dialog"
+      max-width="600"
+    >
+      <v-card style="overflow-y: auto;">
+        <v-img
+          v-if="blok.profile_img?.filename"
+          :src="transformImage(blok.profile_img, 600, 320)"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          height="320"
+          contain
+        ></v-img>
+        <v-card-title class="text-h5">
+          {{ blok.full_name }}
+        </v-card-title>
+        <v-card-subtitle v-if="position">
+          {{ blok.position }}
+        </v-card-subtitle>
+        <v-card-text>
+          <div v-html="biography"></div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="elevated" color="accent" @click="dialog = false">
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-col>
 </template>
+
+<style scoped lang="scss">
+
+.fade-out {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(43, 72, 101, 0) 0%, rgb(0, 0, 0) 100%);
+    pointer-events: none;
+  }
+}
+
+.floating-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 100%);
+}
+  //margin-left: 200px;
+  //width: calc(100% - 200px);
+</style>

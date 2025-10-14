@@ -9,6 +9,8 @@ const webStore = useWebStore()
 const { query } = useRoute()
 // Store setup and state
 const { all_projects } = storeToRefs(webStore)
+import generic_poster from '~/assets/generic-poster.png'
+import {flip} from "lodash/function.js";
 
 const props = defineProps({
   blok: Object,
@@ -21,14 +23,32 @@ if (query._storyblok_lang)
   storyblok_lang = String(query._storyblok_lang)
 
 const final_projects = computed(() => {
-  if (props.full_projects)
-    return props.full_projects
-  const projects_ids = props.projects || props.blok?.projects || []
-  // console.log("projects_ids", projects_ids)
-  // console.log("all_projects", all_projects.value)
-  return projects_ids.map(
-    id => all_projects.value.find(p => p.uuid === id)
-  ).filter(p => p)
+  let full_projects = []
+  if (props.full_projects){
+    full_projects = props.full_projects
+  }
+  else{
+    const projects_ids = props.projects || props.blok?.projects || []
+    // console.log("projects_ids", projects_ids)
+    // console.log("all_projects", all_projects.value)
+    full_projects = projects_ids.map(
+      id => all_projects.value.find(p => p.uuid === id)
+    ).filter(p => p)
+  }
+  full_projects = full_projects.reduce((projects, project, idx) => {
+    const is_first = idx === 0 && props.blok.display_type === 'home'
+    let current_project = {...project, is_first}
+    if (project.content.images.length > 0){
+      const cover_image = project.content.images[0]
+      current_project.cover_image = resizeImg(cover_image, 1200)
+    } else {
+      current_project.cover_image = generic_poster
+    }
+    projects.push(current_project)
+    return projects
+  },[])
+
+  return full_projects
 })
 
 </script>
@@ -46,18 +66,23 @@ const final_projects = computed(() => {
       :key="project._uid"
       v-editable="project"
       cols="12"
-      :sm="(blok.display_type === 'home'
-        && parseInt(project.content.practica_id) === 1) ?  10 : 6"
+      :sm="blok.display_type === 'home' && project.is_first ?  10 : 6"
       class="align-center justify-space-between full-height"
     >
       <v-card
         v-if="blok.display_type === 'home' || !blok.display_type"
-        class="pb-4 paper-texture d-flex flex-column"
-        :height="parseInt(project.content.practica_id) === 1 ? 280 : 200"
+        class="pb-4 poster-background d-flex flex-column"
+        :height="project.is_first ? 280 : 200"
+        :style="`background-image: url(${project.cover_image})`"
       >
-        <div class="text-white pa-3 pa-sm-5 font-weight-bold text-h4 text-md-h3">
+        <div
+          class="text-white pt-3 px-3 px-sm-5 pt-sm-5 font-weight-bold text-h4 text-md-h3"
+        >
           {{project.content.name}}
         </div>
+        <span class="text-white" v-if="false">
+          cover: {{project.cover_image}}
+        </span>
         <v-card-actions class="mt-auto">
           <v-spacer></v-spacer>
           <v-btn-primary
@@ -91,12 +116,13 @@ const final_projects = computed(() => {
       </v-card>
       <v-card
         v-else-if="blok.display_type === 'detailed'"
-        class="pb-4 paper-texture d-flex flex-column"
+        class="pb-4 poster-background d-flex flex-column"
         :height="parseInt(project.content.practica_id) === 1 ? 280 : 200"
       >
         <div class="pa-3 font-weight-bold text-h5 text-md-h4 project-title">
           {{project.name}}
         </div>
+
         <v-card-actions class="mt-auto">
           <v-spacer></v-spacer>
           <v-btn-primary
@@ -120,16 +146,10 @@ const final_projects = computed(() => {
   white-space: normal !important;
 }
 
-.paper-texture {
-  _position: absolute;
-  _width: 473px;
-  _height: 843px;
-  _left: 0px;
-  _top: 227px;
+.poster-background {
   z-index: 4;
   background: url('~/assets/generic-poster.png');
   background-size: cover;
-
   //background-size: cover;
 }
 

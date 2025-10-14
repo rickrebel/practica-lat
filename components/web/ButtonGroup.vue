@@ -11,7 +11,6 @@ const props = defineProps({
   button: Object,
 })
 
-
 let storyblok_lang = ref('es')
 if (query._storyblok_lang){
   storyblok_lang.value = String(query._storyblok_lang)
@@ -21,7 +20,6 @@ else {
   // storyblok_lang.value = 'es'
   // console.log('storyblok_lang default', storyblok_lang.value)
 }
-
 
 const first_element = computed(() => {
   return props.button.elements && props.button.elements.length > 0
@@ -41,16 +39,23 @@ const final_items = computed(() => {
   }
   else if (first.agendas && first.agendas.length > 0){
     // console.log('all_agendas', webStore.all_agendas)
-    items = webStore.all_agendas.filter(agenda =>
-      first.agendas.includes(agenda.uuid))
+    items = first.agendas.map(
+      id => webStore.all_agendas.find(a => a.uuid === id)
+    ).filter(a => a)
   }
   else if (first.projects && first.projects.length > 0){
     // console.log('all_projects', webStore.all_projects)
-    items = webStore.all_projects.filter(project =>
-      first.projects.includes(project.uuid))
+    items = first.projects.map(
+      id => webStore.all_projects.find(p => p.uuid === id)
+    ).filter(p => p)
   }
-  // console.log('final_items', items)
   return items
+})
+
+const has_projects = computed(() => {
+  return first_element.value
+    && first_element.value.projects
+    && first_element.value.projects.length > 0
 })
 
 </script>
@@ -67,7 +72,15 @@ const final_items = computed(() => {
         v-bind="props"
         exact
         :title="button.button_title"
+        class="text-h5 my-1"
       >
+        <template v-slot:title>
+          <div
+            class="text-subtitle-1"
+          >
+            {{ button.button_title }}
+          </div>
+        </template>
         <template v-slot:prepend>
           <v-avatar
             v-if="button.image_icon?.filename"
@@ -88,15 +101,40 @@ const final_items = computed(() => {
         </template>
       </v-list-item>
     </template>
-    <v-list-item
-      v-for="sub_coll in final_items"
+    <div
+      v-for="(sub_coll, index) in final_items"
       :key="sub_coll._uid"
-      exact
-      :title="sub_coll.name"
-      :value="sub_coll._uid"
-      :to="`/${storyblok_lang}/${sub_coll.full_slug}`"
-      v-tooltip:left="sub_coll.name"
-    ></v-list-item>
+      class="ml-11"
+    >
+      <v-divider
+        xcolor="white"
+        opacity="0.7"
+        thickness="1"
+      ></v-divider>
+      <v-list-item
+        exact
+        nav
+        xlines="has_projects ? 'two' : 'one'"
+        :value="sub_coll._uid"
+        variant="text"
+        :to="`/${storyblok_lang}/${sub_coll.full_slug}`"
+        v-tooltip:left="sub_coll.name"
+        color="accent"
+        class="my-1 ml-n14"
+        style="min-width: 260px"
+        slim
+      >
+        <template v-slot:title>
+          <div
+            class="text-wrap text-subtitle-2"
+            style="max-width: 200px;"
+          >
+            {{ sub_coll.name }}
+          </div>
+        </template>
+      </v-list-item>
+
+    </div>
   </v-list-group>
 
 </template>
