@@ -39,6 +39,32 @@ const artificial_blok = {
 
 const justify = ref(props.blok.justify || false)
 
+const social_dict = {
+  facebook: 'social/facebook_blanco.png',
+  twitter: 'social/twitter_blanco.png',
+  instagram: 'social/instagram_blanco.png',
+  threads: 'social/threads_blanco.png',
+}
+
+const social_networks = computed(() => {
+  if (!props.blok.social_networks)
+    return []
+  return props.blok.social_networks.map(net => {
+    if (!net.logo?.filename && net.social_network) {
+      const icon = social_dict[net.social_network.toLowerCase()]
+      if (icon)
+        // net.simple_logo = `@/assets/${icon}`
+        net.simple_logo = `/${icon}`
+    }
+    return net
+  })
+})
+
+
+function getImageUrl(name) {
+  return new URL(`@/assets/social/${name}`, import.meta.url).href
+}
+
 </script>
 
 <template>
@@ -88,7 +114,10 @@ const justify = ref(props.blok.justify || false)
         <v-divider class="my-2" >
         </v-divider>
       </div>
-      <v-card-actions class="pt-4 px-8">
+      <v-card-actions
+        v-if="blok.website || (social_networks && social_networks.length > 0)"
+        class="pt-4 px-8"
+      >
         <v-btn-primary
           variant="flat"
           color="accent"
@@ -100,31 +129,50 @@ const justify = ref(props.blok.justify || false)
           {{blok.website}}
         </v-btn-primary>
         <v-btn
-          v-for="net in blok.social_networks"
+          v-for="net in social_networks"
           :key="net._uid"
           align="end"
           class="mr-4 text-primary"
           icon
           variant="text"
-          @click="wantOpenLink(net.url)"
+          :href="net.url"
+          target="_blank"
           color="white"
         >
           <v-avatar
-            v-if="net.logo"
+            v-if="net.simple_logo"
+            size="default"
+          >
+            <img
+              :src="net.simple_logo"
+              :alt="net.icon"
+              :height="24"
+            >
+          </v-avatar>
+          <v-avatar
+            v-else-if="net.logo?.filename"
             size="default"
           >
             <img
               :src="resizeImg(net.logo, 80)"
-              :alt="net.icon"
+              :alt="net.logo"
               :height="24"
             >
           </v-avatar>
           <v-icon v-else size="large" color="white">
             user
           </v-icon>
+          <v-tooltip
+            location="top"
+            activator="parent"
+            :text="net.social_network || 'Red social'"
+          ></v-tooltip>
         </v-btn>
 
       </v-card-actions>
+      <Carrousel
+        :images="blok.images || []"
+      />
       <v-card
         class="mt-8 pt-8 pb-14"
         variant="flat"

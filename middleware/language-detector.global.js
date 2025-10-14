@@ -4,14 +4,19 @@
 export default defineNuxtRouteMiddleware((to, from, next) => {
   // console.log('process', process)
   const all_paths = to.path.split('/')
-  // console.log('All path segments:', all_paths)
+  console.log('All path segments:', all_paths)
   const last_path = all_paths[all_paths.length - 1]
-  if (['test-rick'].includes(last_path)) {
+  if (['test-rick', 'public'].includes(last_path)) {
     // console.log('Skipping language detection for asset path:', to.fullPath)
     return; // Skip language detection for these paths
   }
+  const some_image_ext = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', 'favicon.ico']
+  if (some_image_ext.some(ext => to.path.endsWith(ext))) {
+    return; // Skip language detection for asset paths
+  }
+
   if (process.server) {
-    // console.log('Language detector middleware running on server for path:', to.fullPath)
+    console.log('Language detector middleware running on server for path:', to.fullPath)
 
     // Helper function to perform redirection
 

@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from 'vue'
-import { resizeImg } from '~/composables/storyblok_images.js'
+import { resizeImg, transformImage } from '~/composables/storyblok_images.js'
 
 // Props
 const props = defineProps({
@@ -23,6 +23,15 @@ const biography = computed(() => {
   return rich_text
   // return renderRichText(props.blok.text)
 })
+
+const short_biography = computed(() => {
+  let bio = biography.value
+  if (bio.length > 90) {
+    bio = bio.slice(0, 90) + '...'
+  }
+  return bio
+})
+
 // Use the converted mixin as a composable
 </script>
 
@@ -39,7 +48,7 @@ const biography = computed(() => {
         <v-col cols="6">
           <v-img
             v-if="blok.profile_img?.filename"
-            :src="resizeImg(blok.profile_img, 300)"
+            :src="transformImage(blok.profile_img, 400, 400)"
             class="grey lighten-2"
             aspect-ratio="1"
             cover
@@ -51,11 +60,14 @@ const biography = computed(() => {
             <div class="text-h6 text-sm-h5 font-weight-bold px-3">
               {{ blok.full_name }}
             </div>
-            <div class="text-subtitle-1 px-3">
+            <div
+              class="text-subtitle-1 px-3"
+              style="line-height: 1.2 !important;"
+            >
               {{ blok.position }}
             </div>
           </div>
-          <div class="text-body-2 pa-3" v-html="biography">
+          <div class="text-body-2 pa-3" v-html="short_biography">
           </div>
 
         </v-col>

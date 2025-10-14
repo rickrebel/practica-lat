@@ -26,15 +26,9 @@ const final_projects = computed(() => {
   const projects_ids = props.projects || props.blok?.projects || []
   // console.log("projects_ids", projects_ids)
   // console.log("all_projects", all_projects.value)
-  let selected_projects = all_projects.value.filter(
-    p => projects_ids.includes(p.uuid))
-  // sort by practica_id ascending
-  // console.log("selected_projects", selected_projects)
-  selected_projects.sort((a, b) =>
-    parseInt(a.content.practica_id || 99)
-      - parseInt(b.content.practica_id || 99)
-  )
-  return selected_projects
+  return projects_ids.map(
+    id => all_projects.value.find(p => p.uuid === id)
+  ).filter(p => p)
 })
 
 </script>
