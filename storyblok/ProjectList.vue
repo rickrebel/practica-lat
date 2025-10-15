@@ -6,10 +6,10 @@ import { resizeImg } from '~/composables/storyblok_images.js'
 import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const webStore = useWebStore()
-const { query } = useRoute()
+import { currentLocale } from "~/composables/locales.js"
 // Store setup and state
 const { all_projects } = storeToRefs(webStore)
-import generic_poster from '~/assets/generic-poster.png'
+import generic_poster from '~/assets/practica-poster.png'
 import {flip} from "lodash/function.js";
 
 const props = defineProps({
@@ -17,10 +17,6 @@ const props = defineProps({
   projects: Array,
   full_projects: Array,
 })
-
-let storyblok_lang = 'es'
-if (query._storyblok_lang)
-  storyblok_lang = String(query._storyblok_lang)
 
 const final_projects = computed(() => {
   let full_projects = []
@@ -66,15 +62,21 @@ const final_projects = computed(() => {
       :key="project._uid"
       v-editable="project"
       cols="12"
-      :sm="blok.display_type === 'home' && project.is_first ?  10 : 6"
-      class="align-center justify-space-between full-height"
+      :md="blok.display_type === 'home' && project.is_first ?  10 : 6"
+      class="d-flex justify-center align-center full-height"
     >
       <v-card
         v-if="blok.display_type === 'home' || !blok.display_type"
-        class="pb-4 poster-background d-flex flex-column"
-        :height="project.is_first ? 280 : 200"
-        :style="`background-image: url(${project.cover_image})`"
+        class="pb-4  d-flex flex-column"
+        :height="project.is_first ? 300 : 220"
+        style="width: 100%;"
       >
+        <div
+          class="back-poster poster-background"
+          :style="`background-image: url(${project.cover_image})`"
+        >
+
+        </div>
         <div
           class="text-white pt-3 px-3 px-sm-5 pt-sm-5 font-weight-bold text-h4 text-md-h3"
         >
@@ -91,7 +93,7 @@ const final_projects = computed(() => {
             variant="tonal"
             elevation="4"
             append-icon="arrow_right_alt"
-            :to="`/${storyblok_lang}/${project.full_slug}`"
+            :to="`/${currentLocale}/${project.full_slug}`"
           >
             {{ blok.button_text }}
           </v-btn-primary>
@@ -146,10 +148,23 @@ const final_projects = computed(() => {
   white-space: normal !important;
 }
 
-.poster-background {
-  z-index: 4;
-  background: url('~/assets/generic-poster.png');
+.back-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  //background: url('~/assets/practica-poster.png');
   background-size: cover;
+  filter: brightness(0.6);
+  //background-size: cover;
+}
+
+.poster-background {
+  background: url('~/assets/practica-poster.png');
+  background-size: cover;
+  filter: brightness(0.6);
   //background-size: cover;
 }
 

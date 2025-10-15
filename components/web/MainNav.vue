@@ -1,9 +1,11 @@
 <script setup>
 
-// import { ref } from 'vue'
+import { watch } from 'vue'
 import { useDisplay } from 'vuetify'
 const { xs, mdAndUp, smAndDown } = useDisplay()
-import { locales } from "~/composables/locales.js"
+import { locales, currentLocale } from "~/composables/locales.js"
+const { query, name, params } = useRoute()
+const router = useRouter()
 
 const cookieLang = useCookie('user_lang')
 
@@ -19,15 +21,39 @@ const emits = defineEmits(['toggle-menu'])
 // const font_size = computed(() => xs.value ? 12 : 14)
 
 const locales_with_image_flag = computed(() => {
-  console.log('cookieLang', cookieLang.value)
   return locales.map((loc) => {
     return {
       ...loc,
       flag_image: `/flags_80/${loc.flag}.webp`,
-      is_current: cookieLang.value === loc.code,
+      is_current: loc.code === currentLocale.value
     }
   })
 })
+
+const full_locale = computed(() => {
+  return locales_with_image_flag.value.find(
+    loc => loc.code === currentLocale.value
+  ) || locales_with_image_flag.value[0]
+})
+
+watch(currentLocale, (new_locale, old_locale) => {
+  console.log('Current locale changed from', old_locale, 'to', new_locale)
+})
+
+function changeLocale(new_locale) {
+  console.log('Change locale to', new_locale)
+  if (new_locale && new_locale !== full_locale.value.code) {
+    // const prev_locale = current_locale.value.code
+    const new_params = {...params, lang: new_locale}
+
+    cookieLang.value = new_locale
+    // router.push({ name, query, params: new_params })
+    // window.location.reload()
+    router.push({ name, query, params: new_params })
+      .then(() => window.location.reload())
+
+  }
+}
 
 </script>
 
@@ -44,7 +70,10 @@ const locales_with_image_flag = computed(() => {
     >
       <div class="d-flex">
 
-        <router-link to="/" class="d-flex">
+        <router-link
+          :to="`/${currentLocale}`"
+          class="d-flex"
+        >
           <v-img
             src="~/assets/p-white.svg"
             _src="/logo_simple_white.png"
@@ -52,7 +81,15 @@ const locales_with_image_flag = computed(() => {
             :width="xs ? 60 : 60"
           />
         </router-link>
+        <div v-if="false">
+          <div>
 
+            currentLocale: {{currentLocale}}
+          </div>
+          <div>
+            full_locale: {{full_locale.code}}
+          </div>
+        </div>
       </div>
       <v-spacer></v-spacer>
       <v-chip
@@ -60,14 +97,16 @@ const locales_with_image_flag = computed(() => {
         variant="flat"
         class="font-weight-bold px-5"
       >
-        ES
+        <span class="text-uppercase">
+          {{ full_locale.code }}
+        </span>
         <v-avatar
           size="24"
           class="ml-2"
           rounded="sm"
         >
           <v-img
-            src="@/assets/flags_80/mx.webp"
+            :src="full_locale.flag_image"
             alt="Es"
             width="24"
             max-width="24"
@@ -93,6 +132,7 @@ const locales_with_image_flag = computed(() => {
               :value="locale.code"
               :title="locale.name"
               :class="locale.is_current ? 'font-weight-bold' : ''"
+              @click="changeLocale(locale.code)"
             >
               <template v-slot:prepend>
                 <v-avatar

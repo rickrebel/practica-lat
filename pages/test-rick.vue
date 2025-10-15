@@ -4,7 +4,7 @@ const { query } = useRoute()
 // const { page_name } = useRoute().params
 
 const version = $preview ? 'draft' : 'published'
-console.log('version', version)
+// console.log('version', version)
 const story = await useAsyncStoryblok(
     'test-rick',
     {

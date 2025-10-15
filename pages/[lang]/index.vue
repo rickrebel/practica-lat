@@ -1,21 +1,28 @@
 <script setup>
-import {onMounted} from "vue";
+// import {onMounted} from "vue";
 
 const { $preview } = useNuxtApp()
-const { query } = useRoute()
-// import { apiPlugin, storyblokInit, useStoryblokBridge } from '@storyblok/vue';
-// const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
+// import { currentLocale } from "~/composables/locales.js"
+const { query, params } = useRoute()
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+// const localeCookie = useCookie('user_lang')
+// NUEVO
+// console.log('currentLocale (index)', currentLocale.value)
+// console.log('localeCookie (index)', localeCookie.value)
+// console.log('query._storyblok_lang (index)', query._storyblok_lang)
 const version = $preview ? 'draft' : 'published'
-// const storyblokApi = useStoryblokApi();
-// console.log("language query (lang)", query._storyblok_lang)
 const story = await useAsyncStoryblok(
     'home',
     {
       version: version,
-      // language: 'en',
+      // language: currentLocale.value,
+      language: lang.value,
       // language: null,
-      language: query._storyblok_lang || null,
-      fallback_lang: null,
+      // fallback_lang: null,
     },
 { customParent: 'https://app.storyblok.com' }
 )
@@ -26,7 +33,7 @@ const story = await useAsyncStoryblok(
 // })
 
 
-// console.log('story', story)
+console.log('story', story)
 
 // useSeoMeta({
 //   title: 'Desplazamiento Interno en México',

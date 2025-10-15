@@ -5,9 +5,19 @@ import MainMenu from "~/components/web/MainMenu.vue";
 
 const { $preview } = useNuxtApp()
 const version = $preview ? 'draft' : 'published'
+const { query, params } = useRoute()
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+
 const story = await useAsyncStoryblok(
     'global',
-    { version: version },
+    {
+      version: version,
+      language: lang.value,
+    },
 { customParent: 'https://app.storyblok.com' }
 )
 definePageMeta({

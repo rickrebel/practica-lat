@@ -29,7 +29,11 @@ const props = defineProps({
       md="4"
       class="pa-4 align-center justify-space-between text-center"
     >
-      <a :href="institution.web_page?.url || ''" target="_blank" class="text-decoration-none">
+      <a
+        :href="institution.web_page?.url || ''"
+        target="_blank"
+        class="text-decoration-none d-flex align-center justify-center"
+      >
         <v-img
           v-if="institution.logo?.filename"
           :src="resizeImg(institution.logo, 350)"

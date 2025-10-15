@@ -5,21 +5,11 @@ import {useWebStore} from "~/store/web.ts";
 
 const webStore = useWebStore()
 // Store setup and state
-const { query } = useRoute()
+import { currentLocale } from "~/composables/locales.js"
 
 const props = defineProps({
   button: Object,
 })
-
-let storyblok_lang = ref('es')
-if (query._storyblok_lang){
-  storyblok_lang.value = String(query._storyblok_lang)
-  // console.log('storyblok_lang from query', storyblok_lang)
-}
-else {
-  // storyblok_lang.value = 'es'
-  // console.log('storyblok_lang default', storyblok_lang.value)
-}
 
 const first_element = computed(() => {
   return props.button.elements && props.button.elements.length > 0
@@ -76,7 +66,7 @@ const has_projects = computed(() => {
       >
         <template v-slot:title>
           <div
-            class="text-subtitle-1"
+            class="text-subtitle-1 pl-1"
           >
             {{ button.button_title }}
           </div>
@@ -117,7 +107,7 @@ const has_projects = computed(() => {
         xlines="has_projects ? 'two' : 'one'"
         :value="sub_coll._uid"
         variant="text"
-        :to="`/${storyblok_lang}/${sub_coll.full_slug}`"
+        :to="`/${currentLocale}/${sub_coll.full_slug}`"
         v-tooltip:left="sub_coll.name"
         color="accent"
         class="my-1 ml-n14"

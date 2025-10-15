@@ -34,7 +34,7 @@ const card_class = computed(() => {
   if (blok.background_color2)
     final_class += ' paper-texture'
   // if random number generated now
-  console.log("blok._uid", blok._uid)
+  // console.log("blok._uid", blok._uid)
   if (blok._uid) {
     const num = parseInt(blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
     if (num % 4 === 0)
@@ -127,18 +127,19 @@ const blok_header = computed(() => {
       :variant="variant_card"
       :class="card_class"
       class="rounded-0 fill-height py-0"
-      notclass="d-flex flex-column flex-sm-row flex-md-column"
-      _style="`background-image: ${background_image}`"
-
       elevation="0"
       :color="blok.background_color2 || 'transparent'"
     >
-<!--      <div-->
-<!--        class="d-flex flex-column"-->
-<!--        :class="{ 'justify-center' : blok.vertical_centered }"-->
-<!--      >-->
-      <v-row no-gutters>
-        <v-col cols="12" :sm="blok.sm === '12' ? 4 : 12" md="12">
+      <v-row
+        no-gutters
+        align="stretch"
+        :class="blok.space_between ? 'fill-height' : ''"
+      >
+        <v-col
+          cols="12"
+          :sm="blok.sm === '12' ? 4 : 12"
+          md="12"
+        >
           <CommonTitle
             v-if="blok.title && sm && blok.sm === '12'"
             :blok="blok_header"
@@ -147,7 +148,7 @@ const blok_header = computed(() => {
             v-if="blok.media?.filename && !blok.video_hls_url"
             _contain
             dark
-            :src="resizeImg(blok.media)"
+            :src="resizeImg(blok.media, 800)"
             :max-height="blok.image_height || 300"
             class="mt-10 mb-6 px-3 px-sm-6"
             _style="object-fit: contain;"
@@ -162,34 +163,44 @@ const blok_header = computed(() => {
             :video-poster="blok.media?.filename"
           />
         </v-col>
-        <v-col
-          cols="12"
-          :sm="blok.sm === '12' ? 8 : 12"
-          md="12"
+        <template
+          v-if="description2 || blok.buttons.length || blok.contents?.length"
         >
-          <v-card-text v-if="description2" class="py-2 py-sm-4">
-            <div
-              class="text-body-2 text-sm-body-1 montse"
-              v-html="description2"
-            ></div>
-          </v-card-text>
-          <v-card-actions v-if="blok.buttons.length">
-            <v-spacer></v-spacer>
-            <StoryblokComponent
-              v-for="blok in blok.buttons"
-              :key="blok._uid"
-              :blok="blok"
-            ></StoryblokComponent>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-          <v-card-text v-if="blok.contents?.length" class="py-2 py-sm-4">
-            <StoryblokComponent
-              v-for="blok in blok.contents"
-              :key="blok._uid"
-              :blok="blok"
-            ></StoryblokComponent>
-          </v-card-text>
-        </v-col>
+          <v-col
+            cols="12"
+            class="px-3 px-sm-6"
+            v-if="blok.space_between"
+          >
+          </v-col>
+          <v-col
+            cols="12"
+            :sm="blok.sm === '12' ? 8 : 12"
+            md="12"
+          >
+            <v-card-text v-if="description2" class="py-2 py-sm-4">
+              <div
+                class="text-body-2 text-sm-body-1 montse"
+                v-html="description2"
+              ></div>
+            </v-card-text>
+            <v-card-actions v-if="blok.buttons.length">
+              <v-spacer></v-spacer>
+              <StoryblokComponent
+                v-for="blok in blok.buttons"
+                :key="blok._uid"
+                :blok="blok"
+              ></StoryblokComponent>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+            <v-card-text v-if="blok.contents?.length" class="py-2 py-sm-4">
+              <StoryblokComponent
+                v-for="blok in blok.contents"
+                :key="blok._uid"
+                :blok="blok"
+              ></StoryblokComponent>
+            </v-card-text>
+          </v-col>
+        </template>
       </v-row>
 <!--      </div>-->
     </v-card>

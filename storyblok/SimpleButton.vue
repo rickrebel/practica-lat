@@ -78,7 +78,7 @@ const dialog_text_simple = computed(() => {
           color="choco"
         >
           <div
-            class="oswald text-h4 py-2"
+            class="text-h4 py-2"
           >
             {{ blok.dialog_title || 'Título' }}
           </div>

@@ -6,21 +6,14 @@ const props = defineProps({
   blok: Object,
   idx: Number,
 })
+
 import { useDisplay } from 'vuetify'
 const { xs, mdAndUp } = useDisplay()
-const route = useRoute()
-const cookieLang = useCookie('user_lang')
+import { currentLocale } from "~/composables/locales.js"
 
 const color = computed(() => {
   if (!props.item.colors) return 'primary'
   return props.item.colors[0]
-})
-
-const language = computed(() => {
-  let lang = cookieLang.value
-  if (!lang)
-    lang = route.params.lang || 'es'
-  return lang
 })
 
 function openDoc(item) {
@@ -60,7 +53,7 @@ function openDoc(item) {
         style="line-height: 1.25"
       >
         <NuxtLink
-          :to="`/${language}/${item.full_slug}`"
+          :to="`/${currentLocale}/${item.full_slug}`"
           class="text-decoration-none text-black"
         >
           {{ item.name }}

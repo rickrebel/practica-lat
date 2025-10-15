@@ -131,6 +131,7 @@ const final_buttons = computed(() => {
                 v-else-if="button.icon"
                 :icon="button.icon"
                 size="30"
+                :color="button.icon_color || 'white'"
                 class="opacity-100 mr-n4"
               ></v-icon>
               <v-icon v-else size="28" icon="info"></v-icon>

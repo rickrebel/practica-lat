@@ -5,14 +5,15 @@ import MainNav from "~/components/web/MainNav.vue";
 import MainMenu from "~/components/web/MainMenu.vue";
 import Footer from "~/components/web/Footer.vue";
 
-
 import {nextTick, onMounted} from "vue";
 const storyblokApi = useStoryblokApi();
 import {useWebStore} from '~/store/web.ts'
-const { query } = useRoute()
+import { currentLocale } from "~/composables/locales.js"
 import { useTheme } from 'vuetify';
-
 const { $preview } = useNuxtApp()
+// const { query } = useRoute()
+// const localeCookie = useCookie('user_lang')
+
 
 const webStore = useWebStore()
 const {
@@ -25,11 +26,6 @@ const {
 
 const version = $preview ? 'draft' : 'published'
 
-let storyblok_lang = 'es'
-if (query._storyblok_lang)
-  storyblok_lang = String(query._storyblok_lang)
-
-
 const menu_drawer = ref(false);
 
 onMounted(() => {
@@ -37,7 +33,7 @@ onMounted(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "project/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_projects", data);
@@ -46,7 +42,7 @@ onMounted(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "report/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_documents", data);
@@ -55,7 +51,7 @@ onMounted(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "agend/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_agendas", data);
@@ -66,7 +62,7 @@ onMounted(() => {
       {
         version: version,
         starts_with: "global",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data global_config", data);
@@ -93,16 +89,7 @@ function changeMenu() {
         fluid
         max-width="1440"
       >
-<!--        <v-responsive-->
-<!--          max-width="1440"-->
-<!--          class="mx-auto _dfi-app-width"-->
-<!--        >-->
-
-<!--          <v-main class="" id="app-width">-->
-              <NuxtPage />
-<!--          </v-main>-->
-<!--        </v-responsive>-->
-
+        <NuxtPage />
       </v-container>
     </v-main>
     <Footer />

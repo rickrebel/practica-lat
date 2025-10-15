@@ -2,15 +2,13 @@
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
-const route = useRoute()
-const cookieLang = useCookie('user_lang')
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import {useWebStore} from '~/store/web.ts'
 import {getDocumentType} from "~/composables/documents.js";
 import Document from "~/storyblok/Document.vue"
-
 dayjs.locale('es')
+
 const webStore = useWebStore()
 // Store setup and state
 const { all_documents } = storeToRefs(webStore)
@@ -29,13 +27,6 @@ const final_display = computed(()=>{
   return props.blok
     ? Number(props.blok.init_display || 4)
     : 300
-})
-
-const language = computed(() => {
-  let lang = cookieLang.value
-  if (!lang)
-    lang = route.params.lang || 'es'
-  return lang
 })
 
 // Computed properties

@@ -1,10 +1,9 @@
 <script setup>
-const { query } = useRoute()
 const storyblokApi = useStoryblokApi();
 
 import {nextTick, onMounted} from "vue";
 import {useWebStore} from "~/store/web.js";
-
+import { currentLocale } from "~/composables/locales.js"
 const { $preview } = useNuxtApp()
 
 const webStore = useWebStore()
@@ -18,16 +17,12 @@ const {
 
 const version = $preview ? 'draft' : 'published'
 
-let storyblok_lang = 'es'
-if (query._storyblok_lang)
-  storyblok_lang = String(query._storyblok_lang)
-
 onMounted(() => {
   nextTick(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "project/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_projects", data);
@@ -36,7 +31,7 @@ onMounted(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "report/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_documents", data);
@@ -45,7 +40,7 @@ onMounted(() => {
     storyblokApi.getStories({
         version: version,
         starts_with: "agend/",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data all_agendas", data);
@@ -56,7 +51,7 @@ onMounted(() => {
       {
         version: version,
         starts_with: "global",
-        language: storyblok_lang,
+        language: currentLocale.value,
       }
     ).then(({data}) => {
       // console.log("data global_config", data);

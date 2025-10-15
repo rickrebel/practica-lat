@@ -116,7 +116,7 @@ const openTestimony = (testimony) => {
           <v-card-text class="text-body-1 text-sm-h6" v-html="testimony.testimony">
           </v-card-text>
           <v-card-text>
-            <div class="text-subtitle-2 text-sm-subtitle-1 text-choco oswald font-weight-bold">
+            <div class="text-subtitle-2 text-sm-subtitle-1 text-choco font-weight-bold">
               {{ testimony.title }}
             </div>
             <div
@@ -168,7 +168,7 @@ const openTestimony = (testimony) => {
 
           </v-card-text>
           <v-card-text>
-            <div class="text-subtitle-1 text-choco oswald font-weight-bold">
+            <div class="text-subtitle-1 text-choco font-weight-bold">
               {{testimony.title}}
             </div>
             <div
@@ -197,7 +197,7 @@ const openTestimony = (testimony) => {
           <v-card-text class="text-h6" v-html="full_testimony">
           </v-card-text>
           <v-card-text>
-            <div class="text-subtitle-1 text-choco oswald font-weight-bold">
+            <div class="text-subtitle-1 text-choco font-weight-bold">
               {{ last_testimony.title }}
             </div>
             <div

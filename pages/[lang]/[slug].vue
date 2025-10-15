@@ -2,18 +2,21 @@
 const { $preview } = useNuxtApp()
 // const { project_id } = useRoute().params
 const { query, params } = useRoute()
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+import { currentLocale } from "~/composables/locales.js"
 const slug = params.slug
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
-let storyblok_lang: string = 'es'
-if (query._storyblok_lang)
-  storyblok_lang = String(query._storyblok_lang)
 const story = await useAsyncStoryblok(
     `${slug}`,
     {
       version: version,
-      language: storyblok_lang,
-      fallback_lang: 'es',
+      language: lang.value,
+      // fallback_lang: 'es',
     },
 { customParent: 'https://app.storyblok.com' }
 )
