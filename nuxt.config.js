@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     }
   },
   build: {
-    transpile: ['vuetify']
+    transpile: ['vuetify', '@storyblok/nuxt']
   },
   router: {
     // middleware: ['language-detector']
@@ -107,13 +107,17 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             'vuetify': ['vuetify'],
-            'storyblok': ['@storyblok/nuxt']
+            // 'storyblok': ['@storyblok/nuxt']
           }
         }
       }
     },
     optimizeDeps: {
-      include: ['vuetify', '@storyblok/nuxt']
+      exclude: ['@storyblok/nuxt'], // 👈 Excluye de la pre-optimización
+      include: ['vuetify']
+    },
+    ssr: {
+      noExternal: ['@storyblok/nuxt']
     }
   }
 
