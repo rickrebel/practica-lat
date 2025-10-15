@@ -6,7 +6,7 @@ const props = defineProps({
 })
 import { useDisplay } from 'vuetify'
 import CommonTitle from "~/components/web/CommonTitle.vue";
-import {useWebStore} from "~/store/web.js";
+import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const { xs, mdAndUp } = useDisplay()
 const webStore = useWebStore()
@@ -39,6 +39,32 @@ const artificial_blok = {
 
 const justify = ref(props.blok.justify || false)
 
+const social_dict = {
+  facebook: 'social/facebook_blanco.png',
+  twitter: 'social/twitter_blanco.png',
+  instagram: 'social/instagram_blanco.png',
+  threads: 'social/threads_blanco.png',
+}
+
+const social_networks = computed(() => {
+  if (!props.blok.social_networks)
+    return []
+  return props.blok.social_networks.map(net => {
+    if (!net.logo?.filename && net.social_network) {
+      const icon = social_dict[net.social_network.toLowerCase()]
+      if (icon)
+        // net.simple_logo = `@/assets/${icon}`
+        net.simple_logo = `/${icon}`
+    }
+    return net
+  })
+})
+
+
+function getImageUrl(name) {
+  return new URL(`@/assets/social/${name}`, import.meta.url).href
+}
+
 </script>
 
 <template>
@@ -53,9 +79,10 @@ const justify = ref(props.blok.justify || false)
     <div class="d-flex _flex-no-wrap flex-column">
       <v-sheet
         v-if="blok.logo?.filename"
-        class="d-flex justify-space-between align-center"
+        class="d-flex justify-center align-center"
         max-height="200"
         color="transparent"
+        style="width: 100%;"
       >
         <v-img
           :aspect-ratio="1"
@@ -66,7 +93,7 @@ const justify = ref(props.blok.justify || false)
           class="contain"
         ></v-img>
         <v-chip
-          v-if="blok.is_assistance"
+          v-if="blok.project_type === 'assistance'"
           color="secondary"
           class="font-weight-bold px-5 mx-3"
         >
@@ -75,7 +102,7 @@ const justify = ref(props.blok.justify || false)
       </v-sheet>
       <div class="pt-6">
         <v-card-title
-          class="text-h4 title-no-wrap pt-0 font-weight-bold montse mx-3"
+          class="text-h4 title-no-wrap pt-0 font-weight-bold mx-3 text-center"
         >
           {{ blok.name }}
         </v-card-title>
@@ -87,17 +114,65 @@ const justify = ref(props.blok.justify || false)
         <v-divider class="my-2" >
         </v-divider>
       </div>
-      <v-card-actions class="pt-4 px-8">
+      <v-card-actions
+        v-if="blok.website || (social_networks && social_networks.length > 0)"
+        class="pt-4 px-8"
+      >
         <v-btn-primary
-          variant="outlined"
-          color="white"
+          variant="flat"
+          color="accent"
           :append-icon="false"
           :href="blok.website"
           target="_blank"
+          class="font-weight-medium mr-4"
         >
           {{blok.website}}
         </v-btn-primary>
+        <v-btn
+          v-for="net in social_networks"
+          :key="net._uid"
+          align="end"
+          class="mr-4 text-primary"
+          icon
+          variant="text"
+          :href="net.url"
+          target="_blank"
+          color="white"
+        >
+          <v-avatar
+            v-if="net.simple_logo"
+            size="default"
+          >
+            <img
+              :src="net.simple_logo"
+              :alt="net.icon"
+              :height="24"
+            >
+          </v-avatar>
+          <v-avatar
+            v-else-if="net.logo?.filename"
+            size="default"
+          >
+            <img
+              :src="resizeImg(net.logo, 80)"
+              :alt="net.logo"
+              :height="24"
+            >
+          </v-avatar>
+          <v-icon v-else size="large" color="white">
+            user
+          </v-icon>
+          <v-tooltip
+            location="top"
+            activator="parent"
+            :text="net.social_network || 'Red social'"
+          ></v-tooltip>
+        </v-btn>
+
       </v-card-actions>
+      <Carrousel
+        :images="blok.images || []"
+      />
       <v-card
         class="mt-8 pt-8 pb-14"
         variant="flat"
@@ -131,10 +206,6 @@ const justify = ref(props.blok.justify || false)
 
 .title-no-wrap{
   white-space: normal !important;
-}
-
-.white-outlined {
-  border: 3px solid white !important;
 }
 
 .outlined-card {

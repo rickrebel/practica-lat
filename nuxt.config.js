@@ -10,11 +10,32 @@ export default defineNuxtConfig({
       apiUrl: process.env.NUXT_API_URL
     }
   },
+  nitro: {
+    preset: 'node-server', // o 'vercel', 'netlify', según tu hosting
+    compressPublicAssets: true,
+    minify: true,
+
+    // Caché del servidor
+    storage: {
+      cache: {
+        driver: 'fs', // o 'fs' si no tienes Redis
+        // Si usas Redis:
+        // host: process.env.REDIS_HOST,
+        // port: process.env.REDIS_PORT,
+      }
+    },
+    // Pre-renderizar páginas estáticas
+    prerender: {
+      crawlLinks: true,
+      routes: ['/'],
+      ignore: ['/admin', '/api']
+    }
+  },
   build: {
-    transpile: ['vuetify']
+    transpile: ['vuetify', '@storyblok/nuxt']
   },
   router: {
-    middleware: ['language-detector']
+    // middleware: ['language-detector']
   },
   modules: [
     '@pinia/nuxt',
@@ -51,22 +72,52 @@ export default defineNuxtConfig({
     },
     port: 3013
   },
+  routeRules: {
+    // This rule is effective only in development mode
+    '/**': {
+      headers: {
+        'X-Frame-Options': 'ALLOW-FROM https://app.storyblok.com/'
+      }
+    }
+  },
+  typescript: {
+    typeCheck: false
+  },
   googleFonts: {
     families: {
       Montserrat: [400, 700, 900],
-      Oswald: [700],
-      "PT+Serif": [700]
+      'Titillium Web': [400, 700, 900],
     },
     display: 'swap',
     preload: true,
-    prefetch: true,
-    preconnect: true
+    prefetch: false, // Cambiado a false para mejorar rendimiento
+    preconnect: true,
+    download: true, // 👈 Descarga las fuentes localmente
+    inject: true,
+    base64: false
   },
   vite: {
     vue: {
       template: {
         transformAssetUrls
       }
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vuetify': ['vuetify'],
+            // 'storyblok': ['@storyblok/nuxt']
+          }
+        }
+      }
+    },
+    optimizeDeps: {
+      exclude: ['@storyblok/nuxt'], // 👈 Excluye de la pre-optimización
+      include: ['vuetify']
+    },
+    ssr: {
+      noExternal: ['@storyblok/nuxt']
     }
   }
 

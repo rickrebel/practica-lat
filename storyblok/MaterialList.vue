@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import {useWebStore} from '~/store/web.js'
+import {useWebStore} from '~/store/web.ts'
 import { resizeImg } from '~/composables/storyblok_images.js'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
@@ -106,7 +106,7 @@ const filteredMats = computed(() => {
             </span> |
             <span class="text-grey-darken-1">{{ item.year }}</span>
           </v-card-subtitle>
-          <v-card-title class="text-h5 text-no-wrap py-2 font-weight-bold oswald">
+          <v-card-title class="text-h5 text-no-wrap py-2 font-weight-bold">
             {{ item.name }}
           </v-card-title>
           <v-card-text v-if="item.description" class="text-black text-body-1 pb-2 montse">

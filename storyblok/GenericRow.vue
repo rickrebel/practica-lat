@@ -26,7 +26,12 @@ const background_color = computed(() => {
 </script>
 
 <template>
-  <v-col cols="12">
+  <v-col
+    cols="12"
+    class="pa-0"
+    :order="blok.order || 1"
+    :order-md="blok.order_md || 1"
+  >
     <v-sheet
       v-editable="blok"
       :color="background_color"
@@ -35,7 +40,7 @@ const background_color = computed(() => {
       :class="blok.free_class"
     >
       <v-row
-        class="px-2 px-sm-4 py-3"
+        class="_px-2 _px-sm-4 py-3"
         :no-gutters="columns_together"
       >
         <StoryblokComponent

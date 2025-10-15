@@ -1,14 +1,12 @@
 <script setup>
 import CommonTitle from "../components/web/CommonTitle.vue";
 import {storeToRefs} from "pinia";
-import {useWebStore} from '~/store/web.js'
+import {useWebStore} from '~/store/web.ts'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 dayjs.locale('es')
 const webStore = useWebStore()
-// Store setup and state
 const { all_documents } = storeToRefs(webStore)
-
 const props = defineProps({
   blok: Object,
 })
@@ -38,8 +36,9 @@ const other_reports = computed(() => {
 const header_blok = computed(() => {
   if (!report_blok.value) return null
   return {
-    header: dayjs(report_blok.value.start_date).format('DD [de] MMMM [de] YYYY'),
+    header: null,
     subheader: report_blok.value.name,
+    date: dayjs(report_blok.value.start_date).format('DD [de] MMMM [de] YYYY'),
     explanation: report_blok.value.subtitle,
     cover: report_blok.value.cover,
     // color_title: 'primary',
@@ -47,8 +46,8 @@ const header_blok = computed(() => {
 })
 
 const artificial_blok = {
-  subheader: 'Otros informes',
-  color_title: 'primary',
+  subheader: 'Informes e investigaciones relacionados',
+  color_title: 'white',
   init_display: 4,
 }
 
@@ -62,11 +61,11 @@ function openDoc(item) {
 </script>
 
 <template>
-  <v-row class="page ma-0">
-    <v-col cols="12">
+<!--  <v-row class="page ma-0">-->
+<!--    <v-col cols="12">-->
       <v-sheet
-        :style="{backgroundImage: `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)`}"
-
+        class="sheet-background"
+        color="transparent"
       >
         <SectionHeader
           v-if="report_blok"
@@ -74,51 +73,41 @@ function openDoc(item) {
           :report_blok="report_blok"
           v-editable="report_blok"
         />
+        <StoryblokComponent
+          v-for="blok in blok.body"
+          :key="blok._uid"
+          :blok="blok"
+          :report_blok="report_blok"
+        ></StoryblokComponent>
+        <div
+          v-for="blok in blok.document"
+          class="pb-2 pb-md-4 mt-3 pt-3"
+        >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                variant="elevated"
+                color="accent"
+                size="large"
+                class="white-outlined mr-2"
+                rounded="lg"
+                append-icon="file_download"
+                @click="openDoc(blok)"
+            >
+              Descargar Informe
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </div>
       </v-sheet>
-      <StoryblokComponent
-        v-for="blok in blok.body"
-        :key="blok._uid"
-        :blok="blok"
-        :report_blok="report_blok"
-      ></StoryblokComponent>
-      <v-card
-        v-for="blok in blok.document"
-        class="pb-2 pb-md-4 mt-3 pt-3"
-        elevation="6"
-        color="pinked"
-      >
-        <v-card-actions>
-          <v-spacer></v-spacer>
-<!--          <v-btn-->
-<!--            color="accent"-->
-<!--            variant="elevated"-->
-<!--            class="mr-2"-->
-<!--            @click="openDoc(blok)"-->
-<!--            append-icon="file_download"-->
-<!--          >-->
-<!--            Descargar Informe-->
-<!--          </v-btn>-->
-          <v-btn
-            variant="elevated"
-            color="accent"
-            size="large"
-            class="white-outlined mr-2"
-            rounded="lg"
-            append-icon="file_download"
-            @click="openDoc(blok)"
-          >
-            Descargar Informe
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
       <v-card
         v-if="report_blok"
-        class="pb-2 pb-md-4 mt-3 pt-3"
+        class="pb-2 pb-md-4 pt-12"
         elevation="0"
         variant="flat"
+        tile
+        color="black"
       >
-
         <CommonTitle
           :blok="artificial_blok"
         />
@@ -126,6 +115,12 @@ function openDoc(item) {
           :init_documents="other_reports"
         />
       </v-card>
-    </v-col>
-  </v-row>
+<!--    </v-col>-->
+<!--  </v-row>-->
 </template>
+
+<style lang="scss">
+  .sheet-background {
+    background: url('~/assets/papel-azul.png');
+  }
+</style>

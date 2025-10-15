@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 // import { useMainStore } from '~/store/index'
-import { useWebStore } from '~/store/web.js'
+import { useWebStore } from '~/store/web.ts'
 import { storeToRefs } from 'pinia'
 
 const webStore = useWebStore()
@@ -49,7 +49,7 @@ function wantOpenLink(url) {
     padless
     id="app"
     v-editable="blok"
-    color="#c72d67"
+    color="black"
     class="py-2"
     style="width: 100%;"
   >
@@ -58,11 +58,57 @@ function wantOpenLink(url) {
       class="app-width2"
     >
       <v-col
-        cols="8"
+        cols="12"
         sm="4"
+        class="text-left pa-3 text-justify d-flex flex-column align-start"
+      >
+        <v-img
+          src="~/assets/logo_simple_white.png"
+          width="240"
+          class="mb-4"
+        />
+
+        <div
+          v-if="description"
+          v-html="description"
+          class="text-body-2 text-sm-body-1 py-2 lato"
+        ></div>
+<!--        <v-divider-->
+<!--          v-if="main_blok.contact_email || main_blok.social_networks.length > 0"-->
+<!--          color="white" class="my-1"-->
+<!--        ></v-divider>-->
+<!--        <div v-if="main_blok.contact_email" class="lato">-->
+<!--          <b>Contacto:</b> {{ main_blok.contact_email }}-->
+<!--        </div>-->
+
+
+      </v-col>
+
+      <v-col
+        cols="8"
+        sm="5"
         offset="2"
         offset-sm="0"
-        class="text-left pa-8"
+        class="text-left pa-3"
+      >
+        <div v-if="final_buttons.length">
+
+          <StoryblokComponent
+            v-for="blok in final_buttons"
+            :key="blok._uid"
+            :blok="blok"
+            fixed_size="default"
+            fixed_variant="text"
+            fixed_color="white"
+          ></StoryblokComponent>
+        </div>
+      </v-col>
+      <v-col
+        cols="8"
+        sm="3"
+        offset="2"
+        offset-sm="0"
+        class="text-left pa-3"
       >
         <div class="_mt-4">
           <v-btn
@@ -90,44 +136,7 @@ function wantOpenLink(url) {
             </v-icon>
           </v-btn>
         </div>
-<!--        <v-img-->
-<!--          src="~/assets/logo_cuadrado.png"-->
-<!--          :height="'100%'"-->
-<!--          :width="'100%'"-->
-<!--          max-height="280"-->
-<!--        />-->
       </v-col>
-      <v-col
-        cols="12"
-        sm="8"
-        class="text-left pa-8 text-justify d-flex flex-column justify-center lato"
-      >
-        <div
-          v-if="description"
-          v-html="description"
-          class="text-body-2 text-sm-body-1 py-2 lato"
-        ></div>
-<!--        <v-divider-->
-<!--          v-if="main_blok.contact_email || main_blok.social_networks.length > 0"-->
-<!--          color="white" class="my-1"-->
-<!--        ></v-divider>-->
-<!--        <div v-if="main_blok.contact_email" class="lato">-->
-<!--          <b>Contacto:</b> {{ main_blok.contact_email }}-->
-<!--        </div>-->
-        <div v-if="final_buttons.length">
-
-          <StoryblokComponent
-            v-for="blok in final_buttons"
-            :key="blok._uid"
-            :blok="blok"
-            fixed_size="default"
-            fixed_variant="text"
-            fixed_color="white"
-          ></StoryblokComponent>
-        </div>
-
-      </v-col>
-
     </v-row>
   </v-footer>
 </template>

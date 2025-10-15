@@ -21,28 +21,29 @@ function openDoc(item) {
     cols="12"
     class="section-header mb-1 pt-3 d-flex justify-space-between"
     :class="{report_block: 'text-center'}"
+    :order="blok.order || 1"
+    :order-md="blok.order_md || 1"
   >
-    <v-card
+    <v-avatar
       v-if="report_blok?.cover?.filename"
-      width="340"
-      class="white-outlined ml-2 ml-sm-10 mr-2"
-      color="transparent"
-      rounded="xl"
+      size="340"
+      class="ml-2 ml-sm-8 mr-2 mr-sm-8"
     >
       <v-img
         :aspect-ratio="1"
-        :src="resizeImg(report_blok.cover, 350)"
+        :src="resizeImg(report_blok.cover, 340)"
         class="ma-3"
       ></v-img>
-    </v-card>
+    </v-avatar>
     <v-spacer v-else-if="!blok.left_align"></v-spacer>
     <div class="d-flex flex-column">
-<!--      <div-->
-<!--        class="text-uppercase text-body-2 text-grey-darken-2 px-4"-->
-<!--        :class="report_blok ? '' : 'mb-4'"-->
-<!--      >-->
-<!--        {{blok.header}}-->
-<!--      </div>-->
+      <div
+        v-if="blok.date"
+        class="text-uppercase text-body-2 text-grey-darken-2 px-4"
+        :class="report_blok ? '' : 'mb-4'"
+      >
+        {{blok.date}}
+      </div>
       <CommonTitle
         :blok="blok"
         is_main_title
@@ -63,7 +64,7 @@ function openDoc(item) {
         variant="elevated"
         color="accent"
         size="large"
-        class="white-outlined px-5 mx-4 mt-4 align-self-start"
+        class="px-5 mx-4 mt-4 align-self-start"
         v-tooltip="'Descargar'"
         rounded="lg"
         append-icon="file_download"
@@ -96,7 +97,4 @@ function openDoc(item) {
   }
 }
 
-.white-outlined {
-  border: 3px solid white !important;
-}
 </style>

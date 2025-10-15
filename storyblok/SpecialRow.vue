@@ -28,7 +28,7 @@ const background_image = computed(() => {
 const sheet_class = computed(() => {
   let final_class = ''
   if (props.blok.use_grandient)
-    final_class += 'container-with-texture dynamic_background'
+    final_class += 'container-with-texture dynamic-background'
   if (props.blok.free_class)
     final_class += ` ${props.blok.free_class}`
   return final_class
@@ -42,6 +42,8 @@ const sheet_class = computed(() => {
     cols="12"
     v-editable="blok"
     class="pa-0 _mb-3"
+    :order="blok.order || 1"
+    :order-md="blok.order_md || 1"
   >
     <v-sheet
       :color="background_color"
@@ -74,11 +76,13 @@ const sheet_class = computed(() => {
             :columns_together="columns_together"
           />
         </v-row>
-        <StoryblokComponent
-          v-for="comp in blok.components"
-          :key="comp._uid"
-          :blok="comp"
-        />
+        <v-row no-gutters>
+          <StoryblokComponent
+            v-for="comp in blok.components"
+            :key="comp._uid"
+            :blok="comp"
+          />
+        </v-row>
         <v-card-actions v-if="blok.buttons?.length" class="mt-6">
           <v-spacer></v-spacer>
           <StoryblokComponent

@@ -60,10 +60,10 @@ const dialog_text_simple = computed(() => {
     color="accent"
     :size="blok.size || 'large'"
     class="mx-2 text-weight-bold"
-    _class="blok.style ? 'text-white px-3' : 'white-outlined px-5'"
     @click="openDialog"
     id="button_new"
     rounded="lg"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
     <v-dialog
@@ -77,9 +77,8 @@ const dialog_text_simple = computed(() => {
           height="80"
           color="choco"
         >
-
           <div
-            class="oswald text-h4 py-2"
+            class="text-h4 py-2"
           >
             {{ blok.dialog_title || 'Título' }}
           </div>
@@ -110,6 +109,7 @@ const dialog_text_simple = computed(() => {
     size="default"
     :to="blok.to.cached_url || blok.to.url"
     id="button_new"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
   </v-btn-menu>
@@ -122,6 +122,7 @@ const dialog_text_simple = computed(() => {
     :to="blok.to.cached_url || blok.to.url"
     id="button_new"
     style="font-weight: bold;"
+    :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
   </v-btn-primary>
@@ -142,7 +143,5 @@ const dialog_text_simple = computed(() => {
 </template>
 
 <style scoped lang="scss">
-.white-outlined {
-  border: 3px solid white !important;
-}
+
 </style>

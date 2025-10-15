@@ -18,11 +18,16 @@ export function resizeImg(img, size1 = 0, size2 = 0) {
   return null
 }
 
-export function transformImage(image, option) {
+export function transformImage(image, size1 = 0, size2 = 0) {
+  if (!size1 && !size2)
+    size1 = 400
   if (!image) return ''
-  if (!option) return ''
+  const focus_point = image.focus
 
-  let imageService = '//img2.storyblok.com/'
-  let path = image.filename.replace('https://a.storyblok.com', '')
-  return imageService + option + path
+  let final_path = `${image.filename}/m/${size1}x${size2}`
+
+  if (focus_point) {
+    final_path += `/filters:focal(${focus_point})`
+  }
+  return final_path
 }

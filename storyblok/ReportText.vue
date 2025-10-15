@@ -35,22 +35,13 @@ const padding_top = computed(() => {
   return `pt-${final_val}`
 })
 
-const title_color = computed(() => {
-  if (props.report_blok){
-    // const type_doc = typeDocuments.value[props.report_blok.type_doc]
-    const document_type = getDocumentType(props.report_blok.type_doc)
-    return document_type.v_color
-  }
-
-  return 'secondary'
-})
-
 </script>
 
 <template>
   <v-card
     v-editable="blok"
-    elevation="6"
+    elevation="0"
+    variant="text"
     class="pb-2 pb-md-4 mx-3"
   >
     <v-row class="mx-3 my-0" align="start">
@@ -61,10 +52,10 @@ const title_color = computed(() => {
       >
         <div>
           <v-sheet
-            :color="title_color"
-            class="px-5 py-1 text-white font-weight-bold text-h5"
+            color="primary"
+            class="px-5 py-1 font-weight-bold text-h5"
           >
-            <div class="oswald">
+            <div class="montse">
               {{blok.title}}
             </div>
           </v-sheet>
