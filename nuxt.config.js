@@ -10,29 +10,30 @@ export default defineNuxtConfig({
       apiUrl: process.env.NUXT_API_URL
     }
   },
-  nitro: {
-    preset: 'node-server', // o 'vercel', 'netlify', según tu hosting
-    compressPublicAssets: true,
-    minify: true,
-
-    // Caché del servidor
-    storage: {
-      cache: {
-        driver: 'fs', // o 'fs' si no tienes Redis
-        // Si usas Redis:
-        // host: process.env.REDIS_HOST,
-        // port: process.env.REDIS_PORT,
-      }
-    },
-    // Pre-renderizar páginas estáticas
-    prerender: {
-      crawlLinks: true,
-      routes: ['/'],
-      ignore: ['/admin', '/api']
-    }
-  },
+  // nitro: {
+  //   preset: 'node-server', // o 'vercel', 'netlify', según tu hosting
+  //   compressPublicAssets: true,
+  //   minify: true,
+  //
+  //   // Caché del servidor
+  //   storage: {
+  //     cache: {
+  //       driver: 'fs', // o 'fs' si no tienes Redis
+  //       // Si usas Redis:
+  //       // host: process.env.REDIS_HOST,
+  //       // port: process.env.REDIS_PORT,
+  //     }
+  //   },
+  //   // Pre-renderizar páginas estáticas
+  //   prerender: {
+  //     crawlLinks: true,
+  //     routes: ['/'],
+  //     ignore: ['/admin', '/api']
+  //   }
+  // },
   build: {
-    transpile: ['vuetify', '@storyblok/nuxt']
+    // transpile: ['vuetify', '@storyblok/nuxt']
+    transpile: ['vuetify']
   },
   router: {
     // middleware: ['language-detector']
@@ -72,14 +73,14 @@ export default defineNuxtConfig({
     },
     port: 3013
   },
-  routeRules: {
-    // This rule is effective only in development mode
-    '/**': {
-      headers: {
-        'X-Frame-Options': 'ALLOW-FROM https://app.storyblok.com/'
-      }
-    }
-  },
+  // routeRules: {
+  //   // This rule is effective only in development mode
+  //   '/**': {
+  //     headers: {
+  //       'X-Frame-Options': 'ALLOW-FROM https://app.storyblok.com/'
+  //     }
+  //   }
+  // },
   typescript: {
     typeCheck: false
   },
@@ -102,23 +103,23 @@ export default defineNuxtConfig({
         transformAssetUrls
       }
     },
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'vuetify': ['vuetify'],
-            // 'storyblok': ['@storyblok/nuxt']
-          }
-        }
-      }
-    },
-    optimizeDeps: {
-      exclude: ['@storyblok/nuxt'], // 👈 Excluye de la pre-optimización
-      include: ['vuetify']
-    },
-    ssr: {
-      noExternal: ['@storyblok/nuxt']
-    }
+    // build: {
+    //   rollupOptions: {
+    //     output: {
+    //       manualChunks: {
+    //         'vuetify': ['vuetify'],
+    //         // 'storyblok': ['@storyblok/nuxt']
+    //       }
+    //     }
+    //   }
+    // },
+    // optimizeDeps: {
+    //   exclude: ['@storyblok/nuxt'], // 👈 Excluye de la pre-optimización
+    //   include: ['vuetify']
+    // },
+    // ssr: {
+    //   noExternal: ['@storyblok/nuxt']
+    // }
   }
 
 })
