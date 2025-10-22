@@ -27,6 +27,7 @@ const story = await useAsyncStoryblok(
   <StoryblokComponent
     v-if="story"
     :blok="story.content"
+    :uid="story.uuid"
   />
 </template>
 

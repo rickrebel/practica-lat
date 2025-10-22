@@ -39,7 +39,7 @@ onMounted(() => {
     });
     storyblokApi.getStories({
         version: version,
-        starts_with: "agend/",
+        starts_with: "agenda/",
         language: currentLocale.value,
       }
     ).then(({data}) => {

@@ -11,10 +11,26 @@ const props = defineProps({
   button: Object,
 })
 
+const all_types = {
+  "ProjectList": "project",
+  "AgendaList": "agenda",
+  "AgendList": "agenda",
+  "DocumentList": "document",
+}
+
 const first_element = computed(() => {
   return props.button.elements && props.button.elements.length > 0
     ? props.button.elements[0]
     : null
+})
+
+const current_type = computed(() => {
+  const first = first_element.value
+  console.log('first', first)
+  if (!first) return null
+  console.log('all_types', all_types)
+  console.log(all_types[first.component])
+  return all_types[first.component] || null
 })
 
 const final_items = computed(() => {
@@ -39,13 +55,8 @@ const final_items = computed(() => {
       id => webStore.all_projects.find(p => p.uuid === id)
     ).filter(p => p)
   }
+  // console.log('items_menu', items)
   return items
-})
-
-const has_projects = computed(() => {
-  return first_element.value
-    && first_element.value.projects
-    && first_element.value.projects.length > 0
 })
 
 </script>
@@ -104,10 +115,9 @@ const has_projects = computed(() => {
       <v-list-item
         exact
         nav
-        xlines="has_projects ? 'two' : 'one'"
         :value="sub_coll._uid"
         variant="text"
-        :to="`/${currentLocale}/${sub_coll.full_slug}`"
+        :to="`/${currentLocale}/${current_type}/${sub_coll.slug}`"
         v-tooltip:left="sub_coll.name"
         color="accent"
         class="my-1 ml-n14"

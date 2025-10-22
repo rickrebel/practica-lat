@@ -30,6 +30,12 @@ const locales_with_image_flag = computed(() => {
   })
 })
 
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+
 const full_locale = computed(() => {
   return locales_with_image_flag.value.find(
     loc => loc.code === currentLocale.value
@@ -71,7 +77,7 @@ function changeLocale(new_locale) {
       <div class="d-flex">
 
         <router-link
-          :to="`/${currentLocale}`"
+          :to="`/${lang}`"
           class="d-flex"
         >
           <v-img
@@ -81,13 +87,15 @@ function changeLocale(new_locale) {
             :width="xs ? 60 : 60"
           />
         </router-link>
-        <div v-if="false">
+        <div v-if="true">
           <div>
-
             currentLocale: {{currentLocale}}
           </div>
           <div>
             full_locale: {{full_locale.code}}
+          </div>
+          <div>
+            lang: {{lang}}
           </div>
         </div>
       </div>
@@ -159,10 +167,9 @@ function changeLocale(new_locale) {
           </v-list>
         </v-menu>
       </v-chip>
-      <v-app-bar-nav-icon class="ml-4" @click="$emit('toggle-menu')">
-
-
-      </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="ml-4" @click="$emit('toggle-menu')"
+      ></v-app-bar-nav-icon>
     </div>
 <!--    <template v-slot:append>-->
 <!--      <v-app-bar-nav-icon></v-app-bar-nav-icon>-->

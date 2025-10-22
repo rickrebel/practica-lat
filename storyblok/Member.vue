@@ -20,8 +20,8 @@ const biography = computed(() => {
   let rich_text = renderRichText(props.blok.biography)
   if (!rich_text)
     return '-'
-  // rich_text = rich_text.replace(
-  //     /<p>/g, '<p class="mt-2 mt-sm-4 montse">')
+  rich_text = rich_text.replace(
+      /<p>/g, '<p class="mb-2 mb-sm-4">')
   return rich_text
   // return renderRichText(props.blok.text)
 })
@@ -102,22 +102,26 @@ const short_biography = computed(() => {
       <v-card style="overflow-y: auto;">
         <v-img
           v-if="blok.profile_img?.filename"
-          :src="transformImage(blok.profile_img, 600, 320)"
+          :src="transformImage(blok.profile_img, 600, 360)"
           aspect-ratio="1"
-          class="grey lighten-2"
-          height="320"
+          class="grey lighten-2 mt-n1"
+          height="360"
           contain
         ></v-img>
-        <v-card-title class="text-h5">
+        <v-card-title class="text-h5 text-sm-h4 ">
           {{ blok.full_name }}
         </v-card-title>
-        <v-card-subtitle v-if="position">
+        <v-card-subtitle
+          v-if="blok.position"
+          class="text-subtitle-1 text-sm-h6 px-4 pb-0"
+        >
           {{ blok.position }}
+
         </v-card-subtitle>
-        <v-card-text>
+        <v-card-text class="pa-4 text-body-1" style="line-height: 1.4;">
           <div v-html="biography"></div>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="pb-4">
           <v-spacer></v-spacer>
           <v-btn variant="elevated" color="accent" @click="dialog = false">
             Cerrar

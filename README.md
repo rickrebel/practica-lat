@@ -9,4 +9,3 @@ In the folder you have some files like:
 
 - `nuxt.config.js`: the configuration with Storyblok API;
 - `pages/index.vue`: the initialization of the Storyblok Bridge.
-

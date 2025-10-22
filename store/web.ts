@@ -37,7 +37,7 @@ interface Project {
 }
 
 interface Agenda {
-  // Define agend properties based on your data structure
+  // Define agenda properties based on your data structure
   [key: string]: any
 }
 

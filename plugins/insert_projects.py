@@ -157,7 +157,7 @@ for item in data_to_insert:
             "parent_id": PARENT_FOLDER_ID,
             "content": {
                 "name": project_name,
-                "agend": "",
+                "agenda": "",
                 "images": [],
                 "content": content_paragraphs,
                 "website": item.get("website", ""),

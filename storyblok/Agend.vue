@@ -32,7 +32,7 @@ const related_projects = computed(() => {
   // return all_documents.value
   // return []
   return all_projects.value.filter(
-      project => project.content.agend === props.story.uuid)
+      project => project.content.agenda === props.story.uuid)
 })
 
 const artificial_blok = {

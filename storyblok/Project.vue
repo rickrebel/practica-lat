@@ -1,23 +1,24 @@
 <script setup>
-import { resizeImg } from '~/composables/storyblok_images.js'
-import dayjs from "dayjs";
-const props = defineProps({
-  blok: Object,
-})
-import { useDisplay } from 'vuetify'
 import CommonTitle from "~/components/web/CommonTitle.vue";
-import {useWebStore} from "~/store/web.ts";
+
+import { resizeImg } from '~/composables/storyblok_images.js'
 import {storeToRefs} from "pinia";
-const { xs, mdAndUp } = useDisplay()
+import {useWebStore} from "~/store/web.ts";
 const webStore = useWebStore()
-// const { all_documents } = webStore
 const { all_documents } = storeToRefs(webStore)
 
+const props = defineProps({
+  blok: Object,
+  uid: {
+    type: String,
+    required: true,
+  }
+})
 
 const explanation = computed(() => {
   let rich_text = renderRichText(props.blok.description)
   if (!rich_text)
-    return '-'
+    return null
   rich_text = rich_text.replace(
       /<p>/g, '<p class="mt-2 mt-sm-4 montse text-white">')
   return rich_text
@@ -25,10 +26,14 @@ const explanation = computed(() => {
 
 
 const related_documents = computed(() => {
-  // console.log('documents', all_documents.value)
+  console.log('documents', all_documents.value)
+  console.log('blok', props.blok)
+  console.log('uid', props.uid)
   // return all_documents.value
   // return []
-  return all_documents.value.filter((doc, idx) => idx < 4)
+  return all_documents.value.filter((doc, idx) =>
+    idx < 4 && doc.projects2 === props.uid
+  )
 })
 
 const artificial_blok = {
@@ -100,15 +105,17 @@ function getImageUrl(name) {
           Asistencia técnica especializada
         </v-chip>
       </v-sheet>
-      <div class="pt-6">
+      <div class="pt-6 pt-sm-12">
         <v-card-title
+          v-if="!blok.hide_name"
           class="text-h4 title-no-wrap pt-0 font-weight-bold mx-3 text-center"
         >
           {{ blok.name }}
         </v-card-title>
         <v-card-text
+          v-if="explanation"
           v-html="explanation"
-          class="text-sm-subtitle-1 special-img mx-3"
+          class="text-sm-subtitle-1 special-img mx-3 pt-1"
           :class="{'text-justify' : justify}"
         ></v-card-text>
         <v-divider class="my-2" >
@@ -116,7 +123,7 @@ function getImageUrl(name) {
       </div>
       <v-card-actions
         v-if="blok.website || (social_networks && social_networks.length > 0)"
-        class="pt-4 px-8"
+        class="px-8 mb-2 mb-sm-6"
       >
         <v-btn-primary
           variant="flat"
@@ -162,6 +169,7 @@ function getImageUrl(name) {
           <v-icon v-else size="large" color="white">
             user
           </v-icon>
+
           <v-tooltip
             location="top"
             activator="parent"
@@ -174,7 +182,7 @@ function getImageUrl(name) {
         :images="blok.images || []"
       />
       <v-card
-        class="mt-8 pt-8 pb-14"
+        class="mt-8 pt-8 pt-sm-12 pb-14"
         variant="flat"
         color="grey-darken-4"
       >
@@ -186,7 +194,8 @@ function getImageUrl(name) {
       </v-card>
     </div>
     <v-card
-      class="pb-2 pb-md-4 mt-3 pt-3"
+      v-if="related_documents && related_documents.length > 0"
+      class="pb-2 pb-md-4 pt-6 pt-sm-10"
       elevation="0"
       variant="flat"
       color="white"
@@ -194,6 +203,7 @@ function getImageUrl(name) {
 
       <CommonTitle
         :blok="artificial_blok"
+        class="pb-6"
       />
       <DocumentList
         :init_documents="related_documents"

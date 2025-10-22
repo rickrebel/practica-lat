@@ -3,6 +3,7 @@
 import {useWebStore} from '~/store/web.ts'
 import ButtonGroup from "~/components/web/ButtonGroup.vue";
 const webStore = useWebStore()
+const { query, params } = useRoute()
 // const { global_config } = webStore
 
 const props = defineProps({
@@ -20,6 +21,14 @@ const props = defineProps({
   },
 })
 
+const emits = defineEmits(['toggle-menu'])
+
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+
 const main_blok = computed(() => {
   if (props.blok) return props.blok
   // console.log('global_config', webStore.global_config)
@@ -31,18 +40,43 @@ const main_blok = computed(() => {
 })
 
 const final_buttons = computed(() => {
-  // console.log('main_blok', main_blok.value)
-  if (!main_blok.value) return []
-  return main_blok.value.buttons || []
+  console.log('main_blok', main_blok.value.buttons)
+  if (!main_blok.value)
+    return []
+  let buttons = main_blok.value.buttons || []
+  return buttons.map(button => {
+    const main_url = button.to.cached_url || button.to.url
+    button.main_url = main_url
+    button.is_external = button.to?.linktype === 'url'
+    if (button.is_external)
+      return button
+    if (button.to.cached_url || button.to.url){
+      const all_paths = main_url.split('/')
+      const some_is_current_lang = all_paths.some(
+        path => path === lang.value)
+      if (!some_is_current_lang) {
+        const sep = main_url.startsWith('/') ? '' : '/'
+        button.main_url = `/${lang.value}${sep}${main_url}`
+      }
+    }
+    return button
+  })
 })
 
-// const menu_drawer = ref(false)
+const final_menu_drawer = computed({
+  get() {
+    return props.menu_drawer
+  },
+  set(value) {
+    emits('toggle-menu', value)
+  }
+})
 
 </script>
 
 <template>
   <v-navigation-drawer
-    :model-value="menu_drawer"
+    v-model="final_menu_drawer"
     app
     temporary
     location="right"
@@ -75,35 +109,14 @@ const final_buttons = computed(() => {
             v-if="button.component === 'ButtonMenu'"
             :button="button"
           />
-<!--          <v-list-group-->
-<!--            v-if="button.component === 'ButtonMenu'"-->
-<!--            :key="button._uid"-->
-<!--            :value="button._uid"-->
-<!--            soubgroup-->
-<!--          >-->
-<!--            <template v-slot:activator="{ props, isOpen }">-->
-<!--              <v-list-item-->
-<!--                v-bind="props"-->
-<!--                exact-->
-<!--                :title="button.button_title"-->
-<!--                :prepend-icon="button.icon"-->
-<!--              >-->
-<!--              </v-list-item>-->
-<!--            </template>-->
-<!--            <v-list-item-->
-<!--              v-for="sub_coll in button.elements[0].agendas"-->
-<!--              :key="sub_coll"-->
-<!--              exact-->
-<!--              :title="sub_coll"-->
-<!--              :value="sub_coll"-->
-<!--              :to="`/dashboard/catalog/${sub_coll}`"-->
-<!--            ></v-list-item>-->
-<!--          </v-list-group>-->
           <v-list-item
             v-else
             :value="button._uid"
             exact
-            :to="button.to.cached_url || button.to.url"
+            :href="button.is_external ? button.main_url : undefined"
+            :to="button.is_external ? undefined : button.main_url"
+            :target="button.is_external ? '_blank' : undefined"
+            xto="button.to.cached_url || button.to.url"
             :title="button.button_title"
             class="my-1"
           >

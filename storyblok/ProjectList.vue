@@ -70,6 +70,7 @@ const final_projects = computed(() => {
         class="pb-4  d-flex flex-column"
         :height="project.is_first ? 300 : 220"
         style="width: 100%;"
+        :to="`/${currentLocale}/project/${project.slug}`"
       >
         <div
           class="back-poster poster-background"
@@ -93,7 +94,7 @@ const final_projects = computed(() => {
             variant="tonal"
             elevation="4"
             append-icon="arrow_right_alt"
-            :to="`/${currentLocale}/${project.full_slug}`"
+            :to="`/${currentLocale}/project/${project.slug}`"
           >
             {{ blok.button_text }}
           </v-btn-primary>

@@ -5,7 +5,7 @@ import AdaptativeVideoPlayer from "../components/AdaptativeVideoPlayer.vue";
 import {computed} from "vue";
 import { resizeImg } from '~/composables/storyblok_images.js'
 import { useDisplay } from 'vuetify';
-const { sm } = useDisplay()
+const { sm, md } = useDisplay()
 
 
 // defineProps({ blok: Object });
@@ -169,9 +169,8 @@ const blok_header = computed(() => {
           <v-col
             cols="12"
             class="px-3 px-sm-6"
-            v-if="blok.space_between"
-          >
-          </v-col>
+            v-if="blok.space_between && !(md && blok.sm === '12')"
+          ></v-col>
           <v-col
             cols="12"
             :sm="blok.sm === '12' ? 8 : 12"
@@ -179,7 +178,7 @@ const blok_header = computed(() => {
           >
             <v-card-text v-if="description2" class="py-2 py-sm-4">
               <div
-                class="text-body-2 text-sm-body-1 montse"
+                class="text-body-2 text-sm-body-1"
                 v-html="description2"
               ></div>
             </v-card-text>

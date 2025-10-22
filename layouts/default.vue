@@ -50,7 +50,7 @@ onMounted(() => {
     });
     storyblokApi.getStories({
         version: version,
-        starts_with: "agend/",
+        starts_with: "agenda/",
         language: currentLocale.value,
       }
     ).then(({data}) => {
@@ -72,8 +72,11 @@ onMounted(() => {
   });
 });
 
-function changeMenu() {
-  menu_drawer.value = !menu_drawer.value;
+function changeMenu(value) {
+  if (typeof value === 'boolean')
+    menu_drawer.value = value
+  else
+    menu_drawer.value = !menu_drawer.value;
 }
 
 
@@ -81,8 +84,11 @@ function changeMenu() {
 
 <template>
   <v-app>
-    <MainNav @toggleMenu="changeMenu"/>
-    <MainMenu :menu_drawer="menu_drawer"/>
+    <MainNav @toggleMenu="changeMenu()"/>
+    <MainMenu
+      :menu_drawer="menu_drawer"
+      @toggleMenu="changeMenu($event)"
+    />
     <v-main>
       <v-container
         class="_px-1 _px-sm-3 px-0 pt-0"

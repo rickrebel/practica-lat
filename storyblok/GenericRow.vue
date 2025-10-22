@@ -4,15 +4,25 @@ const props = defineProps({
   blok: Object,
 })
 import { useDisplay } from "vuetify/framework";
-import { needShow } from '~/composables/display.js'
+// import { needShow } from '~/composables/display.js'
 
+const isClient = ref(false)
 const display = useDisplay()
 
 const columns_together = computed(() => {
-  if (props.blok.space_between_size){
+
+  if (!isClient.value)
+    return !props.blok.space_between
+    // return "Not client"
+  // return display.mdAndUp.value
+  if (props.blok.space_between_size) {
     return !needShow(props.blok.space_between_size, display)
   }
   return !props.blok.space_between
+})
+
+onMounted(() => {
+  isClient.value = true
 })
 
 const background_color = computed(() => {
