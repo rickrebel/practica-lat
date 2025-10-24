@@ -176,7 +176,7 @@ const filteredDocs = computed(() => {
     <Swiper
       :modules="swiper_modules"
       slides-per-view="auto"
-      :space-between="24"
+      space-between="24"
       :navigation="true"
       :pagination="pagination"
       :autoplay="{ delay: 4000, disableOnInteraction: true }"

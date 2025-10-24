@@ -28,8 +28,6 @@ onMounted(() => {
 const background_color = computed(() => {
   if (props.blok.texture_back)
     return null
-  if (props.blok.background_color_collection)
-    return props.blok.background_color_collection
   return props.blok?.background_color?.color || 'transparent'
 })
 
@@ -46,7 +44,6 @@ const background_color = computed(() => {
       v-editable="blok"
       :color="background_color"
       style="min-width: 100%;"
-      _style="{backgroundImage: blok.texture_back ? `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)` : ''}"
       :class="blok.free_class"
     >
       <v-row

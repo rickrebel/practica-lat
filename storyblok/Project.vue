@@ -4,6 +4,7 @@ import CommonTitle from "~/components/web/CommonTitle.vue";
 import { resizeImg } from '~/composables/storyblok_images.js'
 import {storeToRefs} from "pinia";
 import {useWebStore} from "~/store/web.ts";
+import LazoDecoration from "~/components/web/svg/LazoDecoration.vue";
 const webStore = useWebStore()
 const { all_documents } = storeToRefs(webStore)
 
@@ -23,7 +24,6 @@ const explanation = computed(() => {
       /<p>/g, '<p class="mt-2 mt-sm-4 montse text-white">')
   return rich_text
 })
-
 
 const related_documents = computed(() => {
   console.log('documents', all_documents.value)
@@ -65,7 +65,6 @@ const social_networks = computed(() => {
   })
 })
 
-
 function getImageUrl(name) {
   return new URL(`@/assets/social/${name}`, import.meta.url).href
 }
@@ -79,9 +78,17 @@ function getImageUrl(name) {
     v-editable="blok"
     variant="flat"
     class="outlined-card"
+
     tile
   >
-    <div class="d-flex _flex-no-wrap flex-column">
+    <LazoDecoration
+      v-if="blok.lazo_type"
+      :lazo_type="blok.lazo_type"
+    />
+    <div
+      class="d-flex _flex-no-wrap flex-column"
+      :style="`padding-top: ${blok.padding_top || 8}px`"
+    >
       <v-sheet
         v-if="blok.logo?.filename"
         class="d-flex justify-center align-center"
@@ -133,7 +140,7 @@ function getImageUrl(name) {
           target="_blank"
           class="font-weight-medium mr-4"
         >
-          {{blok.website}}
+          {{ blok.website }}
         </v-btn-primary>
         <v-btn
           v-for="net in social_networks"
@@ -221,6 +228,5 @@ function getImageUrl(name) {
 .outlined-card {
   border: 1px solid #bbbbbb !important;
 }
-
 
 </style>

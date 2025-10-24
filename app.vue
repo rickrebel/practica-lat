@@ -8,15 +8,19 @@ useSeoMeta({
   // ogImage: 'https://oej.yeeko.org/_nuxt/nuevo_logo.ChaL5KSF.png',
 })
 
-// TODO: La página de transparencia
+// LISTO:
 // TODO: Agregar lazos y dibujitos
 // TODO: Mejorar carrousel de imágenes en proyecto
-// TODO: Traer en una sola consulta la info y solo con campos necesarios
+// FALTA:
+// TODO: La página de transparencia
 // TODO: La página concentradora con todos los proyectos y agendas
+// BLOQUEADO:
 // TODO: Mostrar los informes/investigaciones relacionados con cada agenda.
+// TODO: Mejorar la parte visual en el detalle de una agenda
+// OPTIMIZACIONES:
+// TODO: Traer en una sola consulta la info y solo con campos necesarios
 // TODO: Constituir todo el SEO, ícono, descripción etc.
 // TODO: Volver a verificar toda la responsividad del sitio.
-// TODO: Mejorar la parte visual en el detalle de una agenda
 // TODO: Capacitación al equipo
 </script>
 <template>

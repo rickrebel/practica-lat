@@ -90,14 +90,6 @@ const final_sm_align = computed(() => {
   return orientToAlign(props.blok.align_md)
 })
 
-const background_image = computed(() => {
-  if (!props.blok.texture_back)
-    return null
-
-  const image_url = resizeImg(props.blok.texture_back, 400)
-  return `url(${image_url})`
-})
-
 const blok_header = computed(() => {
   return {
     subheader: props.blok.title,
