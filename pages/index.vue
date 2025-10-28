@@ -2,26 +2,24 @@
 import {onMounted} from "vue";
 
 const { $preview } = useNuxtApp()
-import { currentLocale } from "~/composables/locales.js"
 // import { apiPlugin, storyblokInit, useStoryblokBridge } from '@storyblok/vue';
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
+const lang = useStoryblokLang()
 // const storyblokApi = useStoryblokApi();
 // console.log("language query (index)", query._storyblok_lang)
 const story = await useAsyncStoryblok(
-    'home',
+    `${lang.prefix}home`,
     {
       version: version,
-      // language: 'en',
-      // language: null,
-      language: currentLocale.value,
+      language: lang.final_code,
       fallback_lang: null,
     },
 { customParent: 'https://app.storyblok.com' }
 )
 
 onMounted(() => {
-  // console.log('query', query)
+  console.log('onMounted home page')
   // console.log('language', query._storyblok_lang)
 })
 

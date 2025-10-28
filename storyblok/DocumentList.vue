@@ -125,7 +125,7 @@ const filteredDocs = computed(() => {
   />
   <v-card
     v-editable="blok"
-    style="width: 100%"
+    style="width: 100% max-width: 100%;"
     class="px-3 pb-4 pb-md-8"
     variant="flat"
     color="transparent"

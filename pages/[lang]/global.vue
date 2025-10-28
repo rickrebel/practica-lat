@@ -5,18 +5,13 @@ import MainMenu from "~/components/web/MainMenu.vue";
 
 const { $preview } = useNuxtApp()
 const version = $preview ? 'draft' : 'published'
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
+const lang = useStoryblokLang()
 
 const story = await useAsyncStoryblok(
-    'global',
+    `${lang.prefix}global`,
     {
       version: version,
-      language: lang.value,
+      language: lang.final_code,
     },
 { customParent: 'https://app.storyblok.com' }
 )

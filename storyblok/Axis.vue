@@ -4,6 +4,10 @@ import dayjs from "dayjs";
 const props = defineProps({
   blok: Object,
   story: Object,
+  is_editable: {
+    type: Boolean,
+    default: true
+  }
 })
 import { useDisplay } from 'vuetify'
 import CommonTitle from "~/components/web/CommonTitle.vue";
@@ -45,6 +49,19 @@ const artificial_blok_list = {
   button_text: 'Ver más',
 }
 
+const class_effect = computed(() => {
+  let final_class = ''
+  const num = parseInt(props.blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
+  console.log("num", num)
+  if (num % 4 === 0)
+    final_class += ' effect-1'
+  else if (num % 4 === 1)
+    final_class += ' effect-2'
+  else if (num % 4 === 2)
+    final_class += ' effect-3'
+  return final_class
+})
+
 const justify = ref(props.blok.justify || false)
 
 </script>
@@ -52,36 +69,49 @@ const justify = ref(props.blok.justify || false)
 <template>
   <v-card
     v-if="blok"
-    color="white"
-    v-editable="blok"
+    :color="blok.color || 'transparent'"
+    v-editable="is_editable ? blok : null"
     variant="flat"
-    class="outlined-card dynamic-background"
+    xclass="outlined-card dynamic-background"
+    class="paper-texture"
+    :class="class_effect"
     tile
   >
-    <div class="d-flex _flex-no-wrap flex-column">
-      <v-sheet
-        v-if="blok.logo?.filename"
-        class="d-flex justify-space-between align-center"
-        max-height="200"
-        color="transparent"
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+        align-self="center"
+        class="pa-3 pa-md-6"
       >
-        <v-img
-          :aspect-ratio="1"
-          :src="resizeImg(blok.logo, 400)"
+        <v-sheet
+          v-if="blok.logo?.filename"
+          class="d-flex justify-space-between align-center"
           max-height="200"
-          max-width="480"
-          contain
-          class="contain"
-        ></v-img>
-      </v-sheet>
-      <div class="pt-6">
-        <v-card-subtitle
-          v-if="blok.pre_title"
-          class="text-h6 montse mx-3 font-weight-medium"
-          style="opacity: 100%"
+          color="transparent"
         >
-          {{ blok.pre_title }}
-        </v-card-subtitle>
+          <v-img
+            :aspect-ratio="1"
+            :src="resizeImg(blok.logo, 400)"
+            max-height="200"
+            max-width="480"
+            contain
+            class="contain"
+          ></v-img>
+        </v-sheet>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+        class="pt-6 "
+      >
+<!--        <v-card-subtitle-->
+<!--          v-if="blok.pre_title"-->
+<!--          class="text-h6 montse mx-3 font-weight-medium"-->
+<!--          style="opacity: 100%"-->
+<!--        >-->
+<!--          {{ blok.pre_title }}-->
+<!--        </v-card-subtitle>-->
         <v-card-title
           class="text-h4 title-no-wrap pt-0 font-weight-bold montse mx-3"
         >
@@ -94,9 +124,9 @@ const justify = ref(props.blok.justify || false)
         ></v-card-text>
         <v-divider class="my-2" >
         </v-divider>
-      </div>
+      </v-col>
 
-    </div>
+    </v-row>
     <v-card
       class="pb-2 pb-md-4 mt-3 pt-3"
       elevation="0"

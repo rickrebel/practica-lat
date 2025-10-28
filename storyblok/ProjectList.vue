@@ -159,11 +159,13 @@ const final_projects = computed(() => {
   //background: url('~/assets/practica-poster.png');
   background-size: cover;
   filter: brightness(0.6);
+  background-position-y: center;
+  background-position-x: center;
   //background-size: cover;
 }
 
 .poster-background {
-  background: url('~/assets/practica-poster.png');
+  //background: url('~/assets/practica-poster.png');
   background-size: cover;
   filter: brightness(0.6);
   //background-size: cover;

@@ -13,8 +13,7 @@ const props = defineProps({
 
 const all_types = {
   "ProjectList": "project",
-  "AgendaList": "agenda",
-  "AgendList": "agenda",
+  "AxesList": "eje",
   "DocumentList": "document",
 }
 
@@ -37,16 +36,16 @@ const final_items = computed(() => {
   // console.log('button', props.button)
   const first = first_element.value
   let items = []
-  if (!webStore.all_projects || !webStore.all_agendas){
+  if (!webStore.all_projects || !webStore.all_axes){
     return []
   }
   if (!first){
     return []
   }
-  else if (first.agendas && first.agendas.length > 0){
-    // console.log('all_agendas', webStore.all_agendas)
-    items = first.agendas.map(
-      id => webStore.all_agendas.find(a => a.uuid === id)
+  else if (first.axes && first.axes.length > 0){
+    // console.log('all_axes', webStore.all_axes)
+    items = first.axes.map(
+      id => webStore.all_axes.find(a => a.uuid === id)
     ).filter(a => a)
   }
   else if (first.projects && first.projects.length > 0){

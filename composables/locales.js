@@ -2,9 +2,9 @@ import {computed} from "vue";
 
 export const locales = [
   { code: 'es', name: 'Español', flag: 'mx', is_default: true },
-  { code: 'en', name: 'English', flag: 'za' },
+  { code: 'en', name: 'English', flag: 'us' },
+  { code: 'fr', name: 'Français', flag: 'fr' },
   { code: 'pt', name: 'Português', flag: 'br' },
-  { code: 'fr', name: 'Français', flag: 'ht' },
 ]
 
 export const defaultLocale = 'es'

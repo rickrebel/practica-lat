@@ -5,8 +5,9 @@ import { resizeImg } from '~/composables/storyblok_images.js'
 import {storeToRefs} from "pinia";
 import {useWebStore} from "~/store/web.ts";
 import LazoDecoration from "~/components/web/svg/LazoDecoration.vue";
+import {currentLocale} from "~/composables/locales.js";
 const webStore = useWebStore()
-const { all_documents } = storeToRefs(webStore)
+const { all_documents, all_axes } = storeToRefs(webStore)
 
 const props = defineProps({
   blok: Object,
@@ -26,9 +27,9 @@ const explanation = computed(() => {
 })
 
 const related_documents = computed(() => {
-  console.log('documents', all_documents.value)
-  console.log('blok', props.blok)
-  console.log('uid', props.uid)
+  // console.log('documents', all_documents.value)
+  // console.log('blok', props.blok)
+  // console.log('uid', props.uid)
   // return all_documents.value
   // return []
   return all_documents.value.filter((doc, idx) =>
@@ -50,6 +51,12 @@ const social_dict = {
   instagram: 'social/instagram_blanco.png',
   threads: 'social/threads_blanco.png',
 }
+
+const axis_full = computed(() => {
+  if (!props.blok.axis)
+    return null
+  return all_axes.value.find(axis => axis.uuid === props.blok.axis)
+})
 
 const social_networks = computed(() => {
   if (!props.blok.social_networks)
@@ -125,19 +132,20 @@ function getImageUrl(name) {
           class="text-sm-subtitle-1 special-img mx-3 pt-1"
           :class="{'text-justify' : justify}"
         ></v-card-text>
-        <v-divider class="my-2" >
+        <v-divider v-if="false" class="my-2">
         </v-divider>
       </div>
       <v-card-actions
         v-if="blok.website || (social_networks && social_networks.length > 0)"
-        class="px-8 mb-2 mb-sm-6"
+        class="px-8 mb-2 mb-sm-6 mt-6 d-flex flex-wrap align-end"
       >
         <v-btn-primary
           variant="flat"
-          color="accent"
+          color="white"
           :append-icon="false"
           :href="blok.website"
           target="_blank"
+          prepend-icon="language"
           class="font-weight-medium mr-4"
         >
           {{ blok.website }}
@@ -183,11 +191,27 @@ function getImageUrl(name) {
             :text="net.social_network || 'Red social'"
           ></v-tooltip>
         </v-btn>
+        <v-spacer></v-spacer>
+        <div
+          v-if="axis_full"
+          class="d-flex flex-column align-center mt-0"
+        >
+          <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">
+            Eje de Trabajo:
+          </span>
+          <v-chip
+            class="px-6 font-weight-bold"
+            :color="axis_full.content?.color || 'grey'"
+            size="large"
+            variant="elevated"
+            :to="`/${currentLocale}/eje/${axis_full.slug}`"
+          >
+
+            {{ axis_full.name }}
+          </v-chip>
+        </div>
 
       </v-card-actions>
-      <Carrousel
-        :images="blok.images || []"
-      />
       <v-card
         class="mt-8 pt-8 pt-sm-12 pb-14"
         variant="flat"
@@ -200,6 +224,11 @@ function getImageUrl(name) {
         ></Paragraph>
       </v-card>
     </div>
+    <Carrousel
+      :images="blok.images || []"
+      class="mb-8"
+    />
+
     <v-card
       v-if="related_documents && related_documents.length > 0"
       class="pb-2 pb-md-4 pt-6 pt-sm-10"

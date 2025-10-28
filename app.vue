@@ -11,17 +11,33 @@ useSeoMeta({
 // LISTO:
 // TODO: Agregar lazos y dibujitos
 // TODO: Mejorar carrousel de imágenes en proyecto
-// FALTA:
+// TODO: Logos aliados
+// TODO: Cambiar agendas por ejes
+// TODO: Que en los proyectos salga el eje
+// TODO: Ejes en móviles se ver raro
 // TODO: La página de transparencia
+
+// FALTA:
+// TODO: Relacionamiento de proyectos.
+// TODO: Logos de orgs participantes en proyectos
+// TODO: Mejorar la parte visual de una Investigación/Informe
+
+// FALTA:
 // TODO: La página concentradora con todos los proyectos y agendas
+
 // BLOQUEADO:
-// TODO: Mostrar los informes/investigaciones relacionados con cada agenda.
-// TODO: Mejorar la parte visual en el detalle de una agenda
+// TODO: Mostrar los informes/investigaciones relacionados con cada eje.
+// TODO: Mejorar la parte visual en el detalle de una eje
+
 // OPTIMIZACIONES:
 // TODO: Traer en una sola consulta la info y solo con campos necesarios
 // TODO: Constituir todo el SEO, ícono, descripción etc.
 // TODO: Volver a verificar toda la responsividad del sitio.
 // TODO: Capacitación al equipo
+
+// Últimos
+// TODO: idiomas
+
 </script>
 <template>
   <NuxtLayout>

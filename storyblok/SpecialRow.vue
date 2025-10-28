@@ -10,16 +10,16 @@ const columns_together = computed(() => {
 })
 
 const background_color = computed(() => {
-  if (props.blok.texture_back)
-    return null
+  // if (props.blok.texture_back)
+  //   return null
   if (props.blok.background_color_collection)
     return props.blok.background_color_collection
   return props.blok?.background_color?.color || 'transparent'
 })
 
 const background_image = computed(() => {
-  if (props.blok.texture_back)
-    return `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)`
+  // if (props.blok.texture_back)
+  //   return `url(https://a.storyblok.com/f/327491/2550x3300/3994476a6e/fondo.png)`
   if (props.blok.ribbon)
     return "~/assets/lazo.svg"
   return null

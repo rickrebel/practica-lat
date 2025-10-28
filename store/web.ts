@@ -36,8 +36,8 @@ interface Project {
   [key: string]: any
 }
 
-interface Agenda {
-  // Define agenda properties based on your data structure
+interface Axis {
+  // Define eje properties based on your data structure
   [key: string]: any
 }
 
@@ -63,7 +63,7 @@ interface WebStoreState {
   all_documents: Document[]
   all_projects: Project[]
   main_projects: Project[]
-  all_agendas: Agenda[]
+  all_axes: Axis[]
   global_config: GlobalConfig | null
 }
 
@@ -79,7 +79,7 @@ export const useWebStore = defineStore('web', {
     all_documents: [],
     all_projects: [],
     main_projects: [],
-    all_agendas: [],
+    all_axes: [],
     global_config: null,
   }),
 
@@ -152,9 +152,9 @@ export const useWebStore = defineStore('web', {
       this.all_projects = stories
     },
 
-    setAllAgendas(agendas: Agenda[]): void {
+    setAllAxes(axes: Axis[]): void {
       // console.log('setting agendas', agendas)
-      this.all_agendas = agendas
+      this.all_axes = axes
     },
 
     setGlobalConfig(config: GlobalConfig): void {

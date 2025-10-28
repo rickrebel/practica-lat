@@ -1,14 +1,11 @@
 <script setup>
 // import {onMounted} from "vue";
 
+import {currentLocale} from "~/composables/locales.js";
+
 const { $preview } = useNuxtApp()
 // import { currentLocale } from "~/composables/locales.js"
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
+const lang = useStoryblokLang()
 // const localeCookie = useCookie('user_lang')
 // NUEVO
 // console.log('currentLocale (index)', currentLocale.value)
@@ -16,24 +13,16 @@ const lang = computed(() => {
 // console.log('query._storyblok_lang (index)', query._storyblok_lang)
 const version = $preview ? 'draft' : 'published'
 const story = await useAsyncStoryblok(
-    'home',
+    `${lang.prefix}home`,
     {
       version: version,
       // language: currentLocale.value,
-      language: lang.value,
+      language: lang.final_code,
       // language: null,
       // fallback_lang: null,
     },
 { customParent: 'https://app.storyblok.com' }
 )
-
-// onMounted(() => {
-//   console.log('query', query)
-//   console.log('language', query._storyblok_lang)
-// })
-
-
-console.log('story', story)
 
 // useSeoMeta({
 //   title: 'Desplazamiento Interno en México',
@@ -42,6 +31,11 @@ console.log('story', story)
 //   ogDescription: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
 //   // ogImage: 'https://oej.yeeko.org/_nuxt/nuevo_logo.ChaL5KSF.png',
 // })
+
+onMounted(() => {
+  console.log('Onmounted [lang]index.vue')
+  console.log('story:', story)
+})
 
 
 </script>

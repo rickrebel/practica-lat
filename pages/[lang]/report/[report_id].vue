@@ -1,20 +1,16 @@
 <script setup>
 const { $preview } = useNuxtApp()
 // const { report_id } = useRoute().params
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
+const { params } = useRoute()
+const lang = useStoryblokLang()
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
 const story = await useAsyncStoryblok(
-    `report/${params.report_id}`,
-    {
-      version: version,
-      language: lang.value,
-    },
+  `${lang.prefix}report/${params.report_id}`,
+  {
+    version: version,
+    language: lang.final_code,
+  },
 { customParent: 'https://app.storyblok.com' }
 )
 // useHead({

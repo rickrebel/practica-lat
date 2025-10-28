@@ -4,6 +4,7 @@ import { watch } from 'vue'
 import { useDisplay } from 'vuetify'
 const { xs, mdAndUp, smAndDown } = useDisplay()
 import { locales, currentLocale } from "~/composables/locales.js"
+import AnimationLogo from "~/components/web/svg/AnimationLogo.vue";
 const { query, name, params } = useRoute()
 const router = useRouter()
 
@@ -87,7 +88,8 @@ function changeLocale(new_locale) {
             :width="xs ? 60 : 60"
           />
         </router-link>
-        <div v-if="true">
+        <AnimationLogo/>
+        <div v-if="false">
           <div>
             currentLocale: {{currentLocale}}
           </div>
