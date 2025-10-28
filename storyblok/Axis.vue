@@ -32,11 +32,11 @@ const related_projects = computed(() => {
   // return all_documents.value
   // return []
   return all_projects.value.filter(
-      project => project.content.agenda === props.story.uuid)
+      project => project.content.axis === props.story.uuid)
 })
 
 const artificial_blok = {
-  subheader: 'Proyectos de la agenda',
+  subheader: 'Proyectos del eje',
   color_title: 'black',
   init_display: 4,
 }
