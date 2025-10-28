@@ -120,7 +120,4 @@ function openDoc(item) {
 </template>
 
 <style lang="scss">
-  .sheet-background {
-    background: url('~/assets/papel-azul.png');
-  }
 </style>
