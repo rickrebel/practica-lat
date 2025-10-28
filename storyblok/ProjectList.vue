@@ -62,13 +62,14 @@ const final_projects = computed(() => {
       :key="project._uid"
       v-editable="project"
       cols="12"
-      :md="blok.display_type === 'home' && project.is_first ?  10 : 6"
+      :sm="blok.display_type === 'home' && project.is_first ?  8 : 6"
       class="d-flex justify-center align-center full-height"
     >
       <v-card
         v-if="blok.display_type === 'home' || !blok.display_type"
         class="pb-4  d-flex flex-column"
         :height="project.is_first ? 300 : 220"
+        :max-width="project.is_first ? 900 : 600"
         style="width: 100%;"
         :to="`/${currentLocale}/project/${project.slug}`"
       >

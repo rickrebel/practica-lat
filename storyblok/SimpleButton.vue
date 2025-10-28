@@ -57,7 +57,7 @@ const dialog_text_simple = computed(() => {
   <v-btn-primary
     v-if="blok.behavior === 'dialog'"
     :variant="variant"
-    color="accent"
+    :color="blok.color || 'accent'"
     :size="blok.size || 'large'"
     class="mx-2 text-weight-bold"
     @click="openDialog"
@@ -116,7 +116,7 @@ const dialog_text_simple = computed(() => {
   <v-btn-primary
     v-else
     :variant="variant"
-    color="accent"
+    :color="blok.icon_color || 'accent'"
     :size="blok.size || 'large'"
     class="mx-2 text-weight-bold"
     :to="blok.to.cached_url || blok.to.url"

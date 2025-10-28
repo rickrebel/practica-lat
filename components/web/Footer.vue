@@ -59,7 +59,9 @@ function wantOpenLink(url) {
     >
       <v-col
         cols="12"
-        sm="4"
+        sm="8"
+        order="1"
+        md="4"
         class="text-left pa-3 text-justify d-flex flex-column align-start"
       >
         <v-img
@@ -67,75 +69,79 @@ function wantOpenLink(url) {
           width="240"
           class="mb-4"
         />
-
         <div
           v-if="description"
           v-html="description"
           class="text-body-2 text-sm-body-1 py-2 lato"
         ></div>
-<!--        <v-divider-->
-<!--          v-if="main_blok.contact_email || main_blok.social_networks.length > 0"-->
-<!--          color="white" class="my-1"-->
-<!--        ></v-divider>-->
-<!--        <div v-if="main_blok.contact_email" class="lato">-->
-<!--          <b>Contacto:</b> {{ main_blok.contact_email }}-->
-<!--        </div>-->
-
-
       </v-col>
 
       <v-col
-        cols="8"
-        sm="5"
-        offset="2"
-        offset-sm="0"
+        cols="12"
+        md="5"
+        lg="6"
+        order="3"
+        order-md="2"
         class="text-left pa-3"
+        align-self="center"
       >
-        <div v-if="final_buttons.length">
-
-          <StoryblokComponent
+        <v-row
+          v-if="final_buttons.length"
+          class="d-flex justify-space-between flex-wrap"
+          no-gutters
+        >
+          <v-col
+            cols="6"
+            sm="4"
+            md="6"
+            lg="4"
             v-for="blok in final_buttons"
             :key="blok._uid"
-            :blok="blok"
-            fixed_size="default"
-            fixed_variant="text"
-            fixed_color="white"
-          ></StoryblokComponent>
-        </div>
+          >
+
+            <StoryblokComponent
+              :blok="blok"
+              fixed_size="default"
+              fixed_variant="text"
+              fixed_color="white"
+            ></StoryblokComponent>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col
-        cols="8"
-        sm="3"
-        offset="2"
-        offset-sm="0"
-        class="text-left pa-3"
+        cols="12"
+        sm="4"
+        md="3"
+        lg="2"
+        order="2"
+        order-md="3"
+        class="pa-3 d-flex justify-center"
+        align-self="center"
       >
-        <div class="_mt-4">
-          <v-btn
-            v-for="net in main_blok.social_networks"
-            :key="net._uid"
-            align="end"
-            class="mr-4 text-primary"
-            icon
-            variant="tonal"
-            @click="wantOpenLink(net.url)"
-            color="white"
+        <v-btn
+          v-for="net in main_blok.social_networks"
+          :key="net._uid"
+          align="end"
+          class="mr-4 text-primary"
+          icon
+          variant="tonal"
+          @click="wantOpenLink(net.url)"
+          color="white"
+        >
+          <v-avatar
+            v-if="net.logo"
+            size="default"
           >
-            <v-avatar
-              v-if="net.logo"
-              size="default"
+            <img
+              :src="resizeImg(net.logo, 80)"
+              :alt="net.icon"
+              :height="24"
             >
-              <img
-                :src="resizeImg(net.logo, 80)"
-                :alt="net.icon"
-                :height="24"
-              >
-            </v-avatar>
-            <v-icon v-else size="large" color="white">
-              user
-            </v-icon>
-          </v-btn>
-        </div>
+          </v-avatar>
+          <v-icon v-else size="large" color="white">
+            user
+          </v-icon>
+        </v-btn>
       </v-col>
     </v-row>
   </v-footer>

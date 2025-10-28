@@ -5,13 +5,18 @@ import { useDisplay } from 'vuetify'
 const { xs, mdAndUp, smAndDown } = useDisplay()
 import { locales, currentLocale } from "~/composables/locales.js"
 import AnimationLogo from "~/components/web/svg/AnimationLogo.vue";
+import {useWebStore} from "~/store/web.js";
 const { query, name, params } = useRoute()
 const router = useRouter()
-
+const webStore = useWebStore()
 const cookieLang = useCookie('user_lang')
 
 const props = defineProps({
   is_editable: Boolean,
+  blok: {
+    type: Object,
+    required: false,
+  },
 })
 
 const emits = defineEmits(['toggle-menu'])
@@ -46,6 +51,26 @@ const full_locale = computed(() => {
 watch(currentLocale, (new_locale, old_locale) => {
   console.log('Current locale changed from', old_locale, 'to', new_locale)
 })
+
+
+const main_blok = computed(() => {
+  if (props.blok) return props.blok
+  // console.log('global_config', webStore.global_config)
+  const global_c = webStore.global_config
+  // console.log('global_c', global_c)
+  if (global_c && global_c.header && global_c.header.length > 0)
+    return global_c.header[0]
+  return {}
+})
+
+
+function getImageUrl(name) {
+  if (main_blok.value.logo && main_blok.value.logo.filename) {
+    return main_blok.value.logo.filename
+  }
+  return new URL(`/assets/${name}`, import.meta.url).href
+}
+
 
 function changeLocale(new_locale) {
   console.log('Change locale to', new_locale)
@@ -82,13 +107,13 @@ function changeLocale(new_locale) {
           class="d-flex"
         >
           <v-img
-            src="~/assets/p-white.svg"
+            :src="getImageUrl('p-white.svg')"
             _src="/logo_simple_white.png"
             :height="xs ? 60 : 60"
             :width="xs ? 60 : 60"
           />
         </router-link>
-        <AnimationLogo/>
+        <AnimationLogo v-if="false"/>
         <div v-if="false">
           <div>
             currentLocale: {{currentLocale}}

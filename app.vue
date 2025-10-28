@@ -16,18 +16,15 @@ useSeoMeta({
 // TODO: Que en los proyectos salga el eje
 // TODO: Ejes en móviles se ver raro
 // TODO: La página de transparencia
+// TODO: La página concentradora con todos los proyectos y agendas
+// TODO: Mejorar la parte visual en el detalle de una eje
 
 // FALTA:
 // TODO: Relacionamiento de proyectos.
 // TODO: Logos de orgs participantes en proyectos
 // TODO: Mejorar la parte visual de una Investigación/Informe
-
-// FALTA:
-// TODO: La página concentradora con todos los proyectos y agendas
-
-// BLOQUEADO:
 // TODO: Mostrar los informes/investigaciones relacionados con cada eje.
-// TODO: Mejorar la parte visual en el detalle de una eje
+
 
 // OPTIMIZACIONES:
 // TODO: Traer en una sola consulta la info y solo con campos necesarios
