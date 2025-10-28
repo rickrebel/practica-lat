@@ -8,6 +8,7 @@ defineProps({ blok: Object })
 <template>
   <v-card
     :color="blok.background_color?.color || 'transparent'"
+    flat
   >
 
     <v-row

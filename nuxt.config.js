@@ -41,11 +41,10 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/google-fonts',
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', config => config.plugins.push(
+        vuetify({ autoImport: true })
+      ))
     },
     [
       '@storyblok/nuxt',
