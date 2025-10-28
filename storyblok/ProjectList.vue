@@ -33,10 +33,11 @@ const final_projects = computed(() => {
   }
   full_projects = full_projects.reduce((projects, project, idx) => {
     const is_first = idx === 0 && props.blok.display_type === 'home'
-    let current_project = {...project, is_first}
+    const max_width = is_first ? 900 : 600
+    let current_project = {...project, is_first, max_width}
     if (project.content.images.length > 0){
       const cover_image = project.content.images[0]
-      current_project.cover_image = resizeImg(cover_image, 1200)
+      current_project.cover_image = resizeImg(cover_image, max_width)
     } else {
       current_project.cover_image = generic_poster
     }
@@ -69,7 +70,7 @@ const final_projects = computed(() => {
         v-if="blok.display_type === 'home' || !blok.display_type"
         class="pb-4  d-flex flex-column"
         :height="project.is_first ? 300 : 220"
-        :max-width="project.is_first ? 900 : 600"
+        :max-width="project.max_width"
         style="width: 100%;"
         :to="`/${currentLocale}/project/${project.slug}`"
       >

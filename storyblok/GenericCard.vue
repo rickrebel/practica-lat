@@ -146,7 +146,7 @@ const blok_header = computed(() => {
             v-if="blok.media?.filename && !blok.video_hls_url"
             _contain
             dark
-            :src="resizeImg(blok.media, 800)"
+            :src="resizeImg(blok.media, 0, blok.image_height || 300)"
             :max-height="blok.image_height || 300"
             class="mt-10 mb-6 px-3 px-sm-6"
             _style="object-fit: contain;"
