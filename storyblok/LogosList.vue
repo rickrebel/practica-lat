@@ -14,6 +14,7 @@ const props = defineProps({
 <!--    :blok="blok"-->
 <!--  />-->
   <v-row
+
     justify="space-around"
     align="center"
     align-content="center"

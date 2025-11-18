@@ -40,7 +40,7 @@ const card_class = computed(() => {
     let num = props.index
     if (num === undefined)
       num = parseInt(blok._uid.replace(/\D/g, '').slice(-1))
-    console.log("num", num)
+    // console.log("num", num)
     if (num % 4 === 0)
       final_class += ' effect-1'
     else if (num % 4 === 1)
@@ -149,7 +149,7 @@ const blok_header = computed(() => {
             :src="resizeImg(blok.media, 0, blok.image_height || 300)"
             :max-height="blok.image_height || 300"
             class="mt-10 mb-6 px-3 px-sm-6"
-            _style="object-fit: contain;"
+            :style="`min-height: ${blok.image_height || 300}px`"
           ></v-img>
           <CommonTitle
             xv-if="blok.title && (!sm || blok.sm !== '12')"

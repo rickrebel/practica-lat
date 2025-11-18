@@ -6,6 +6,7 @@ import {storeToRefs} from "pinia";
 import {useWebStore} from "~/store/web.ts";
 import LazoDecoration from "~/components/web/svg/LazoDecoration.vue";
 import {currentLocale} from "~/composables/locales.js";
+import ProjectButtons from "~/components/web/ProjectButtons.vue";
 const webStore = useWebStore()
 const { all_documents, all_axes } = storeToRefs(webStore)
 
@@ -45,31 +46,10 @@ const artificial_blok = {
 
 const justify = ref(props.blok.justify || false)
 
-const social_dict = {
-  facebook: 'social/facebook_blanco.png',
-  twitter: 'social/twitter_blanco.png',
-  instagram: 'social/instagram_blanco.png',
-  threads: 'social/threads_blanco.png',
-}
-
 const axis_full = computed(() => {
   if (!props.blok.axis)
     return null
   return all_axes.value.find(axis => axis.uuid === props.blok.axis)
-})
-
-const social_networks = computed(() => {
-  if (!props.blok.social_networks)
-    return []
-  return props.blok.social_networks.map(net => {
-    if (!net.logo?.filename && net.social_network) {
-      const icon = social_dict[net.social_network.toLowerCase()]
-      if (icon)
-        // net.simple_logo = `@/assets/${icon}`
-        net.simple_logo = `/${icon}`
-    }
-    return net
-  })
 })
 
 function getImageUrl(name) {
@@ -95,6 +75,7 @@ function getImageUrl(name) {
     <div
       class="d-flex _flex-no-wrap flex-column"
       :style="`padding-top: ${blok.padding_top || 8}px`"
+      style="z-index: 1;"
     >
       <v-sheet
         v-if="blok.logo?.filename"
@@ -135,83 +116,109 @@ function getImageUrl(name) {
         <v-divider v-if="false" class="my-2">
         </v-divider>
       </div>
-      <v-card-actions
-        v-if="blok.website || (social_networks && social_networks.length > 0)"
+      <ProjectButtons
+        :project_content="blok"
         class="px-8 mb-2 mb-sm-6 mt-6 d-flex flex-wrap align-end"
       >
-        <v-btn-primary
-          variant="flat"
-          color="white"
-          :append-icon="false"
-          :href="blok.website"
-          target="_blank"
-          prepend-icon="language"
-          class="font-weight-medium mr-4"
-        >
-          {{ blok.website }}
-        </v-btn-primary>
-        <v-btn
-          v-for="net in social_networks"
-          :key="net._uid"
-          align="end"
-          class="mr-4 text-primary"
-          icon
-          variant="text"
-          :href="net.url"
-          target="_blank"
-          color="white"
-        >
-          <v-avatar
-            v-if="net.simple_logo"
-            size="default"
+        <template v-slot:complementary_buttons>
+          <div
+            v-if="axis_full"
+            class="d-flex flex-column align-center mt-0"
           >
-            <img
-              :src="net.simple_logo"
-              :alt="net.icon"
-              :height="24"
+            <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">
+              Eje de Trabajo:
+            </span>
+            <v-chip
+              class="px-6 font-weight-bold"
+              :color="axis_full.content?.color || 'grey'"
+              size="large"
+              variant="elevated"
+              :to="`/${currentLocale}/eje/${axis_full.slug}`"
             >
-          </v-avatar>
-          <v-avatar
-            v-else-if="net.logo?.filename"
-            size="default"
-          >
-            <img
-              :src="resizeImg(net.logo, 80)"
-              :alt="net.logo"
-              :height="24"
-            >
-          </v-avatar>
-          <v-icon v-else size="large" color="white">
-            user
-          </v-icon>
 
-          <v-tooltip
-            location="top"
-            activator="parent"
-            :text="net.social_network || 'Red social'"
-          ></v-tooltip>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <div
-          v-if="axis_full"
-          class="d-flex flex-column align-center mt-0"
-        >
-          <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">
-            Eje de Trabajo:
-          </span>
-          <v-chip
-            class="px-6 font-weight-bold"
-            :color="axis_full.content?.color || 'grey'"
-            size="large"
-            variant="elevated"
-            :to="`/${currentLocale}/eje/${axis_full.slug}`"
-          >
+              {{ axis_full.name }}
+            </v-chip>
+          </div>
+        </template>
+      </ProjectButtons>
 
-            {{ axis_full.name }}
-          </v-chip>
-        </div>
+<!--      <v-card-actions-->
+<!--        v-if="blok.website || (social_networks && social_networks.length > 0)"-->
+<!--        class="px-8 mb-2 mb-sm-6 mt-6 d-flex flex-wrap align-end"-->
+<!--      >-->
+<!--        <v-btn-primary-->
+<!--          variant="flat"-->
+<!--          color="white"-->
+<!--          :append-icon="false"-->
+<!--          :href="blok.website"-->
+<!--          target="_blank"-->
+<!--          prepend-icon="language"-->
+<!--          class="font-weight-medium mr-4"-->
+<!--        >-->
+<!--          {{ blok.website }}-->
+<!--        </v-btn-primary>-->
+<!--        <v-btn-->
+<!--          v-for="net in social_networks"-->
+<!--          :key="net._uid"-->
+<!--          align="end"-->
+<!--          class="mr-4 text-primary"-->
+<!--          icon-->
+<!--          variant="text"-->
+<!--          :href="net.url"-->
+<!--          target="_blank"-->
+<!--          color="white"-->
+<!--        >-->
+<!--          <v-avatar-->
+<!--            v-if="net.simple_logo"-->
+<!--            size="default"-->
+<!--          >-->
+<!--            <img-->
+<!--              :src="net.simple_logo"-->
+<!--              :alt="net.icon"-->
+<!--              :height="24"-->
+<!--            >-->
+<!--          </v-avatar>-->
+<!--          <v-avatar-->
+<!--            v-else-if="net.logo?.filename"-->
+<!--            size="default"-->
+<!--          >-->
+<!--            <img-->
+<!--              :src="resizeImg(net.logo, 80)"-->
+<!--              :alt="net.logo"-->
+<!--              :height="24"-->
+<!--            >-->
+<!--          </v-avatar>-->
+<!--          <v-icon v-else size="large" color="white">-->
+<!--            user-->
+<!--          </v-icon>-->
 
-      </v-card-actions>
+<!--          <v-tooltip-->
+<!--            location="top"-->
+<!--            activator="parent"-->
+<!--            :text="net.social_network || 'Red social'"-->
+<!--          ></v-tooltip>-->
+<!--        </v-btn>-->
+<!--        <v-spacer></v-spacer>-->
+<!--        <div-->
+<!--          v-if="axis_full"-->
+<!--          class="d-flex flex-column align-center mt-0"-->
+<!--        >-->
+<!--          <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">-->
+<!--            Eje de Trabajo:-->
+<!--          </span>-->
+<!--          <v-chip-->
+<!--            class="px-6 font-weight-bold"-->
+<!--            :color="axis_full.content?.color || 'grey'"-->
+<!--            size="large"-->
+<!--            variant="elevated"-->
+<!--            :to="`/${currentLocale}/eje/${axis_full.slug}`"-->
+<!--          >-->
+
+<!--            {{ axis_full.name }}-->
+<!--          </v-chip>-->
+<!--        </div>-->
+
+<!--      </v-card-actions>-->
       <v-card
         class="mt-8 pt-8 pt-sm-12 pb-14"
         variant="flat"

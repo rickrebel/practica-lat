@@ -60,7 +60,7 @@ $blending: hard-light;
 
 .paper-texture {
   background-blend-mode: multiply;
-  background: url('~/assets/textura-papel.png');
+  background-image: url('~/assets/textura-papel.png') !important;
 }
 
 .effect-1 {

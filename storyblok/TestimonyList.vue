@@ -51,11 +51,6 @@ const onSwiper = (swiper) => {
   swiperRef.value = swiper
 }
 
-onMounted(() => {
-  console.log("mobile", mobile.value)
-  console.log("width", width.value)
-})
-
 const testimonies = computed(() => {
   return props.blok.testimonies.map(testimony => {
     return {

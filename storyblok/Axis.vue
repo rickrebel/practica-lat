@@ -7,7 +7,8 @@ const props = defineProps({
   is_editable: {
     type: Boolean,
     default: true
-  }
+  },
+  is_list: Boolean,
 })
 import { useDisplay } from 'vuetify'
 import CommonTitle from "~/components/web/CommonTitle.vue";
@@ -72,8 +73,7 @@ const justify = ref(props.blok.justify || false)
     :color="blok.color || 'transparent'"
     v-editable="is_editable ? blok : null"
     variant="flat"
-    xclass="outlined-card dynamic-background"
-    class="paper-texture"
+    class="paper-texture pt-6 pb-12"
     :class="class_effect"
     tile
   >
@@ -136,12 +136,13 @@ const justify = ref(props.blok.justify || false)
     >
       <CommonTitle
         :blok="artificial_blok"
-        class="mb-3"
+        class="mb-6 mt-3"
       />
       <div class="content">
         <ProjectList
           :full_projects="related_projects"
           :blok="artificial_blok_list"
+          display_type="detailed"
         />
       </div>
     </v-card>

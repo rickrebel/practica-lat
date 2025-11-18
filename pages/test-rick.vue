@@ -1,6 +1,5 @@
 <script setup>
 const { $preview } = useNuxtApp()
-const { query } = useRoute()
 // const { page_name } = useRoute().params
 
 const version = $preview ? 'draft' : 'published'
@@ -9,7 +8,8 @@ const story = await useAsyncStoryblok(
     'test-rick',
     {
       version: version,
-      language: query._storyblok_lang || null,
+      language: 'es',
+      resolve_relations: ['ProjectList.projects'],
       fallback_lang: null,
     },
 {

@@ -67,12 +67,19 @@ function openDoc(item) {
         class="sheet-background"
         color="transparent"
       >
-        <SectionHeader
-          v-if="report_blok"
-          :blok="header_blok"
-          :report_blok="report_blok"
-          v-editable="report_blok"
-        />
+        <v-card
+          tile
+          elevation="0"
+          variant="flat"
+          color="black"
+        >
+          <SectionHeader
+            v-if="report_blok"
+            :blok="header_blok"
+            :report_blok="report_blok"
+            v-editable="report_blok"
+          />
+        </v-card>
         <StoryblokComponent
           v-for="blok in blok.body"
           :key="blok._uid"

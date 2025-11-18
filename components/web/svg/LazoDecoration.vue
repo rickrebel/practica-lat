@@ -10,11 +10,11 @@ const props = defineProps({
   },
   colorStart: {
     type: String,
-    default: 'rgb(193,226,61)'
+    default: 'rgb(227,221,44)'
   },
   colorEnd: {
     type: String,
-    default: 'rgb(255,107,107)'
+    default: 'rgb(32,250,138)'
   },
   // Duración de la animación en segundos
   animationDuration: {
@@ -92,7 +92,7 @@ onMounted(async () => {
 .svg-decoration {
   position: absolute;
   width: 100%;
-  z-index: 0;
+  z-index: -2;
   overflow: hidden;
 }
 

@@ -43,8 +43,8 @@ const story = await useAsyncStoryblok(
 //   // script: [ { innerHTML: 'console.log(\'Hello world\')' } ]
 // })
 useSeoMeta({
-  title: `${story.value.content?.document[0].name} - Desplazamiento Interno en México`,
-  ogTitle: `${story.value.content?.document[0].name} (Desplazamiento Interno en México)`,
+  title: `${story.value.content?.document[0].name} - Práctica`,
+  ogTitle: `${story.value.content?.document[0].name} (Práctica)`,
   description: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
   type: 'article',
   ogDescription: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',

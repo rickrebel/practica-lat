@@ -18,19 +18,11 @@ const story = await useAsyncStoryblok(
 { customParent: 'https://app.storyblok.com' }
 )
 
-onMounted(() => {
-  console.log('onMounted home page')
-  // console.log('language', query._storyblok_lang)
-})
-
-
-// console.log('story', story)
-
 useSeoMeta({
-  title: 'Desplazamiento Interno en México',
-  ogTitle: 'Desplazamiento Interno en México',
-  description: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
-  ogDescription: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
+  title: 'Práctica. Laboratorio para la Democracia',
+  ogTitle: 'Práctica. Laboratorio para la Democracia',
+  description: 'Somos un equipo multidisciplinario que trabaja para construir formas justas de habitar nuestras comunidades y el planeta ',
+  ogDescription: 'Somos un equipo multidisciplinario que trabaja para construir formas justas de habitar nuestras comunidades y el planeta ',
   // ogImage: 'https://oej.yeeko.org/_nuxt/nuevo_logo.ChaL5KSF.png',
 })
 

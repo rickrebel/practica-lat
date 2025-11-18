@@ -52,7 +52,7 @@ const padding_top = computed(() => {
       >
         <div>
           <v-sheet
-            color="primary"
+            color="black"
             class="px-5 py-1 font-weight-bold text-h5"
           >
             <div class="montse">

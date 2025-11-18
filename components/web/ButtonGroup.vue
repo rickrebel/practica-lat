@@ -25,10 +25,10 @@ const first_element = computed(() => {
 
 const current_type = computed(() => {
   const first = first_element.value
-  console.log('first', first)
+  // console.log('first', first)
   if (!first) return null
-  console.log('all_types', all_types)
-  console.log(all_types[first.component])
+  // console.log('all_types', all_types)
+  // console.log(all_types[first.component])
   return all_types[first.component] || null
 })
 

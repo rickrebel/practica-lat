@@ -2,9 +2,9 @@
 export function needShow(size: string | undefined, display: any): boolean {
   if (!size) return false
   // const { xs, smAndDown, smAndUp, mdAndUp, lgAndUp, xlAndUp } = display
-  console.log("display", display)
-  console.log("size", size)
-  console.log("mdAndUp 0", display.mdAndUp.value)
+  // console.log("display", display)
+  // console.log("size", size)
+  // console.log("mdAndUp 0", display.mdAndUp.value)
   // console.log("mdAndUp 1", mdAndUp.value)
   return display[size]?.value ?? false
   // const xs = computed(() => display.xs.value)

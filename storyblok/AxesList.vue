@@ -40,6 +40,8 @@ const final_axes = computed(() => {
         :blok="axis.content"
         :story="axis"
         :is_editable="false"
+        is_list
+
       />
 
     </v-col>

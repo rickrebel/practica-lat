@@ -35,7 +35,7 @@ const text_size = computed(() => {
   <v-card-title
     v-if="main_text"
     class="d-flex flex-column align-center pt-0"
-    :class="`text-${blok.color_title || 'black'} ${align_classes} ${text_size}`"
+    :class="`text-${blok.color_title || 'i'} ${align_classes} ${text_size}`"
   >
     <span
       class="montse title-no-wrap font-weight-bold"

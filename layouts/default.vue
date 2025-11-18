@@ -91,7 +91,7 @@ function changeMenu(value) {
     />
     <v-main>
       <v-container
-        class="_px-1 _px-sm-3 px-0 pt-0"
+        class="_px-1 _px-sm-3 px-0 pt-0 pb-0"
         fluid
         max-width="1440"
       >

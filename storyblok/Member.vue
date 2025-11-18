@@ -152,7 +152,6 @@ const short_biography = computed(() => {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 100%);
 }
   //margin-left: 200px;
   //width: calc(100% - 200px);

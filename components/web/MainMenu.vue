@@ -4,7 +4,9 @@ import {useWebStore} from '~/store/web.ts'
 import ButtonGroup from "~/components/web/ButtonGroup.vue";
 const webStore = useWebStore()
 const { query, params } = useRoute()
+// const { calc_final_url } = useWebStore()
 // const { global_config } = webStore
+import { calcFinalUrl } from '~/composables/final_url.ts'
 
 const props = defineProps({
   // main_collections: {
@@ -40,26 +42,27 @@ const main_blok = computed(() => {
 })
 
 const final_buttons = computed(() => {
-  console.log('main_blok', main_blok.value.buttons)
+  // console.log('main_blok', main_blok.value.buttons)
   if (!main_blok.value)
     return []
   let buttons = main_blok.value.buttons || []
   return buttons.map(button => {
-    const main_url = button.to.cached_url || button.to.url
-    button.main_url = main_url
-    button.is_external = button.to?.linktype === 'url'
-    if (button.is_external)
-      return button
-    if (button.to.cached_url || button.to.url){
-      const all_paths = main_url.split('/')
-      const some_is_current_lang = all_paths.some(
-        path => path === lang.value)
-      if (!some_is_current_lang) {
-        const sep = main_url.startsWith('/') ? '' : '/'
-        button.main_url = `/${lang.value}${sep}${main_url}`
-      }
-    }
-    return button
+    return calcFinalUrl(button, lang.value)
+    // const main_url = button.to.cached_url || button.to.url
+    // button.main_url = main_url
+    // button.is_external = button.to?.linktype === 'url'
+    // if (button.is_external)
+    //   return button
+    // if (button.to.cached_url || button.to.url){
+    //   const all_paths = main_url.split('/')
+    //   const some_is_current_lang = all_paths.some(
+    //     path => path === lang.value)
+    //   if (!some_is_current_lang) {
+    //     const sep = main_url.startsWith('/') ? '' : '/'
+    //     button.main_url = `/${lang.value}${sep}${main_url}`
+    //   }
+    // }
+    // return button
   })
 })
 

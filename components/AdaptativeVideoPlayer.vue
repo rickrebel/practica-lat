@@ -8,7 +8,6 @@ import 'video.js/dist/video-js.css'
 // import qualityLevels from "videojs-contrib-quality-levels";
 // import 'videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css'
 
-
 const props = defineProps({
   videoUrl: {
     type: String,
@@ -25,7 +24,7 @@ const videoPlayer = ref(null)
 // let player = null
 
 onMounted(() => {
-  console.log("onMounted AdaptativeVideoPlayer")
+  // console.log("onMounted AdaptativeVideoPlayer")
   initPlayer()
 })
 
@@ -158,7 +157,8 @@ const addQualitySelector = () => {
       ]
 
       items.forEach(item => {
-        qualityButton.menu.addItem(new videojs.getComponent('MenuItem')(player.value, {
+        qualityButton.menu.addItem(
+          new videojs.getComponent('MenuItem')(player.value, {
           label: item.label,
           clickHandler: () => {
             if (item.value === -1) {
@@ -220,7 +220,7 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div style="min-height: 240px; width: 100%; height: 100%;">
     <video
       ref="videoPlayer"
       class="video-js vjs-default-skin vjs-big-play-centered"

@@ -50,7 +50,7 @@ function wantOpenLink(url) {
     id="app"
     v-editable="blok"
     color="black"
-    class="py-2"
+    class="py-2 py-sm-6"
     style="width: 100%;"
   >
     <v-row
@@ -101,9 +101,6 @@ function wantOpenLink(url) {
 
             <StoryblokComponent
               :blok="blok"
-              fixed_size="default"
-              fixed_variant="text"
-              fixed_color="white"
             ></StoryblokComponent>
           </v-col>
         </v-row>
