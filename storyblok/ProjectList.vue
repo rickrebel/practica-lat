@@ -69,9 +69,8 @@ const final_projects = computed(() => {
 
     const max_width = is_home ? (is_first ? 900 : 600) : 600
     let current_project = {...project, is_first, max_width}
-    // if (!is_home){
-      project.explanation = hydrateText(project.content.description)
-    // }
+
+    project.explanation = hydrateText(project.content.description)
     if (project.content.images.length > 0){
       const cover_image = project.content.images[0]
       current_project.cover_image = resizeImg(cover_image, max_width)

@@ -15,6 +15,7 @@ const props = defineProps({
 <!--    :blok="blok"-->
 <!--    class="px-3"-->
 <!--  />-->
+<!--  <div>hola documentos</div>-->
   <DocumentList
     :blok="{
       ...blok,

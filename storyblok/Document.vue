@@ -53,7 +53,15 @@ function openDoc(item) {
         style="line-height: 1.25"
       >
         <NuxtLink
+          v-if="item.slug"
           :to="`/${currentLocale}/report/${item.slug}`"
+          class="text-decoration-none text-black"
+        >
+          {{ item.name }}
+        </NuxtLink>
+        <NuxtLink
+          v-else
+          @click.prevent="openDoc(item)"
           class="text-decoration-none text-black"
         >
           {{ item.name }}
@@ -62,7 +70,10 @@ function openDoc(item) {
       <v-spacer></v-spacer>
       <v-divider class="my-2" >
       </v-divider>
-      <v-card-actions class="pt-auto pb-3">
+      <v-card-actions
+        v-if="item.slug"
+        class="pt-auto pb-3"
+      >
   <!--          <NuxtLink-->
   <!--            :to="`/${item.full_slug}`"-->
   <!--            class="text-decoration-none"-->
@@ -97,6 +108,7 @@ function openDoc(item) {
 
         <v-spacer></v-spacer>
         <v-icon-btn
+          v-if="item.slug"
           :to="`/${currentLocale}/report/${item.slug}`"
           color="accent"
           variant="tonal"
@@ -118,6 +130,23 @@ function openDoc(item) {
 <!--        >-->
 <!--        </v-btn-text>-->
       </v-card-actions>
+      <v-card-actions
+        v-else
+        class="pt-auto pb-3"
+      >
+        <v-spacer></v-spacer>
+        <v-btn-primary
+          color="accent"
+          variant="elevated"
+          @click="openDoc(item)"
+          append-icon="download"
+        >
+          Descargar
+        </v-btn-primary>
+        <v-spacer></v-spacer>
+
+      </v-card-actions>
+
     </div>
 
   </v-card>

@@ -46,7 +46,7 @@ const header_blok = computed(() => {
 })
 
 const artificial_blok = {
-  subheader: 'Informes e investigaciones relacionados',
+  subheader: 'Otras investigaciones e informes',
   color_title: 'white',
   init_display: 4,
 }
@@ -117,6 +117,7 @@ function openDoc(item) {
       >
         <CommonTitle
           :blok="artificial_blok"
+          class="pb-8"
         />
         <DocumentList
           :init_documents="other_reports"

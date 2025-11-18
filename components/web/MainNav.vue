@@ -116,7 +116,7 @@ function changeLocale(new_locale) {
     app
     color="black"
     height="90"
-    class="px-3 footer-shadow"
+    class="px-3 header-shadow"
   >
     <div
       class="app-width2 d-flex px-3 justify-space-between align-center mx-auto"
@@ -240,7 +240,7 @@ function changeLocale(new_locale) {
   margin-left: -10px
 }
 
-.footer-shadow{
+.header-shadow{
   box-shadow:
     0px 2px 3px -1px rgba(255, 255, 255, 0.4),
     0px 4px 4px 0px rgba(255, 255, 255, 0.3),

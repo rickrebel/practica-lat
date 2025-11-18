@@ -50,7 +50,7 @@ function wantOpenLink(url) {
     id="app"
     v-editable="blok"
     color="black"
-    class="py-2 py-sm-6"
+    class="py-2 py-sm-6 footer-shadow"
     style="width: 100%;"
   >
     <v-row
@@ -153,5 +153,13 @@ function wantOpenLink(url) {
 </template>
 
 <style scoped lang="scss">
+.footer-shadow{
+  // shadow above of the footer
+  box-shadow:
+    0px -2px 4px -1px rgba(255, 255, 255, 0.4),
+    0px -4px 5px 0px rgba(255, 255, 255, 0.2),
+    0px -1px 10px 0px rgba(255, 255, 255, 0.15);
 
+
+}
 </style>

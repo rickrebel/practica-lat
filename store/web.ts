@@ -14,7 +14,7 @@ interface Material {
 }
 
 interface Document {
-  date_start: string
+  start_date: string
   slug?: string
   full_slug?: string
   // Add other document properties as needed
@@ -139,7 +139,7 @@ export const useWebStore = defineStore('web', {
         return acc
       }, [])
 
-      documents = documents.sort((a, b) => d3.descending(a.date_start, b.date_start))
+      documents = documents.sort((a, b) => d3.descending(a.start_date, b.date_start))
       this.all_documents = documents
     },
 

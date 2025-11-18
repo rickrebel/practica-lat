@@ -56,20 +56,20 @@ const final_docs = computed(() => {
     return []
   return initialDocs
     .map(doc => {
-      // console.log("doc", doc)
+      console.log("doc", doc)
       doc.document_type = getDocumentType(doc.type_doc)
       doc.colors = doc.document_type.colors
-      const date_start = dayjs(doc.start_date.substr(0, 10))
-      doc.date_start = date_start
-      doc.year = date_start.year()
-      doc.month = date_start.month()
-      doc.month_year = date_start.format('MMMM YYYY')
+      // const date_start = dayjs(doc.start_date.substr(0, 10))
+      // doc.date_start = date_start
+      // doc.year = date_start.year()
+      // doc.month = date_start.month()
+      // doc.month_year = date_start.format('MMMM YYYY')
       let date_text = ''
-      let date_month = date_start.format('MMMM-YYYY')
-      date_text = date_start.format('D/MMM/YYYY')
-      doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
-      doc.date_text = date_text
-      doc.date_month = date_month
+      // let date_month = date_start.format('MMMM-YYYY')
+      // date_text = date_start.format('D/MMM/YYYY')
+      // doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
+      // doc.date_text = date_text
+      // doc.date_month = date_month
       return doc
     })
     // .sort((x, y) => d3.descending(x.date_start, y.date_start))

@@ -29,7 +29,8 @@ const props = defineProps({
       sm="3"
       md="2"
       lg="1"
-      class="pa-4 align-center justify-space-between text-center"
+      class="align-center justify-space-between text-center pa-4"
+      xclass="`pa-${institution.padding || 4}`"
     >
       <a
         :href="institution.web_page?.url || ''"
@@ -43,6 +44,7 @@ const props = defineProps({
           :max-height="blok.max_height || 120"
           :max-width="blok.max_width || 200"
           :class="{'black-and-white': blok.black_and_white}"
+          :style="`max-width: ${institution.heigth_percent}%;`"
         ></v-img>
         <span
           v-else

@@ -43,7 +43,6 @@ const related_projects = computed(() => {
 const artificial_blok = {
   subheader: 'Proyectos del eje',
   color_title: 'black',
-  init_display: 4,
 }
 
 const artificial_blok_list = {

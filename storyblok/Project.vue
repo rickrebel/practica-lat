@@ -126,6 +126,7 @@ function getImageUrl(name) {
             class="d-flex flex-column align-center mt-0"
           >
             <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">
+<!--              TODO: Cambiar dinámicamente-->
               Eje de Trabajo:
             </span>
             <v-chip
