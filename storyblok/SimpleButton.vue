@@ -61,14 +61,13 @@ const final_url = computed(() => {
 
 <template>
   <v-btn-primary
-    v-if="blok.behavior === 'dialog'"
+    v-if="blok.is_dialog"
     :variant="variant"
     :color="blok.color || 'accent'"
     :size="blok.size || 'large'"
     class="mx-2 text-weight-bold"
     @click="openDialog"
-    id="button_new"
-    rounded="lg"
+    style="font-weight: bold;"
     :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
@@ -76,12 +75,12 @@ const final_url = computed(() => {
       v-model="dialog"
       max-width="850"
     >
-      <v-card class="_rounded-xl">
+      <v-card class="rounded-xl">
         <v-card
-          class="rounded-0 d-flex justify-center align-center"
+          class="d-flex justify-center align-center"
           elevation="6"
           height="80"
-          color="choco"
+          color="accent"
         >
           <div
             class="text-h4 py-2"
@@ -114,7 +113,6 @@ const final_url = computed(() => {
     color="secondary"
     size="default"
     :to="blok.to.cached_url || blok.to.url"
-    id="button_new"
     :append-icon="blok.icon || 'add'"
   >
     {{blok.button_title}}
@@ -128,7 +126,6 @@ const final_url = computed(() => {
     :target="final_url.is_external ? '_blank' : undefined"
     :href="final_url.is_external ? final_url.main_url : undefined"
     :to="!final_url.is_external ? final_url.main_url : undefined"
-    id="button_new"
     style="font-weight: bold;"
     :append-icon="blok.icon || 'add'"
   >

@@ -112,33 +112,42 @@ function wantOpenLink(url) {
         lg="2"
         order="2"
         order-md="3"
-        class="pa-3 d-flex justify-center"
+        class="pa-3"
         align-self="center"
       >
-        <v-btn
-          v-for="net in main_blok.social_networks"
-          :key="net._uid"
-          align="end"
-          class="mr-4 text-primary"
-          icon
-          variant="tonal"
-          @click="wantOpenLink(net.url)"
-          color="white"
-        >
-          <v-avatar
-            v-if="net.logo"
-            size="default"
+        <div class="d-flex justify-center">
+          <v-btn
+            v-for="net in main_blok.social_networks"
+            :key="net._uid"
+            align="end"
+            class="mr-4 text-primary"
+            icon
+            variant="tonal"
+            @click="wantOpenLink(net.url)"
+            color="white"
           >
-            <img
-              :src="resizeImg(net.logo, 80)"
-              :alt="net.icon"
-              :height="24"
+            <v-avatar
+              v-if="net.logo?.filename"
+              size="default"
             >
-          </v-avatar>
-          <v-icon v-else size="large" color="white">
-            user
-          </v-icon>
-        </v-btn>
+              <img
+                :src="resizeImg(net.logo, 80)"
+                :alt="net.icon"
+                :height="24"
+              >
+            </v-avatar>
+            <v-icon v-else size="large" color="white">
+              user
+            </v-icon>
+          </v-btn>
+        </div>
+
+        <v-img
+          v-if="main_blok.seal && main_blok.seal.filename"
+          :src="resizeImg(main_blok.seal, 300)"
+          class="mx-3 mt-6"
+          max-width="300"
+        />
       </v-col>
     </v-row>
   </v-footer>
