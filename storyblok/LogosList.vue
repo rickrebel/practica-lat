@@ -39,7 +39,7 @@ const props = defineProps({
         <v-img
           v-if="institution.logo?.filename"
           :src="resizeImg(institution.logo, 200)"
-          :alt="`Institución ${institution}`"
+          :alt="`${institution.name}`"
           :max-height="blok.max_height || 120"
           :max-width="blok.max_width || 200"
           :class="{'black-and-white': blok.black_and_white}"
@@ -53,13 +53,15 @@ const props = defineProps({
 
         </span>
       </a>
-      <v-tooltip
-        activator="parent"
-        location="bottom"
-      >
-        {{ institution.name }}
-      </v-tooltip>
-
+      <client-only>
+        <v-tooltip
+          v-if="institution.name"
+          activator="parent"
+          location="bottom"
+        >
+          {{ institution.name }}
+        </v-tooltip>
+      </client-only>
     </v-col>
   </v-row>
 

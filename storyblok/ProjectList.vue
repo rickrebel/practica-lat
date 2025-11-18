@@ -62,16 +62,16 @@ const final_projects = computed(() => {
     else
       full_projects = props.blok.projects
   }
-  // console.log("full_projects", full_projects)
+  console.log("full_projects", full_projects)
   full_projects = full_projects.reduce((projects, project, idx) => {
     const is_home = final_display_type.value === 'home'
     const is_first = idx === 0 && is_home
 
     const max_width = is_home ? (is_first ? 900 : 600) : 600
     let current_project = {...project, is_first, max_width}
-    if (!is_home){
+    // if (!is_home){
       project.explanation = hydrateText(project.content.description)
-    }
+    // }
     if (project.content.images.length > 0){
       const cover_image = project.content.images[0]
       current_project.cover_image = resizeImg(cover_image, max_width)
@@ -218,6 +218,7 @@ const final_projects = computed(() => {
                     class="text-accent"
                     variant="tonal"
                     elevation="4"
+                    :to="`/${lang.code}/project/${project.slug}`"
                   >
                     {{ blok.button_text }}
                   </v-btn-primary>

@@ -31,7 +31,7 @@ const explanation = computed(() => {
 
 
 const related_projects = computed(() => {
-  // console.log('all_projects', all_projects.value)
+  console.log('all_projects', all_projects.value)
   // console.log('current_blok', props.blok)
   // console.log('current_story', props.story)
   // return all_documents.value

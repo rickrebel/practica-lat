@@ -141,12 +141,11 @@ function wantOpenLink(url) {
             </v-icon>
           </v-btn>
         </div>
-
         <v-img
           v-if="main_blok.seal && main_blok.seal.filename"
           :src="resizeImg(main_blok.seal, 300)"
-          class="mx-3 mt-6"
-          max-width="300"
+          class="mx-3 mt-6 mx-auto"
+          max-width="260"
         />
       </v-col>
     </v-row>
