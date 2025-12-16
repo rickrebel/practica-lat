@@ -21,7 +21,7 @@ const {
   setAllDocuments,
   setGlobalConfig,
   setAllProjects,
-  setAllAgendas,
+  setAllAxes,
 } = webStore
 
 const version = $preview ? 'draft' : 'published'
@@ -50,12 +50,12 @@ onMounted(() => {
     });
     storyblokApi.getStories({
         version: version,
-        starts_with: "agend/",
+        starts_with: "eje/",
         language: currentLocale.value,
       }
     ).then(({data}) => {
-      // console.log("data all_agendas", data);
-      setAllAgendas(data.stories);
+      // console.log("data all_axes", data);
+      setAllAxes(data.stories);
     });
     storyblokApi.get(
       `cdn/stories`,
@@ -72,8 +72,11 @@ onMounted(() => {
   });
 });
 
-function changeMenu() {
-  menu_drawer.value = !menu_drawer.value;
+function changeMenu(value) {
+  if (typeof value === 'boolean')
+    menu_drawer.value = value
+  else
+    menu_drawer.value = !menu_drawer.value;
 }
 
 
@@ -81,11 +84,14 @@ function changeMenu() {
 
 <template>
   <v-app>
-    <MainNav @toggleMenu="changeMenu"/>
-    <MainMenu :menu_drawer="menu_drawer"/>
+    <MainNav @toggleMenu="changeMenu()"/>
+    <MainMenu
+      :menu_drawer="menu_drawer"
+      @toggleMenu="changeMenu($event)"
+    />
     <v-main>
       <v-container
-        class="_px-1 _px-sm-3 px-0 pt-0"
+        class="_px-1 _px-sm-3 px-0 pt-0 pb-0"
         fluid
         max-width="1440"
       >

@@ -1,25 +1,26 @@
-<script setup lang="ts">
+<script setup>
 const { $preview } = useNuxtApp()
 // const { project_id } = useRoute().params
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
-import { currentLocale } from "~/composables/locales.js"
+const { params } = useRoute()
+const lang = useStoryblokLang()
+
 const slug = params.slug
-// const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
 const story = await useAsyncStoryblok(
-    `${slug}`,
+    `${lang.prefix}${slug}`,
     {
       version: version,
-      language: lang.value,
+      language: lang.final_code,
       // fallback_lang: 'es',
     },
 { customParent: 'https://app.storyblok.com' }
 )
+
+onMounted(() => {
+  console.log('Onmounted [lang][slug].vue - slug:', slug)
+})
+
+
 </script>
 
 <template>

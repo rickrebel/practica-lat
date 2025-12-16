@@ -19,8 +19,8 @@ function openDoc(item) {
   <v-col
     v-editable="blok"
     cols="12"
-    class="section-header mb-1 pt-3 d-flex justify-space-between"
-    :class="{report_block: 'text-center'}"
+    class="section-header mb-1 d-flex justify-space-between"
+    :class="`py-${blok.space_arround || 3}`"
     :order="blok.order || 1"
     :order-md="blok.order_md || 1"
   >

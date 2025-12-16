@@ -4,14 +4,23 @@ import { watch } from 'vue'
 import { useDisplay } from 'vuetify'
 const { xs, mdAndUp, smAndDown } = useDisplay()
 import { locales, currentLocale } from "~/composables/locales.js"
+import AnimationLogo from "~/components/web/svg/AnimationLogo.vue";
+import {useWebStore} from "~/store/web.js";
 const { query, name, params } = useRoute()
 const router = useRouter()
-
+const webStore = useWebStore()
 const cookieLang = useCookie('user_lang')
 
 const props = defineProps({
   is_editable: Boolean,
+  blok: {
+    type: Object,
+    required: false,
+  },
 })
+
+import animatedLogo from '@/assets/animated_logo.gif';
+import staticLogo from '@/assets/p-white.webp';
 
 const emits = defineEmits(['toggle-menu'])
 
@@ -19,6 +28,25 @@ const emits = defineEmits(['toggle-menu'])
 // const logo = ref(null)
 // const menu = ref(false)
 // const font_size = computed(() => xs.value ? 12 : 14)
+
+const currentLogo = ref(animatedLogo);
+const is_gif_playing = ref(true);
+
+onMounted(() => {
+  reloadLogo();
+});
+
+function reloadLogo() {
+  is_gif_playing.value = true;
+  currentLogo.value = animatedLogo;
+  const gifDuration = 12000;
+  const loops = 1;
+
+  setTimeout(() => {
+    currentLogo.value = staticLogo;
+    is_gif_playing.value = false;
+  }, gifDuration * loops);
+}
 
 const locales_with_image_flag = computed(() => {
   return locales.map((loc) => {
@@ -30,6 +58,12 @@ const locales_with_image_flag = computed(() => {
   })
 })
 
+const lang = computed(() => {
+  if (query._storyblok_lang)
+    return query._storyblok_lang
+  return params.lang || 'es'
+})
+
 const full_locale = computed(() => {
   return locales_with_image_flag.value.find(
     loc => loc.code === currentLocale.value
@@ -39,6 +73,26 @@ const full_locale = computed(() => {
 watch(currentLocale, (new_locale, old_locale) => {
   console.log('Current locale changed from', old_locale, 'to', new_locale)
 })
+
+
+const main_blok = computed(() => {
+  if (props.blok) return props.blok
+  // console.log('global_config', webStore.global_config)
+  const global_c = webStore.global_config
+  // console.log('global_c', global_c)
+  if (global_c && global_c.header && global_c.header.length > 0)
+    return global_c.header[0]
+  return {}
+})
+
+
+function getImageUrl(name) {
+  if (main_blok.value.logo && main_blok.value.logo.filename) {
+    return main_blok.value.logo.filename
+  }
+  return new URL(`/assets/${name}`, import.meta.url).href
+}
+
 
 function changeLocale(new_locale) {
   console.log('Change locale to', new_locale)
@@ -62,7 +116,7 @@ function changeLocale(new_locale) {
     app
     color="black"
     height="90"
-    class="px-3"
+    class="px-3 header-shadow"
   >
     <div
       class="app-width2 d-flex px-3 justify-space-between align-center mx-auto"
@@ -71,23 +125,33 @@ function changeLocale(new_locale) {
       <div class="d-flex">
 
         <router-link
-          :to="`/${currentLocale}`"
+          :to="`/${lang}`"
           class="d-flex"
         >
           <v-img
-            src="~/assets/p-white.svg"
-            _src="/logo_simple_white.png"
+            v-if="main_blok.logo && main_blok.logo.filename"
+            :src="getImageUrl('p-white.svg')"
             :height="xs ? 60 : 60"
             :width="xs ? 60 : 60"
+          />
+          <v-img
+            v-else
+            :src="currentLogo"
+            :height="is_gif_playing ? 60 : 50"
+            :width="is_gif_playing ? 60 : 50"
+            :class="is_gif_playing ? '' : 'py-1 ml-1'"
+            @click="reloadLogo"
           />
         </router-link>
         <div v-if="false">
           <div>
-
             currentLocale: {{currentLocale}}
           </div>
           <div>
             full_locale: {{full_locale.code}}
+          </div>
+          <div>
+            lang: {{lang}}
           </div>
         </div>
       </div>
@@ -159,10 +223,10 @@ function changeLocale(new_locale) {
           </v-list>
         </v-menu>
       </v-chip>
-      <v-app-bar-nav-icon class="ml-4" @click="$emit('toggle-menu')">
-
-
-      </v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="ml-4"
+        @click="emits('toggle-menu')"
+      ></v-app-bar-nav-icon>
     </div>
 <!--    <template v-slot:append>-->
 <!--      <v-app-bar-nav-icon></v-app-bar-nav-icon>-->
@@ -172,7 +236,15 @@ function changeLocale(new_locale) {
 </template>
 
 <style lang="scss">
-  .header-xs{
-    margin-left: -10px
-  }
+.header-xs{
+  margin-left: -10px
+}
+
+.header-shadow{
+  box-shadow:
+    0px 2px 3px -1px rgba(255, 255, 255, 0.4),
+    0px 4px 4px 0px rgba(255, 255, 255, 0.3),
+    0px 1px 2px 0px rgba(255, 255, 255, 0.2) !important;
+}
+
 </style>

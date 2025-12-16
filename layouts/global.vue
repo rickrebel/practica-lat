@@ -12,7 +12,7 @@ const {
   setAllDocuments,
   setGlobalConfig,
   setAllProjects,
-  setAllAgendas,
+  setAllAxes,
 } = webStore
 
 const version = $preview ? 'draft' : 'published'
@@ -39,12 +39,12 @@ onMounted(() => {
     });
     storyblokApi.getStories({
         version: version,
-        starts_with: "agend/",
+        starts_with: "eje/",
         language: currentLocale.value,
       }
     ).then(({data}) => {
-      // console.log("data all_agendas", data);
-      setAllAgendas(data.stories);
+      // console.log("data all_axes", data);
+      setAllAxes(data.stories);
     });
     storyblokApi.get(
       `cdn/stories`,

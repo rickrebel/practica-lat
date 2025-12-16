@@ -11,26 +11,41 @@ const props = defineProps({
   button: Object,
 })
 
+const all_types = {
+  "ProjectList": "project",
+  "AxesList": "eje",
+  "DocumentList": "document",
+}
+
 const first_element = computed(() => {
   return props.button.elements && props.button.elements.length > 0
     ? props.button.elements[0]
     : null
 })
 
+const current_type = computed(() => {
+  const first = first_element.value
+  // console.log('first', first)
+  if (!first) return null
+  // console.log('all_types', all_types)
+  // console.log(all_types[first.component])
+  return all_types[first.component] || null
+})
+
 const final_items = computed(() => {
   // console.log('button', props.button)
   const first = first_element.value
   let items = []
-  if (!webStore.all_projects || !webStore.all_agendas){
+  if (!webStore.all_projects || !webStore.all_axes){
     return []
   }
   if (!first){
     return []
   }
-  else if (first.agendas && first.agendas.length > 0){
-    // console.log('all_agendas', webStore.all_agendas)
-    items = first.agendas.map(
-      id => webStore.all_agendas.find(a => a.uuid === id)
+  else if (first.axes && first.axes.length > 0){
+    // console.log('all_axes', webStore.all_axes)
+    items = first.axes.map(
+      id => webStore.all_axes.find(a => a.uuid === id)
     ).filter(a => a)
   }
   else if (first.projects && first.projects.length > 0){
@@ -39,13 +54,8 @@ const final_items = computed(() => {
       id => webStore.all_projects.find(p => p.uuid === id)
     ).filter(p => p)
   }
+  // console.log('items_menu', items)
   return items
-})
-
-const has_projects = computed(() => {
-  return first_element.value
-    && first_element.value.projects
-    && first_element.value.projects.length > 0
 })
 
 </script>
@@ -104,10 +114,9 @@ const has_projects = computed(() => {
       <v-list-item
         exact
         nav
-        xlines="has_projects ? 'two' : 'one'"
         :value="sub_coll._uid"
         variant="text"
-        :to="`/${currentLocale}/${sub_coll.full_slug}`"
+        :to="`/${currentLocale}/${current_type}/${sub_coll.slug}`"
         v-tooltip:left="sub_coll.name"
         color="accent"
         class="my-1 ml-n14"

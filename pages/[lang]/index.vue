@@ -3,37 +3,17 @@
 
 const { $preview } = useNuxtApp()
 // import { currentLocale } from "~/composables/locales.js"
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
-// const localeCookie = useCookie('user_lang')
-// NUEVO
-// console.log('currentLocale (index)', currentLocale.value)
-// console.log('localeCookie (index)', localeCookie.value)
-// console.log('query._storyblok_lang (index)', query._storyblok_lang)
+const lang = useStoryblokLang()
 const version = $preview ? 'draft' : 'published'
 const story = await useAsyncStoryblok(
-    'home',
+    `${lang.prefix}home`,
     {
       version: version,
-      // language: currentLocale.value,
-      language: lang.value,
-      // language: null,
-      // fallback_lang: null,
+      language: lang.final_code,
+      resolve_relations: ['ProjectList.projects'],
     },
 { customParent: 'https://app.storyblok.com' }
 )
-
-// onMounted(() => {
-//   console.log('query', query)
-//   console.log('language', query._storyblok_lang)
-// })
-
-
-console.log('story', story)
 
 // useSeoMeta({
 //   title: 'Desplazamiento Interno en México',

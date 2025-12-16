@@ -2,11 +2,21 @@
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+const swiper_modules = [Navigation, Pagination, Autoplay, EffectCoverflow];
+// const swiper_modules = [Pagination];
+
 import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import {useWebStore} from '~/store/web.ts'
 import {getDocumentType} from "~/composables/documents.js";
+
 import Document from "~/storyblok/Document.vue"
+
 dayjs.locale('es')
 
 const webStore = useWebStore()
@@ -25,9 +35,15 @@ const show_all = ref(false)
 
 const final_display = computed(()=>{
   return props.blok
-    ? Number(props.blok.init_display || 4)
+    ? Number(props.blok.init_display || 8)
     : 300
 })
+
+const pagination = {
+  clickable: true,
+  bulletClass: 'large-bullet swiper-pagination-bullet',
+  clickableClass: 'outside-pagination swiper-pagination-clickable',
+}
 
 // Computed properties
 const final_docs = computed(() => {
@@ -40,20 +56,20 @@ const final_docs = computed(() => {
     return []
   return initialDocs
     .map(doc => {
-      // console.log("doc", doc)
+      console.log("doc", doc)
       doc.document_type = getDocumentType(doc.type_doc)
       doc.colors = doc.document_type.colors
-      const date_start = dayjs(doc.start_date.substr(0, 10))
-      doc.date_start = date_start
-      doc.year = date_start.year()
-      doc.month = date_start.month()
-      doc.month_year = date_start.format('MMMM YYYY')
+      // const date_start = dayjs(doc.start_date.substr(0, 10))
+      // doc.date_start = date_start
+      // doc.year = date_start.year()
+      // doc.month = date_start.month()
+      // doc.month_year = date_start.format('MMMM YYYY')
       let date_text = ''
-      let date_month = date_start.format('MMMM-YYYY')
-      date_text = date_start.format('D/MMM/YYYY')
-      doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
-      doc.date_text = date_text
-      doc.date_month = date_month
+      // let date_month = date_start.format('MMMM-YYYY')
+      // date_text = date_start.format('D/MMM/YYYY')
+      // doc.created_format = date_start.format('D [de] MMMM [de] YYYY')
+      // doc.date_text = date_text
+      // doc.date_month = date_month
       return doc
     })
     // .sort((x, y) => d3.descending(x.date_start, y.date_start))
@@ -109,8 +125,8 @@ const filteredDocs = computed(() => {
   />
   <v-card
     v-editable="blok"
-    style="width: 100%"
-    class="px-3 pb-4"
+    style="width: 100% max-width: 100%;"
+    class="px-3 pb-4 pb-md-8"
     variant="flat"
     color="transparent"
   >
@@ -157,20 +173,42 @@ const filteredDocs = computed(() => {
 <!--        </v-chip>-->
 <!--      </v-chip-group>-->
 <!--    </div>-->
-    <v-row class="my-3">
-      <v-col
+    <Swiper
+      :modules="swiper_modules"
+      slides-per-view="auto"
+      space-between="24"
+      :navigation="true"
+      :pagination="pagination"
+      :autoplay="{ delay: 4000, disableOnInteraction: true }"
+      class="pb-12"
+    >
+      <SwiperSlide
         v-for="(item, idx) in filteredDocs"
         :key="item._uid"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
+        style="width: 300px;"
       >
         <Document
           :item="item"
           :idx="idx"
         />
-      </v-col>
-    </v-row>
+      </SwiperSlide>
+    </Swiper>
   </v-card>
 </template>
+
+<style scoped lang="scss">
+
+:deep(.large-bullet) {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px !important;
+  margin-right: 6px !important;
+  background-color: #e7e7e7 !important;
+}
+
+:deep(.outside-pagination) {
+  bottom: -2px !important;
+  //margin-top: 20px !important;
+}
+
+</style>

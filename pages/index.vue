@@ -2,37 +2,27 @@
 import {onMounted} from "vue";
 
 const { $preview } = useNuxtApp()
-import { currentLocale } from "~/composables/locales.js"
 // import { apiPlugin, storyblokInit, useStoryblokBridge } from '@storyblok/vue';
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
+const lang = useStoryblokLang()
 // const storyblokApi = useStoryblokApi();
 // console.log("language query (index)", query._storyblok_lang)
 const story = await useAsyncStoryblok(
-    'home',
+    `${lang.prefix}home`,
     {
       version: version,
-      // language: 'en',
-      // language: null,
-      language: currentLocale.value,
+      language: lang.final_code,
       fallback_lang: null,
     },
 { customParent: 'https://app.storyblok.com' }
 )
 
-onMounted(() => {
-  // console.log('query', query)
-  // console.log('language', query._storyblok_lang)
-})
-
-
-// console.log('story', story)
-
 useSeoMeta({
-  title: 'Desplazamiento Interno en México',
-  ogTitle: 'Desplazamiento Interno en México',
-  description: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
-  ogDescription: 'Documentamos y divulgamos sobre eventos de desplazamiento interno en México.',
+  title: 'Práctica. Laboratorio para la Democracia',
+  ogTitle: 'Práctica. Laboratorio para la Democracia',
+  description: 'Somos un equipo multidisciplinario que trabaja para construir formas justas de habitar nuestras comunidades y el planeta ',
+  ogDescription: 'Somos un equipo multidisciplinario que trabaja para construir formas justas de habitar nuestras comunidades y el planeta ',
   // ogImage: 'https://oej.yeeko.org/_nuxt/nuevo_logo.ChaL5KSF.png',
 })
 

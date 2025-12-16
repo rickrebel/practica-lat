@@ -5,13 +5,14 @@ import AdaptativeVideoPlayer from "../components/AdaptativeVideoPlayer.vue";
 import {computed} from "vue";
 import { resizeImg } from '~/composables/storyblok_images.js'
 import { useDisplay } from 'vuetify';
-const { sm } = useDisplay()
+const { sm, md } = useDisplay()
 
 
 // defineProps({ blok: Object });
 const props = defineProps({
   blok: Object,
   columns_together: Boolean,
+  index: Number,
 })
 
 const space_class = computed(() => {
@@ -31,12 +32,15 @@ const card_class = computed(() => {
     final_class += ' d-flex align-center'
   if (blok.free_class)
     final_class += ` ${blok.free_class}`
-  if (blok.background_color2)
+  if (blok.paper_texture)
     final_class += ' paper-texture'
   // if random number generated now
   // console.log("blok._uid", blok._uid)
-  if (blok._uid) {
-    const num = parseInt(blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
+  if (blok._uid && blok.paper_texture) {
+    let num = props.index
+    if (num === undefined)
+      num = parseInt(blok._uid.replace(/\D/g, '').slice(-1))
+    // console.log("num", num)
     if (num % 4 === 0)
       final_class += ' effect-1'
     else if (num % 4 === 1)
@@ -90,14 +94,6 @@ const final_sm_align = computed(() => {
   return orientToAlign(props.blok.align_md)
 })
 
-const background_image = computed(() => {
-  if (!props.blok.texture_back)
-    return null
-
-  const image_url = resizeImg(props.blok.texture_back, 400)
-  return `url(${image_url})`
-})
-
 const blok_header = computed(() => {
   return {
     subheader: props.blok.title,
@@ -116,8 +112,9 @@ const blok_header = computed(() => {
   <v-col
     v-editable="blok"
     :cols="blok.cols"
-    :sm="blok.sm || blok.md"
+    :sm="blok.sm"
     :md="blok.md"
+    :lg="blok.lg"
     class="py-0 _py-sm-3"
     :class="space_class"
     :order="blok.order || 1"
@@ -141,20 +138,21 @@ const blok_header = computed(() => {
           md="12"
         >
           <CommonTitle
-            v-if="blok.title && sm && blok.sm === '12'"
+            xv-if="blok.title && sm && blok.sm === '12'"
+            v-if="false"
             :blok="blok_header"
           />
           <v-img
             v-if="blok.media?.filename && !blok.video_hls_url"
             _contain
             dark
-            :src="resizeImg(blok.media, 800)"
+            :src="resizeImg(blok.media, 0, blok.image_height || 300)"
             :max-height="blok.image_height || 300"
             class="mt-10 mb-6 px-3 px-sm-6"
-            _style="object-fit: contain;"
+            :style="`min-height: ${blok.image_height || 300}px`"
           ></v-img>
           <CommonTitle
-            v-if="blok.title && (!sm || blok.sm !== '12')"
+            xv-if="blok.title && (!sm || blok.sm !== '12')"
             :blok="blok_header"
           />
           <AdaptativeVideoPlayer
@@ -169,9 +167,8 @@ const blok_header = computed(() => {
           <v-col
             cols="12"
             class="px-3 px-sm-6"
-            v-if="blok.space_between"
-          >
-          </v-col>
+            v-if="blok.space_between && !(md && blok.sm === '12')"
+          ></v-col>
           <v-col
             cols="12"
             :sm="blok.sm === '12' ? 8 : 12"
@@ -179,7 +176,7 @@ const blok_header = computed(() => {
           >
             <v-card-text v-if="description2" class="py-2 py-sm-4">
               <div
-                class="text-body-2 text-sm-body-1 montse"
+                class="text-body-2 text-sm-body-1"
                 v-html="description2"
               ></div>
             </v-card-text>
@@ -209,6 +206,7 @@ const blok_header = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@use '../assets/css/utils.scss' as *;
 .side-title{
   width: 50px;
   height: 8px;
@@ -216,52 +214,11 @@ const blok_header = computed(() => {
 .title-no-wrap{
   white-space: normal !important;
 }
-/* Textura-papel */
-.paper-texture {
-  background-blend-mode: multiply;
-  background: url('~/assets/textura-papel.png');
-}
 
 .shadow-phrases{
   background: linear-gradient(#eee, #333);
   filter: drop-shadow(2px 2px #333);
   color: #00FF99;
 }
-
-.effect-1 {
-  background-position: bottom center;
-  background-size: cover;
-  position: relative; /* Necesario para posicionar el pseudoelemento */
-  z-index: 1;
-  overflow: hidden; /* Oculta partes del fondo que se salgan */
-}
-
-.effect-1::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1440px;
-  height: 1440px;
-  background-image: inherit;
-  //background-color: rgba(164, 123, 123, 0.6);
-  background-color: inherit;
-  background-blend-mode: multiply;
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-  //transform: scale(-1, -1);
-  transform: rotate(270deg);
-}
-
-.effect-2 {
-  background-position: top left;
-}
-
-.effect-3 {
-  background-position: top right;
-}
-
-
 
 </style>

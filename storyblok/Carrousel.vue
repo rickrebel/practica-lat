@@ -2,10 +2,14 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 
+import {useDisplay} from "vuetify";
+const { mobile, xs } = useDisplay()
+
+const isMounted = ref(false)
+
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
 import {resizeImg} from "~/composables/storyblok_images.js";
@@ -14,12 +18,44 @@ const modules = [Navigation, Pagination, Autoplay, EffectCoverflow];
 
 dayjs.locale('es')
 
-// Props
 const props = defineProps({
   images: {
     type: Array,
     required: true
   }
+})
+
+const max_height = computed(() => {
+  if (!isMounted.value) return 400
+  return xs.value
+    ? 250
+      : mobile.value
+        ? 300
+        : 400
+
+})
+
+const full_images = computed(() => {
+  let all_images = props.images || []
+  return all_images.reduce((final_imgs, img) => {
+    const paths = img.filename.split('/')
+    const size_path_regex = /\/\d+x\d+\//
+    const size_path_index = paths.findIndex(
+      path => size_path_regex.test(`/${path}/`))
+    if (size_path_index !== -1) {
+      const dimensions = paths[size_path_index].match(/\d+x\d+/)[0]
+      const [width, height] = dimensions.split('x').map(Number)
+      const final_width = Math.round((max_height.value * width) / height)
+      img.resized = resizeImg(img, final_width, max_height.value)
+      img.final_width = final_width
+      final_imgs.push(img)
+    }
+    return final_imgs
+  }, [])
+})
+
+onMounted(() => {
+  isMounted.value = true
 })
 
 </script>
@@ -29,29 +65,25 @@ const props = defineProps({
   <div class="my-swiper">
     <Swiper
       :modules="modules"
-      :slides-per-view="1"
+      slides-per-view="auto"
       :loop="true"
+      space-between="12"
       :navigation="true"
       :pagination="false"
-      :autoplay="{ delay: 3000, disableOnInteraction: true }"
+      :autoplay="{ delay: 4500, disableOnInteraction: true }"
     >
       <SwiperSlide
-        v-for="photo in images"
+        v-for="photo in full_images"
         :key="photo._uid"
+        :style="`width: ${photo.final_width}px;`"
       >
-        <v-card
-          class="my-2 mx-2"
-          _style="width: 100%;"
-        >
-          <v-img
-            :aspect-ratio="1"
-            :src="resizeImg(photo, 1200)"
-            max-height="400"
-            _max-width="480"
-            cover
-            class="contain"
-          ></v-img>
-        </v-card>
+        <v-img
+          :aspect-ratio="1"
+          :src="resizeImg(photo, 1200)"
+          :max-height="max_height"
+          cover
+          class="contain"
+        ></v-img>
       </SwiperSlide>
     </Swiper>
   </div>
@@ -59,22 +91,12 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.carousel-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
 .my-swiper {
   max-width: 100%;
 }
 
 @media (max-width: 500px) {
-  .my-swiper {
-    max-width: 400px;
-  }
-}
-@media (max-width: 600px) {
-  .my-swiper {
+  .not-my-swiper {
     max-width: 400px;
   }
 }

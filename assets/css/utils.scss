@@ -54,6 +54,8 @@
   max-width: 1440px;
 }
 
+
+
 .montse{
   //font-family: Montserrat !important;
   font-family: 'Titillium Web', sans-serif !important;
@@ -86,6 +88,45 @@ $blending: hard-light;
 .texture-background rect {
   opacity: 0.82;
   filter: url(#sandpaper-filter);
+}
+
+.paper-texture {
+  background-blend-mode: multiply;
+  background-image: url('~/assets/textura-papel.png') !important;
+}
+
+.effect-1 {
+  background-position: bottom center;
+  background-size: cover;
+  position: relative; /* Necesario para posicionar el pseudoelemento */
+  z-index: 1;
+  overflow: hidden; /* Oculta partes del fondo que se salgan */
+}
+
+.effect-1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 1440px;
+  background-image: inherit;
+  //background-color: rgba(164, 123, 123, 0.6);
+  background-color: inherit;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+  //transform: scale(-1, -1);
+  transform: rotate(270deg);
+}
+
+.effect-2 {
+  background-position: top left;
+}
+
+.effect-3 {
+  background-position: top right;
 }
 
 .content {

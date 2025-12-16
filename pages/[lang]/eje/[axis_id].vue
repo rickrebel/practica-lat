@@ -1,18 +1,14 @@
 <script setup>
 const { $preview } = useNuxtApp()
-// const { agend_id } = useRoute().params
+// const { axis_id } = useRoute().params
 // import { currentLocale } from "~/composables/locales.js"
-const { query, params } = useRoute()
-const lang = computed(() => {
-  if (query._storyblok_lang)
-    return query._storyblok_lang
-  return params.lang || 'es'
-})
-const agend_id = params.agend_id
+const { params } = useRoute()
+const lang = useStoryblokLang()
+const axis_id = params.axis_id
 // const version_sb = process.env.NUXT_PUBLIC_STORYBLOK_VERSION
 const version = $preview ? 'draft' : 'published'
 const story = await useAsyncStoryblok(
-    `agend/${agend_id}`,
+    `${lang.prefix}eje/${axis_id}`,
     {
       version: version,
       language: lang.value,
@@ -23,7 +19,7 @@ const story = await useAsyncStoryblok(
 </script>
 
 <template>
-  <Agend
+  <Axis
     v-if="story"
     :blok="story.content"
     :story="story"

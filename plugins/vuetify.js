@@ -4,13 +4,15 @@ import { aliases, md } from 'vuetify/iconsets/md'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { VDateInput } from "vuetify/labs/VDateInput"
+import { VIconBtn } from 'vuetify/labs/VIconBtn'
 import { VBtn } from 'vuetify/components/VBtn'
 // import colors from 'vuetify/lib/util/colors'
 
 export default defineNuxtPlugin((app) => {
   const vuetify = createVuetify({
     components: {
-      VDateInput
+      VDateInput,
+      VIconBtn,
     },
     theme: {
       themes: {

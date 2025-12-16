@@ -50,7 +50,7 @@ function wantOpenLink(url) {
     id="app"
     v-editable="blok"
     color="black"
-    class="py-2"
+    class="py-2 py-sm-6 footer-shadow"
     style="width: 100%;"
   >
     <v-row
@@ -59,7 +59,9 @@ function wantOpenLink(url) {
     >
       <v-col
         cols="12"
-        sm="4"
+        sm="8"
+        order="1"
+        md="4"
         class="text-left pa-3 text-justify d-flex flex-column align-start"
       >
         <v-img
@@ -67,50 +69,53 @@ function wantOpenLink(url) {
           width="240"
           class="mb-4"
         />
-
         <div
           v-if="description"
           v-html="description"
           class="text-body-2 text-sm-body-1 py-2 lato"
         ></div>
-<!--        <v-divider-->
-<!--          v-if="main_blok.contact_email || main_blok.social_networks.length > 0"-->
-<!--          color="white" class="my-1"-->
-<!--        ></v-divider>-->
-<!--        <div v-if="main_blok.contact_email" class="lato">-->
-<!--          <b>Contacto:</b> {{ main_blok.contact_email }}-->
-<!--        </div>-->
-
-
       </v-col>
 
       <v-col
-        cols="8"
-        sm="5"
-        offset="2"
-        offset-sm="0"
+        cols="12"
+        md="5"
+        lg="6"
+        order="3"
+        order-md="2"
         class="text-left pa-3"
+        align-self="center"
       >
-        <div v-if="final_buttons.length">
-
-          <StoryblokComponent
+        <v-row
+          v-if="final_buttons.length"
+          class="d-flex justify-space-between flex-wrap"
+          no-gutters
+        >
+          <v-col
+            cols="6"
+            sm="4"
+            md="6"
+            lg="4"
             v-for="blok in final_buttons"
             :key="blok._uid"
-            :blok="blok"
-            fixed_size="default"
-            fixed_variant="text"
-            fixed_color="white"
-          ></StoryblokComponent>
-        </div>
+          >
+
+            <StoryblokComponent
+              :blok="blok"
+            ></StoryblokComponent>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col
-        cols="8"
-        sm="3"
-        offset="2"
-        offset-sm="0"
-        class="text-left pa-3"
+        cols="12"
+        sm="4"
+        md="3"
+        lg="2"
+        order="2"
+        order-md="3"
+        class="pa-3"
+        align-self="center"
       >
-        <div class="_mt-4">
+        <div class="d-flex justify-center">
           <v-btn
             v-for="net in main_blok.social_networks"
             :key="net._uid"
@@ -122,7 +127,7 @@ function wantOpenLink(url) {
             color="white"
           >
             <v-avatar
-              v-if="net.logo"
+              v-if="net.logo?.filename"
               size="default"
             >
               <img
@@ -136,11 +141,25 @@ function wantOpenLink(url) {
             </v-icon>
           </v-btn>
         </div>
+        <v-img
+          v-if="main_blok.seal && main_blok.seal.filename"
+          :src="resizeImg(main_blok.seal, 300)"
+          class="mx-3 mt-6 mx-auto"
+          max-width="260"
+        />
       </v-col>
     </v-row>
   </v-footer>
 </template>
 
 <style scoped lang="scss">
+.footer-shadow{
+  // shadow above of the footer
+  box-shadow:
+    0px -2px 4px -1px rgba(255, 255, 255, 0.4),
+    0px -4px 5px 0px rgba(255, 255, 255, 0.2),
+    0px -1px 10px 0px rgba(255, 255, 255, 0.15);
 
+
+}
 </style>

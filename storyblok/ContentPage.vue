@@ -46,7 +46,7 @@ const header_blok = computed(() => {
 })
 
 const artificial_blok = {
-  subheader: 'Informes e investigaciones relacionados',
+  subheader: 'Otras investigaciones e informes',
   color_title: 'white',
   init_display: 4,
 }
@@ -67,12 +67,19 @@ function openDoc(item) {
         class="sheet-background"
         color="transparent"
       >
-        <SectionHeader
-          v-if="report_blok"
-          :blok="header_blok"
-          :report_blok="report_blok"
-          v-editable="report_blok"
-        />
+        <v-card
+          tile
+          elevation="0"
+          variant="flat"
+          color="black"
+        >
+          <SectionHeader
+            v-if="report_blok"
+            :blok="header_blok"
+            :report_blok="report_blok"
+            v-editable="report_blok"
+          />
+        </v-card>
         <StoryblokComponent
           v-for="blok in blok.body"
           :key="blok._uid"
@@ -110,6 +117,7 @@ function openDoc(item) {
       >
         <CommonTitle
           :blok="artificial_blok"
+          class="pb-8"
         />
         <DocumentList
           :init_documents="other_reports"
@@ -120,7 +128,4 @@ function openDoc(item) {
 </template>
 
 <style lang="scss">
-  .sheet-background {
-    background: url('~/assets/papel-azul.png');
-  }
 </style>

@@ -53,7 +53,15 @@ function openDoc(item) {
         style="line-height: 1.25"
       >
         <NuxtLink
-          :to="`/${currentLocale}/${item.full_slug}`"
+          v-if="item.slug"
+          :to="`/${currentLocale}/report/${item.slug}`"
+          class="text-decoration-none text-black"
+        >
+          {{ item.name }}
+        </NuxtLink>
+        <NuxtLink
+          v-else
+          @click.prevent="openDoc(item)"
           class="text-decoration-none text-black"
         >
           {{ item.name }}
@@ -62,41 +70,83 @@ function openDoc(item) {
       <v-spacer></v-spacer>
       <v-divider class="my-2" >
       </v-divider>
-      <v-card-actions class="pt-auto pb-3">
+      <v-card-actions
+        v-if="item.slug"
+        class="pt-auto pb-3"
+      >
   <!--          <NuxtLink-->
   <!--            :to="`/${item.full_slug}`"-->
   <!--            class="text-decoration-none"-->
   <!--          >-->
-        <v-btn-text
-          @click="openDoc(item)"
-          variant="elevated"
+        <v-icon-btn
           color="accent"
-          icon="download"
-          :block="!mdAndUp"
+          variant="elevated"
+          size="large"
           v-tooltip="'Descargar'"
+          @click="openDoc(item)"
         >
-        </v-btn-text>
+          <v-icon>download</v-icon>
+        </v-icon-btn>
+<!--        <v-btn-text-->
+<!--          @click="openDoc(item)"-->
+<!--          variant="elevated"-->
+<!--          color="accent"-->
+<!--          icon="download"-->
+<!--          :block="!mdAndUp"-->
+<!--          v-tooltip="'Descargar'"-->
+<!--          class="px-1"-->
+<!--        >-->
+<!--        </v-btn-text>-->
         <v-spacer></v-spacer>
-      <v-card-subtitle
-        class="text-subtitle-1 title-no-wrap text-black"
-      >
-        <span class="text-body-2">
-          {{ item.date_month }}
-        </span>
-      </v-card-subtitle>
+        <v-card-subtitle
+          class="text-subtitle-1 title-no-wrap text-black"
+        >
+          <span class="text-body-2">
+            {{ item.date_month }}
+          </span>
+        </v-card-subtitle>
 
         <v-spacer></v-spacer>
-        <v-btn-text
-          :to="`/${item.full_slug}`"
-          variant="text"
+        <v-icon-btn
+          v-if="item.slug"
+          :to="`/${currentLocale}/report/${item.slug}`"
           color="accent"
-          icon="visibility"
+          variant="tonal"
           elevation="4"
-          :block="!mdAndUp"
+          size="large"
+          icon="visibility"
           v-tooltip="'Explorar documento'"
         >
-        </v-btn-text>
+        </v-icon-btn>
+
+<!--        <v-btn-text-->
+<!--          :to="`/${item.full_slug}`"-->
+<!--          variant="text"-->
+<!--          color="accent"-->
+<!--          icon="visibility"-->
+<!--          elevation="4"-->
+<!--          :block="!mdAndUp"-->
+<!--          v-tooltip="'Explorar documento'"-->
+<!--        >-->
+<!--        </v-btn-text>-->
       </v-card-actions>
+      <v-card-actions
+        v-else
+        class="pt-auto pb-3"
+      >
+        <v-spacer></v-spacer>
+        <v-btn-primary
+          color="accent"
+          variant="elevated"
+          @click="openDoc(item)"
+          append-icon="download"
+        >
+          Descargar
+        </v-btn-primary>
+        <v-spacer></v-spacer>
+
+      </v-card-actions>
+
     </div>
 
   </v-card>

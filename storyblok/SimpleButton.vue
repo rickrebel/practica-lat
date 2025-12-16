@@ -1,10 +1,10 @@
 <script setup>
 import { useDisplay } from 'vuetify'
-import DocumentList from "~/storyblok/DocumentList.vue";
-import MaterialList from "~/storyblok/MaterialList.vue";
 import {computed, ref} from "vue";
-
 const { xs } = useDisplay()
+import { calcFinalUrl } from '~/composables/final_url.ts'
+const lang = useStoryblokLang()
+import { currentLocale } from "~/composables/locales.js"
 
 const props = defineProps({
   blok: Object
@@ -51,81 +51,88 @@ const dialog_text_simple = computed(() => {
   return renderRichText(props.blok.dialog_text)
 })
 
+const final_url = computed(() => {
+  if (!props.blok.to)
+    return null
+  return calcFinalUrl(props.blok, currentLocale.value)
+})
+
 </script>
 
 <template>
-  <v-btn-primary
-    v-if="blok.behavior === 'dialog'"
-    :variant="variant"
-    color="accent"
-    :size="blok.size || 'large'"
-    class="mx-2 text-weight-bold"
-    @click="openDialog"
-    id="button_new"
-    rounded="lg"
-    :append-icon="blok.icon || 'add'"
-  >
-    {{blok.button_title}}
-    <v-dialog
-      v-model="dialog"
-      max-width="850"
+  <client-only>
+    <v-btn-primary
+      v-if="blok.is_dialog"
+      :variant="variant"
+      :color="blok.color || 'accent'"
+      :size="blok.size || 'large'"
+      class="mx-2 text-weight-bold"
+      @click="openDialog"
+      style="font-weight: bold;"
+      :append-icon="blok.icon || 'add'"
     >
-      <v-card class="_rounded-xl">
-        <v-card
-          class="rounded-0 d-flex justify-center align-center"
-          elevation="6"
-          height="80"
-          color="choco"
-        >
-          <div
-            class="text-h4 py-2"
+      {{blok.button_title}}
+      <v-dialog
+        v-model="dialog"
+        max-width="850"
+      >
+        <v-card class="rounded-xl">
+          <v-card
+            class="d-flex justify-center align-center"
+            elevation="6"
+            height="80"
+            color="accent"
           >
-            {{ blok.dialog_title || 'Título' }}
-          </div>
-        </v-card>
-        <v-card-text style="min-height: 300px" class="my-3">
-<!--          <MaterialList v-if="blok.display_list === 'Materials'" />-->
-<!--          <DocumentList v-else-if="blok.display_list === 'OfficialDocs'" />-->
-<!--          <FormGossip-->
-<!--            v-else-if="blok.display_list === 'FormGossip'"-->
-<!--            is_dialog-->
-<!--            @close-dialog="closeDialog"-->
-<!--          />-->
-          <span
-            v-html="dialog_text"
-            class="montse"
-            :class="`text-${blok.align_text}`"
-          >
+            <div
+              class="text-h4 py-2"
+            >
+              {{ blok.dialog_title || 'Título' }}
+            </div>
+          </v-card>
+          <v-card-text style="min-height: 300px" class="my-3">
+  <!--          <MaterialList v-if="blok.display_list === 'Materials'" />-->
+  <!--          <DocumentList v-else-if="blok.display_list === 'OfficialDocs'" />-->
+  <!--          <FormGossip-->
+  <!--            v-else-if="blok.display_list === 'FormGossip'"-->
+  <!--            is_dialog-->
+  <!--            @close-dialog="closeDialog"-->
+  <!--          />-->
+            <span
+              v-html="dialog_text"
+              class="montse"
+              :class="`text-${blok.align_text}`"
+            >
 
-          </span>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-btn-primary>
-  <v-btn-menu
-    v-else-if="blok.behavior === 'menu'"
-    :variant="variant"
-    color="secondary"
-    size="default"
-    :to="blok.to.cached_url || blok.to.url"
-    id="button_new"
-    :append-icon="blok.icon || 'add'"
-  >
-    {{blok.button_title}}
-  </v-btn-menu>
-  <v-btn-primary
-    v-else
-    :variant="variant"
-    color="accent"
-    :size="blok.size || 'large'"
-    class="mx-2 text-weight-bold"
-    :to="blok.to.cached_url || blok.to.url"
-    id="button_new"
-    style="font-weight: bold;"
-    :append-icon="blok.icon || 'add'"
-  >
-    {{blok.button_title}}
-  </v-btn-primary>
+            </span>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-btn-primary>
+    <v-btn-menu
+      v-else-if="blok.behavior === 'menu'"
+      :variant="variant"
+      color="secondary"
+      size="default"
+      :to="blok.to.cached_url || blok.to.url"
+      :append-icon="blok.icon || 'add'"
+    >
+      {{blok.button_title}}
+    </v-btn-menu>
+    <v-btn-primary
+      v-else
+      :variant="variant"
+      :color="blok.icon_color || 'accent'"
+      :size="blok.size || 'large'"
+      class="mx-2 text-weight-bold"
+      :target="final_url.is_external ? '_blank' : undefined"
+      :href="final_url.is_external ? final_url.main_url : undefined"
+      :to="!final_url.is_external ? final_url.main_url : undefined"
+      style="font-weight: bold;"
+      :append-icon="blok.icon || 'add'"
+    >
+      {{blok.button_title}}
+    </v-btn-primary>
+  </client-only>
 <!--  <v-btn-->
 <!--    -->
 <!--    :variant="variant"-->
