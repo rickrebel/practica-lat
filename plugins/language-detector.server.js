@@ -4,7 +4,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const cookieLang = useCookie('user_lang')
   const route = useRoute()
 
-  const supportedLocales = ['es', 'en', 'pt', 'fr']
+  // const supportedLocales = ['es', 'en', 'pt', 'fr']
+  const supportedLocales = ['es', 'en']
   const defaultLocale = 'es'
 
   // Skip for assets

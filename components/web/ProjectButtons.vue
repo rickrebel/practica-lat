@@ -40,7 +40,6 @@ const social_networks = computed(() => {
       v-if="project_content.website"
       variant="flat"
       color="white"
-      :append-icon="false"
       :href="project_content.website"
       target="_blank"
       prepend-icon="language"

@@ -8,7 +8,7 @@ import LazoDecoration from "~/components/web/svg/LazoDecoration.vue";
 import {currentLocale} from "~/composables/locales.js";
 import ProjectButtons from "~/components/web/ProjectButtons.vue";
 const webStore = useWebStore()
-const { all_documents, all_axes } = storeToRefs(webStore)
+const { all_documents, all_axes, global_config } = storeToRefs(webStore)
 
 const props = defineProps({
   blok: Object,
@@ -38,11 +38,17 @@ const related_documents = computed(() => {
   )
 })
 
-const artificial_blok = {
-  subheader: 'Informes y Reportes',
-  color_title: 'black',
-  init_display: 4,
-}
+const artificial_blok = computed(() => {
+  return {
+    subheader: global_config.value?.project_reports_title || 'Informes y Reportes',
+    color_title: 'black',
+    init_display: 4,
+  }
+})
+
+const axis_title = computed(() => {
+  return global_config.value?.axis_projects_title || 'Eje de Trabajo'
+})
 
 const justify = ref(props.blok.justify || false)
 
@@ -86,7 +92,7 @@ function getImageUrl(name) {
       >
         <v-img
           :aspect-ratio="1"
-          :src="resizeImg(blok.logo, 400)"
+          :src="resizeImg(blok.logo, 600)"
           max-height="200"
           max-width="480"
           contain
@@ -105,7 +111,7 @@ function getImageUrl(name) {
           v-if="!blok.hide_name"
           class="text-h4 title-no-wrap pt-0 font-weight-bold mx-3 text-center"
         >
-          {{ blok.name }}
+          {{ blok.name }} ??
         </v-card-title>
         <v-card-text
           v-if="explanation"
@@ -126,8 +132,7 @@ function getImageUrl(name) {
             class="d-flex flex-column align-center mt-0"
           >
             <span class="text-grey-lighten-1 text-subtitle-1 font-weight-bold">
-<!--              TODO: Cambiar dinámicamente-->
-              Eje de Trabajo:
+              {{ axis_title }}:
             </span>
             <v-chip
               class="px-6 font-weight-bold"
@@ -137,7 +142,7 @@ function getImageUrl(name) {
               :to="`/${currentLocale}/eje/${axis_full.slug}`"
             >
 
-              {{ axis_full.name }}
+              {{ axis_full.content?.name }}
             </v-chip>
           </div>
         </template>

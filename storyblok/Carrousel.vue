@@ -45,6 +45,7 @@ const full_images = computed(() => {
     if (size_path_index !== -1) {
       const dimensions = paths[size_path_index].match(/\d+x\d+/)[0]
       const [width, height] = dimensions.split('x').map(Number)
+      img.aspect_ratio = width / height
       const final_width = Math.round((max_height.value * width) / height)
       img.resized = resizeImg(img, final_width, max_height.value)
       img.final_width = final_width
@@ -78,8 +79,8 @@ onMounted(() => {
         :style="`width: ${photo.final_width}px;`"
       >
         <v-img
-          :aspect-ratio="1"
-          :src="resizeImg(photo, 1200)"
+          :aspect-ratio="photo.aspect_ratio"
+          :src="resizeImg(photo, 0 , max_height * 1.5)"
           :max-height="max_height"
           cover
           class="contain"

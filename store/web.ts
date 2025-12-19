@@ -148,7 +148,7 @@ export const useWebStore = defineStore('web', {
       //   acc.push(story)
       //   return acc
       // }, [])
-      console.log('setting projects', stories)
+      // console.log('setting projects', stories)
       this.all_projects = stories
     },
 

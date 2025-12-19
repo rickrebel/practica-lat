@@ -86,6 +86,8 @@ function orientToAlign(orient) {
   return orient === 'left' ? 'start' : orient === 'right' ? 'end' : 'center'
 }
 
+const image_height = computed(() => props.blok.image_height || 300)
+
 const final_align = computed(() => {
   return orientToAlign(props.blok.align_text)
 })
@@ -146,10 +148,10 @@ const blok_header = computed(() => {
             v-if="blok.media?.filename && !blok.video_hls_url"
             _contain
             dark
-            :src="resizeImg(blok.media, 0, blok.image_height || 300)"
-            :max-height="blok.image_height || 300"
+            :src="resizeImg(blok.media, 0, image_height * 1.5)"
+            :max-height="image_height"
             class="mt-10 mb-6 px-3 px-sm-6"
-            :style="`min-height: ${blok.image_height || 300}px`"
+            :style="`min-height: ${image_height}px`"
           ></v-img>
           <CommonTitle
             xv-if="blok.title && (!sm || blok.sm !== '12')"

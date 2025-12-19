@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 dayjs.locale('es')
 const webStore = useWebStore()
-const { all_documents } = storeToRefs(webStore)
+const { all_documents, global_config } = storeToRefs(webStore)
 const props = defineProps({
   blok: Object,
 })
@@ -45,11 +45,14 @@ const header_blok = computed(() => {
   }
 })
 
-const artificial_blok = {
-  subheader: 'Otras investigaciones e informes',
-  color_title: 'white',
-  init_display: 4,
-}
+const artificial_blok = computed(() => {
+  return {
+    subheader: global_config.value?.report_related_title || 'Otras investigaciones e informes',
+    color_title: 'white',
+    init_display: 4,
+  }
+})
+
 
 // add name to the component
 

@@ -62,7 +62,7 @@ const final_projects = computed(() => {
     else
       full_projects = props.blok.projects
   }
-  console.log("full_projects", full_projects)
+  // console.log("full_projects", full_projects)
   full_projects = full_projects.reduce((projects, project, idx) => {
     const is_home = final_display_type.value === 'home'
     const is_first = idx === 0 && is_home
@@ -154,7 +154,7 @@ const final_projects = computed(() => {
           height="180"
         ></v-img>
         <div class="pa-3 font-weight-bold text-h6 text-md-h5 text-center">
-          {{project.name}} ??
+          {{project.content.name}}
         </div>
       </v-card>
       <v-card
@@ -196,7 +196,7 @@ const final_projects = computed(() => {
               <v-card-title
                 class="pa-3 font-weight-bold text-h6 text-md-h5 title-no-wrap"
               >
-                {{project.name}}
+                {{project.content.name}}
               </v-card-title>
               <v-card-text
                 class="text-sm-subtitle-1 special-img text-white"
@@ -217,6 +217,7 @@ const final_projects = computed(() => {
                     class="text-accent"
                     variant="tonal"
                     elevation="4"
+                    append-icon="add"
                     :to="`/${lang.code}/project/${project.slug}`"
                   >
                     {{ blok.button_text }}

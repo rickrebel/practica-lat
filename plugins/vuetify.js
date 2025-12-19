@@ -59,12 +59,12 @@ export default defineNuxtPlugin((app) => {
       VBtnPrimary: {
         class: ['v-btn--accent', 'text-none', 'rounded-xl', 'px-6', 'text-weight-bold'],
         // prependIcon: 'arrow_back',
-        appendIcon: 'add',
+        // appendIcon: 'add',
       },
       VBtnText: {
         class: ['v-btn--text', 'rounded-xl', 'px-6'],
         // prependIcon: 'arrow_back',
-        appendIcon: 'add',
+        // appendIcon: 'add',
       },
       VBtnMenu: {
         class: ['v-btn--menu', 'text-none'],

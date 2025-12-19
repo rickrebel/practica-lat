@@ -1,6 +1,6 @@
 <script setup>
 import { resizeImg } from '~/composables/storyblok_images.js'
-import dayjs from "dayjs";
+
 const props = defineProps({
   blok: Object,
   story: Object,
@@ -16,8 +16,7 @@ import {useWebStore} from "~/store/web.ts";
 import {storeToRefs} from "pinia";
 const { xs, mdAndUp } = useDisplay()
 const webStore = useWebStore()
-// const { all_documents } = webStore
-const { all_projects } = storeToRefs(webStore)
+const { all_projects, global_config } = storeToRefs(webStore)
 
 
 const explanation = computed(() => {
@@ -31,7 +30,7 @@ const explanation = computed(() => {
 
 
 const related_projects = computed(() => {
-  console.log('all_projects', all_projects.value)
+  // console.log('all_projects', all_projects.value)
   // console.log('current_blok', props.blok)
   // console.log('current_story', props.story)
   // return all_documents.value
@@ -40,14 +39,18 @@ const related_projects = computed(() => {
       project => project.content.axis === props.story.uuid)
 })
 
-const artificial_blok = {
-  subheader: 'Proyectos del eje',
-  color_title: 'black',
-}
+const artificial_blok = computed(() => {
+  return {
+    subheader: global_config.value?.axis_projects_title || 'Proyectos del eje',
+    color_title: 'black',
+  }
+})
 
-const artificial_blok_list = {
-  button_text: 'Ver más',
-}
+const artificial_blok_list = computed(() => {
+  return {
+    button_text: global_config.value?.axis_show_more || 'Ver más',
+  }
+})
 
 const class_effect = computed(() => {
   let final_class = ''
@@ -91,7 +94,7 @@ const justify = ref(props.blok.justify || false)
         >
           <v-img
             :aspect-ratio="1"
-            :src="resizeImg(blok.logo, 400)"
+            :src="resizeImg(blok.logo, 600)"
             max-height="200"
             max-width="480"
             contain

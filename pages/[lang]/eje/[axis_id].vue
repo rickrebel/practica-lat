@@ -11,7 +11,7 @@ const story = await useAsyncStoryblok(
     `${lang.prefix}eje/${axis_id}`,
     {
       version: version,
-      language: lang.value,
+      language: lang.final_code,
       // fallback_lang: null,
     },
 { customParent: 'https://app.storyblok.com' }
