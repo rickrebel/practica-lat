@@ -97,7 +97,7 @@ export const useWebStore = defineStore('web', {
 
     async saveFile([response_id, file_data]: [string | number, FormData]): Promise<any> {
       try {
-        console.log('response_id', response_id)
+        // console.log('response_id', response_id)
         const { post } = useApi()
 
         const response = await post(

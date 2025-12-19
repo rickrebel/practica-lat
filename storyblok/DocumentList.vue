@@ -56,7 +56,7 @@ const final_docs = computed(() => {
     return []
   return initialDocs
     .map(doc => {
-      console.log("doc", doc)
+      // console.log("doc", doc)
       doc.document_type = getDocumentType(doc.type_doc)
       doc.colors = doc.document_type.colors
       // const date_start = dayjs(doc.start_date.substr(0, 10))

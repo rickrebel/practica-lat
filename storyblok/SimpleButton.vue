@@ -92,11 +92,6 @@ const final_url = computed(() => {
           <v-card-text style="min-height: 300px" class="my-3">
   <!--          <MaterialList v-if="blok.display_list === 'Materials'" />-->
   <!--          <DocumentList v-else-if="blok.display_list === 'OfficialDocs'" />-->
-  <!--          <FormGossip-->
-  <!--            v-else-if="blok.display_list === 'FormGossip'"-->
-  <!--            is_dialog-->
-  <!--            @close-dialog="closeDialog"-->
-  <!--          />-->
             <span
               v-html="dialog_text"
               class="montse"

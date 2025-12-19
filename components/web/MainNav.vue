@@ -70,9 +70,9 @@ const full_locale = computed(() => {
   ) || locales_with_image_flag.value[0]
 })
 
-watch(currentLocale, (new_locale, old_locale) => {
-  console.log('Current locale changed from', old_locale, 'to', new_locale)
-})
+// watch(currentLocale, (new_locale, old_locale) => {
+//   console.log('Current locale changed from', old_locale, 'to', new_locale)
+// })
 
 
 const main_blok = computed(() => {
@@ -95,7 +95,7 @@ function getImageUrl(name) {
 
 
 function changeLocale(new_locale) {
-  console.log('Change locale to', new_locale)
+  // console.log('Change locale to', new_locale)
   if (new_locale && new_locale !== full_locale.value.code) {
     // const prev_locale = current_locale.value.code
     const new_params = {...params, lang: new_locale}

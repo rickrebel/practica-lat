@@ -51,7 +51,7 @@ async function sendRecover(){
   const data = {"email": login_data.value.email}
   store.dispatch("auth/SEND_PASSWORD_RESET", data)
     .then(res => {
-      console.log("res", res)
+      // console.log("res", res)
       loading_login.value = false
       if (res.error){
         // this.$emit('set-alert', JSON.stringify(res.error.response.data))
@@ -71,13 +71,13 @@ async function sendLogin(){
   if (!valid)
     return
   loading_login.value = true
-  console.log("login_data", login_data.value)
+  // console.log("login_data", login_data.value)
   const data = {
     username: login_data.value.email,
     password : login_data.value.password
   }
   loginMail(data).then(res => {
-    console.log("res", res)
+    // console.log("res", res)
     loading_login.value = false
     if (res.error){
       // this.$emit('set-alert', JSON.stringify(res.error.response.data))

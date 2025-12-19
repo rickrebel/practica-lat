@@ -55,7 +55,7 @@ const artificial_blok_list = computed(() => {
 const class_effect = computed(() => {
   let final_class = ''
   const num = parseInt(props.blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
-  console.log("num", num)
+  // console.log("num", num)
   if (num % 4 === 0)
     final_class += ' effect-1'
   else if (num % 4 === 1)
