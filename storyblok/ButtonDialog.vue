@@ -68,11 +68,6 @@ const variant = computed(() =>
         <v-card-text>
           <MaterialList v-if="blok.display_list === 'Materials'" />
           <DocumentList v-else-if="blok.display_list === 'OfficialDocs'" />
-          <FormGossip
-            v-else-if="blok.display_list === 'FormGossip'"
-            is_dialog
-            @close-dialog="closeDialog"
-          />
           <span v-else>
             Ninguno: {{ blok.display_list }}
             {{size}} {{blok.size}}

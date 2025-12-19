@@ -29,7 +29,7 @@ onMounted(() => {
 })
 
 const onPlayerReady = () => {
-  console.log('Reproductor listo')
+  // console.log('Reproductor listo')
   // Configurar controles de calidad manual
   addQualitySelector()
 }

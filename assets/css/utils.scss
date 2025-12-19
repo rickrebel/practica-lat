@@ -93,6 +93,7 @@ $blending: hard-light;
 .paper-texture {
   background-blend-mode: multiply;
   background-image: url('~/assets/textura-papel.png') !important;
+  background-repeat: repeat;
 }
 
 .effect-1 {

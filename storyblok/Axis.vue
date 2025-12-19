@@ -31,7 +31,7 @@ const explanation = computed(() => {
 
 
 const related_projects = computed(() => {
-  console.log('all_projects', all_projects.value)
+  // console.log('all_projects', all_projects.value)
   // console.log('current_blok', props.blok)
   // console.log('current_story', props.story)
   // return all_documents.value
@@ -52,7 +52,7 @@ const artificial_blok_list = {
 const class_effect = computed(() => {
   let final_class = ''
   const num = parseInt(props.blok._uid.replace(/\D/g, '').slice(-1)) // get last digit
-  console.log("num", num)
+  // console.log("num", num)
   if (num % 4 === 0)
     final_class += ' effect-1'
   else if (num % 4 === 1)

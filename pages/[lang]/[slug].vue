@@ -17,7 +17,7 @@ const story = await useAsyncStoryblok(
 )
 
 onMounted(() => {
-  console.log('Onmounted [lang][slug].vue - slug:', slug)
+  // console.log('Onmounted [lang][slug].vue - slug:', slug)
 })
 
 

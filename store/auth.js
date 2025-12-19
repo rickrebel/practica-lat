@@ -100,7 +100,7 @@ export const useAuthStore = defineStore("auth", {
         const { post } = useApi();
         let response = await post('/login/', params)
 
-        console.log("loginMail", response)
+        // console.log("loginMail", response)
         this.hasLogged(response, false)
         return response
 

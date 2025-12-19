@@ -331,7 +331,7 @@ export const useMainStore = defineStore('main', {
   }),
   actions: {
     setFilterGroup(group) {
-      console.log("setFilterGroup", group)
+      // console.log("setFilterGroup", group)
       this.current_filter_group = group
       console.log("cats_ready", this.cats_ready)
       if (this.cats_ready)
@@ -438,7 +438,7 @@ export const useMainStore = defineStore('main', {
       }
     },
     edit_source_value(data) {
-      console.log("edit_source_value", data)
+      // console.log("edit_source_value", data)
       if (!data.source || !data.source.id)
         return
       const index = this.cats.source.findIndex(el => el.id === data.source.id)
@@ -446,33 +446,6 @@ export const useMainStore = defineStore('main', {
       this.all_nodes = calculateNewCats(this.cats, this.schemas)
       // this.all_nodes['sources'] = calculateFilterGroup(
       //   this.cats, this.schemas.filters_dict.sources)
-    },
-    async savePreLink([id, data]) {
-      try {
-        const { patch, setAuthHeader } = useApi();
-        setAuthHeader();
-        let response = await patch(`/note_link/${id}/get_note_content/`, data);
-        console.log("savePreLink", response)
-        this.edit_source_value(response)
-        return response
-      } catch (error) {
-        console.error(error);
-        // this.edit_source_value(error.response.data)
-        this.edit_source_value(error._data)
-        return error._data
-      }
-    },
-    async getAdditionalInfo(id) {
-      try {
-        const { get, setAuthHeader } = useApi();
-        setAuthHeader();
-
-        let response = await get(`/note_content/${id}/additional_info/`);
-        // console.log("getAdditionalInfo", response.data)
-        return response
-      } catch (error) {
-        console.error(error);
-      }
     },
     async saveSimple([collection, data]) {
 
