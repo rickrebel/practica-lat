@@ -83,19 +83,6 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: false
   },
-  googleFonts: {
-    families: {
-      Montserrat: [400, 700, 900],
-      'Titillium Web': [400, 700, 900],
-    },
-    display: 'swap',
-    preload: true,
-    prefetch: false, // Cambiado a false para mejorar rendimiento
-    preconnect: true,
-    download: true, // 👈 Descarga las fuentes localmente
-    inject: true,
-    base64: false
-  },
   vite: {
     vue: {
       template: {

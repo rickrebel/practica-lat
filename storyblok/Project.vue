@@ -111,7 +111,7 @@ function getImageUrl(name) {
           v-if="!blok.hide_name"
           class="text-h4 title-no-wrap pt-0 font-weight-bold mx-3 text-center"
         >
-          {{ blok.name }} ??
+          {{ blok.name }}
         </v-card-title>
         <v-card-text
           v-if="explanation"

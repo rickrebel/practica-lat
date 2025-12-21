@@ -5,6 +5,10 @@ const props = defineProps({
   item: Object,
   blok: Object,
   idx: Number,
+  download_title: {
+    type: String,
+    default: 'Descargar'
+  }
 })
 
 import { useDisplay } from 'vuetify'
@@ -82,7 +86,7 @@ function openDoc(item) {
           color="accent"
           variant="elevated"
           size="large"
-          v-tooltip="'Descargar'"
+          v-tooltip="download_title"
           @click="openDoc(item)"
         >
           <v-icon>download</v-icon>
@@ -141,7 +145,7 @@ function openDoc(item) {
           @click="openDoc(item)"
           append-icon="download"
         >
-          Descargar
+          {{ download_title }}
         </v-btn-primary>
         <v-spacer></v-spacer>
 

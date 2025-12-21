@@ -117,15 +117,17 @@ const blok_header = computed(() => {
     :sm="blok.sm"
     :md="blok.md"
     :lg="blok.lg"
-    class="py-0 _py-sm-3"
+    class="py-0"
     :class="space_class"
     :order="blok.order || 1"
     :order-md="blok.order_md || 1"
+
   >
     <v-card
       :variant="variant_card"
       :class="card_class"
-      class="rounded-0 fill-height py-0"
+      class="rounded-0 fill-height"
+      :style="`padding-top: ${blok.padding_top || 8}px; padding-bottom: ${blok.padding_bottom || 8}px;`"
       elevation="0"
       :color="blok.background_color2 || 'transparent'"
     >

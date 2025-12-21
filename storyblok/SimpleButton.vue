@@ -3,8 +3,8 @@ import { useDisplay } from 'vuetify'
 import {computed, ref} from "vue";
 const { xs } = useDisplay()
 import { calcFinalUrl } from '~/composables/final_url.ts'
-const lang = useStoryblokLang()
 import { currentLocale } from "~/composables/locales.js"
+const { query } = useRoute()
 
 const props = defineProps({
   blok: Object
@@ -51,7 +51,12 @@ const dialog_text_simple = computed(() => {
   return renderRichText(props.blok.dialog_text)
 })
 
+const is_storyblok = computed(() => {
+  return query._storyblok || false
+})
+
 const final_url = computed(() => {
+  // console.log('query', query)
   if (!props.blok.to)
     return null
   return calcFinalUrl(props.blok, currentLocale.value)
@@ -113,20 +118,52 @@ const final_url = computed(() => {
     >
       {{blok.button_title}}
     </v-btn-menu>
-    <v-btn-primary
-      v-else
-      :variant="variant"
-      :color="blok.icon_color || 'accent'"
-      :size="blok.size || 'large'"
-      class="mx-2 text-weight-bold"
-      :target="final_url.is_external ? '_blank' : undefined"
-      :href="final_url.is_external ? final_url.main_url : undefined"
-      :to="!final_url.is_external ? final_url.main_url : undefined"
-      style="font-weight: bold;"
-      :append-icon="blok.icon || 'add'"
-    >
-      {{blok.button_title}}
-    </v-btn-primary>
+    <template v-else>
+      <v-menu v-if="is_storyblok">
+        <template v-slot:activator="{ props }">
+          <v-btn-primary
+            v-bind="props"
+            :variant="variant"
+            :color="blok.icon_color || 'accent'"
+            :size="blok.size || 'large'"
+            class="mx-2 text-weight-bold"
+            style="font-weight: bold;"
+            :append-icon="blok.icon || 'add'"
+          >
+            {{blok.button_title}}
+          </v-btn-primary>
+        </template>
+        <v-list>
+          <v-list-item
+            title="Editar botón"
+            v-editable="blok"
+          ></v-list-item>
+          <v-list-item
+            :to="!final_url.is_external ? final_url.main_url : undefined"
+            :href="final_url.is_external ? final_url.main_url : undefined"
+            :target="final_url.is_external ? '_blank' : undefined"
+          >
+            <v-icon left>open_in_new</v-icon>
+            Ir al enlace
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-btn-primary
+        v-else
+        :to="!final_url.is_external ? final_url.main_url : undefined"
+        :href="final_url.is_external ? final_url.main_url : undefined"
+        :target="final_url.is_external ? '_blank' : undefined"
+        :variant="variant"
+        :color="blok.icon_color || 'accent'"
+        :size="blok.size || 'large'"
+        class="mx-2 text-weight-bold"
+        style="font-weight: bold;"
+        :append-icon="blok.icon || 'add'"
+      >
+        {{blok.button_title}}
+      </v-btn-primary>
+    </template>
   </client-only>
 <!--  <v-btn-->
 <!--    -->

@@ -38,7 +38,7 @@ const text_size = computed(() => {
     :class="`text-${blok.color_title || 'i'} ${align_classes} ${text_size}`"
   >
     <span
-      class="montse title-no-wrap font-weight-bold"
+      class="title-no-wrap font-weight-bold"
       v-html="main_text"
       style="line-height: 1.2 !important;"
     >

@@ -104,7 +104,7 @@ function openDoc(item) {
                 append-icon="file_download"
                 @click="openDoc(blok)"
             >
-              Descargar Informe
+              {{ global_config?.download_title || 'Descargar' }} Documento
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>

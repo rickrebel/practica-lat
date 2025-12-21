@@ -2,6 +2,10 @@
 
 import CommonTitle from "../components/web/CommonTitle.vue";
 import {resizeImg} from "~/composables/storyblok_images.js";
+import { useWebStore } from '~/store/web.ts'
+import { storeToRefs } from 'pinia'
+const webStore = useWebStore()
+const { global_config } = storeToRefs(webStore)
 
 const props = defineProps({
   blok: Object,
@@ -65,12 +69,12 @@ function openDoc(item) {
         color="accent"
         size="large"
         class="px-5 mx-4 mt-4 align-self-start"
-        v-tooltip="'Descargar'"
+        v-tooltip="global_config?.download_title || 'Descargar'"
         rounded="lg"
         append-icon="file_download"
         @click="openDoc(report_blok)"
       >
-        Descargar
+        {{global_config?.download_title || 'Descargar'}}
       </v-btn>
     </div>
     <v-spacer></v-spacer>

@@ -21,7 +21,7 @@ dayjs.locale('es')
 
 const webStore = useWebStore()
 // Store setup and state
-const { all_documents } = storeToRefs(webStore)
+const { all_documents, global_config } = storeToRefs(webStore)
 // Props
 const props = defineProps({
   blok: Object,
@@ -190,6 +190,7 @@ const filteredDocs = computed(() => {
         <Document
           :item="item"
           :idx="idx"
+          :download_title="global_config?.download_title || 'Descargar'"
         />
       </SwiperSlide>
     </Swiper>

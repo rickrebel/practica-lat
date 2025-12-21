@@ -13,8 +13,6 @@
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@fontsource/lato": "^5.1.0",
-    "@fontsource/montserrat": "^5.1.1",
-    "@fontsource/titillium-web": "^5.2.8",
     "@mdi/font": "^7.4.47",
     "@pinia/nuxt": "^0.5.1",
     "@storyblok/nuxt": "^6.2.2",
