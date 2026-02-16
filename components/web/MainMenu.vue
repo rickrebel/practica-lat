@@ -92,15 +92,9 @@ const final_menu_drawer = computed({
     <v-list nav open-strategy="multiple" _active-class="text-primary">
 
       <v-list-item v-if="false">
-        <template v-slot:prepend v-if="false">
-          <v-icon>dashboard</v-icon>
-        </template>
         <v-list-item-title class="text-h6">
           Menú
         </v-list-item-title>
-        <v-list-item-subtitle v-if="false">
-          (en desarrollo)
-        </v-list-item-subtitle>
       </v-list-item>
       <v-divider color="white" opacity="1" thickness="2"></v-divider>
       <client-only>
